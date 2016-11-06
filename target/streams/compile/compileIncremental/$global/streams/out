@@ -2,14 +2,63 @@
 [0m[[0mdebug[0m] [0m[naha] Initial source changes: [0m
 [0m[[0mdebug[0m] [0m[naha] 	removed:Set()[0m
 [0m[[0mdebug[0m] [0m[naha] 	added: Set()[0m
-[0m[[0mdebug[0m] [0m[naha] 	modified: Set()[0m
+[0m[[0mdebug[0m] [0m[naha] 	modified: Set(/home/sarahi/siiaf-play/app/controllers/GerenteController.java)[0m
 [0m[[0mdebug[0m] [0m[naha] Invalidated products: Set()[0m
 [0m[[0mdebug[0m] [0m[naha] External API changes: API Changes: Set()[0m
 [0m[[0mdebug[0m] [0m[naha] Modified binary dependencies: Set()[0m
-[0m[[0mdebug[0m] [0m[naha] Initial directly invalidated sources: Set()[0m
+[0m[[0mdebug[0m] [0m[naha] Initial directly invalidated sources: Set(/home/sarahi/siiaf-play/app/controllers/GerenteController.java)[0m
 [0m[[0mdebug[0m] [0m[naha] [0m
 [0m[[0mdebug[0m] [0m[naha] Sources indirectly invalidated by:[0m
 [0m[[0mdebug[0m] [0m[naha] 	product: Set()[0m
 [0m[[0mdebug[0m] [0m[naha] 	binary dep: Set()[0m
 [0m[[0mdebug[0m] [0m[naha] 	external source: Set()[0m
-[0m[[0mdebug[0m] [0mAll initially invalidated sources: Set()[0m
+[0m[[0mdebug[0m] [0mAll initially invalidated sources: Set(/home/sarahi/siiaf-play/app/controllers/GerenteController.java)[0m
+[0m[[0minfo[0m] [0mCompiling 1 Java source to /home/sarahi/siiaf-play/target/scala-2.11/classes...[0m
+[0m[[0mdebug[0m] [0mAttempting to call com.sun.tools.javac.api.JavacTool@3818ff73 directly...[0m
+[0m[[31merror[0m] [0m/home/sarahi/siiaf-play/app/controllers/GerenteController.java:23: method render in class views.html.gerente.clientes cannot be applied to given types;[0m
+[0m[[31merror[0m] [0m  required: no arguments[0m
+[0m[[31merror[0m] [0m  found: play.data.Form<models.Cliente>,java.util.List<models.Cliente>[0m
+[0m[[31merror[0m] [0m  reason: actual and formal argument lists differ in length[0m
+[0m[[31merror[0m] [0m        return ok(clientes.render(cliente_form,clientes_list));[0m
+[0m[[31merror[0m] [0m/home/sarahi/siiaf-play/app/controllers/GerenteController.java:32: cannot find symbol[0m
+[0m[[31merror[0m] [0m  symbol:   variable cabezal_form[0m
+[0m[[31merror[0m] [0m  location: class controllers.GerenteController[0m
+[0m[[31merror[0m] [0m        if( cabezal_form.hasErrors() ){[0m
+[0m[[31merror[0m] [0m/home/sarahi/siiaf-play/app/controllers/GerenteController.java:34: method render in class views.html.gerente.clientes cannot be applied to given types;[0m
+[0m[[31merror[0m] [0m  required: no arguments[0m
+[0m[[31merror[0m] [0m  found: play.data.Form<models.Cliente>,java.util.List<models.Cliente>[0m
+[0m[[31merror[0m] [0m  reason: actual and formal argument lists differ in length[0m
+[0m[[31merror[0m] [0m            return badRequest(clientes.render(cliente_form,clientes_list));[0m
+[0m[[31merror[0m] [0m/home/sarahi/siiaf-play/app/controllers/GerenteController.java:52: method render in class views.html.gerente.clientes cannot be applied to given types;[0m
+[0m[[31merror[0m] [0m  required: no arguments[0m
+[0m[[31merror[0m] [0m  found: play.data.Form<models.Cliente>,java.util.List<models.Cliente>[0m
+[0m[[31merror[0m] [0m  reason: actual and formal argument lists differ in length[0m
+[0m[[31merror[0m] [0m            return badRequest(clientes.render(cliente_form,clientes_list));[0m
+[0m[[31merror[0m] [0m/home/sarahi/siiaf-play/app/controllers/GerenteController.java:60: cannot find symbol[0m
+[0m[[31merror[0m] [0m  symbol:   variable nit[0m
+[0m[[31merror[0m] [0m  location: variable clie of type models.Cliente[0m
+[0m[[31merror[0m] [0m            clie.nit=cliente_form.get().nit;[0m
+[0m[[31merror[0m] [0m/home/sarahi/siiaf-play/app/controllers/GerenteController.java:60: cannot find symbol[0m
+[0m[[31merror[0m] [0m  symbol:   variable nit[0m
+[0m[[31merror[0m] [0m  location: class models.Cliente[0m
+[0m[[31merror[0m] [0m            clie.nit=cliente_form.get().nit;[0m
+[0m[[31merror[0m] [0m/home/sarahi/siiaf-play/app/controllers/GerenteController.java:82: method render in class views.html.gerente.motoristas cannot be applied to given types;[0m
+[0m[[31merror[0m] [0m  required: no arguments[0m
+[0m[[31merror[0m] [0m  found: play.data.Form<models.Motorista>,java.util.List<models.Motorista>[0m
+[0m[[31merror[0m] [0m  reason: actual and formal argument lists differ in length[0m
+[0m[[31merror[0m] [0m        return ok(motoristas.render(motorista_form,motoristas_list));[0m
+[0m[[31merror[0m] [0m/home/sarahi/siiaf-play/app/controllers/GerenteController.java:91: cannot find symbol[0m
+[0m[[31merror[0m] [0m  symbol:   variable cabezal_form[0m
+[0m[[31merror[0m] [0m  location: class controllers.GerenteController[0m
+[0m[[31merror[0m] [0m        if( cabezal_form.hasErrors() ){[0m
+[0m[[31merror[0m] [0m/home/sarahi/siiaf-play/app/controllers/GerenteController.java:93: cannot find symbol[0m
+[0m[[31merror[0m] [0m  symbol:   variable cmotorista[0m
+[0m[[31merror[0m] [0m  location: class controllers.GerenteController[0m
+[0m[[31merror[0m] [0m            return badRequest(cmotorista.render(motorista_form,motoristas_list));[0m
+[0m[[31merror[0m] [0m/home/sarahi/siiaf-play/app/controllers/GerenteController.java:111: cannot find symbol[0m
+[0m[[31merror[0m] [0m  symbol:   variable motmotoristas[0m
+[0m[[31merror[0m] [0m  location: class controllers.GerenteController[0m
+[0m[[31merror[0m] [0m            return badRequest(motmotoristas.render(motorista_form,motoristas_list));[0m
+[0m[[0minfo[0m] [0m/home/sarahi/siiaf-play/app/controllers/GerenteController.java: /home/sarahi/siiaf-play/app/controllers/GerenteController.java uses or overrides a deprecated API.[0m
+[0m[[0minfo[0m] [0m/home/sarahi/siiaf-play/app/controllers/GerenteController.java: Recompile with -Xlint:deprecation for details.[0m
+[0m[[31merror[0m] [0m(compile:[31mcompileIncremental[0m) javac returned nonzero exit code[0m

@@ -67,8 +67,8 @@ Seq[Any](format.raw/*5.2*/("""
 object facturacion extends facturacion_Scope0.facturacion_Scope1.facturacion
               /*
                   -- GENERATED --
-                  DATE: Sun Nov 06 01:31:06 CST 2016
-                  SOURCE: /home/samuel/Desarrollo/siiaf/app/views/logistica/facturacion.scala.html
+                  DATE: Sun Nov 06 08:15:22 CST 2016
+                  SOURCE: /home/sarahi/siiaf-play/app/views/logistica/facturacion.scala.html
                   HASH: 6db28c6790188db2979b99cae383db0f2482227c
                   MATRIX: 883->19|893->22|972->24|998->31|1007->33|1086->35|1128->28|1156->39|1185->42|1203->51|1304->142|1344->143|1373->145
                   LINES: 34->3|34->3|36->3|38->7|38->7|40->7|43->5|45->9|47->11|47->11|47->11|47->11|48->12

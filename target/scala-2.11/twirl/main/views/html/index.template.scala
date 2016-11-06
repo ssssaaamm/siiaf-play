@@ -53,8 +53,8 @@ Seq[Any](_display_(/*1.2*/base("Home CRM")/*1.18*/{_display_(Seq[Any](format.raw
 object index extends index_Scope0.index
               /*
                   -- GENERATED --
-                  DATE: Sun Nov 06 01:31:06 CST 2016
-                  SOURCE: /home/samuel/Desarrollo/siiaf/app/views/index.scala.html
+                  DATE: Sun Nov 06 08:15:22 CST 2016
+                  SOURCE: /home/sarahi/siiaf-play/app/views/index.scala.html
                   HASH: 510707eca341644b49e8a399922fff5da70266c4
                   MATRIX: 827->1|851->17|889->18|919->22
                   LINES: 32->1|32->1|32->1|34->3

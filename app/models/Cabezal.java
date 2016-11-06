@@ -6,6 +6,7 @@ import javax.persistence.*;
 import play.db.ebean.*;
 import play.data.format.*;
 import play.data.validation.*;
+import play.data.*;
 
 import com.avaje.ebean.*;
 
@@ -21,5 +22,12 @@ public class Cabezal extends Model{
 	@Constraints.Required(message="Debe ingresar una descripcion")
 	public String descripcion;
 
+		public static Finder<Long, Cabezal> find = new Finder<Long,Cabezal>(Cabezal.class);
+
+    public Form<Cabezal> getForm(){
+    	Cabezal c = Cabezal.find.byId(this.id);
+    	Form<Cabezal> returning=Form.form(Cabezal.class).fill(c);
+    	return returning;
+    }
 	
 }

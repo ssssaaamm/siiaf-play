@@ -67,8 +67,8 @@ Seq[Any](format.raw/*5.2*/("""
 object viajes extends viajes_Scope0.viajes_Scope1.viajes
               /*
                   -- GENERATED --
-                  DATE: Sun Nov 06 01:31:06 CST 2016
-                  SOURCE: /home/samuel/Desarrollo/siiaf/app/views/logistica/viajes.scala.html
+                  DATE: Sun Nov 06 08:15:22 CST 2016
+                  SOURCE: /home/sarahi/siiaf-play/app/views/logistica/viajes.scala.html
                   HASH: b6affabb1659cd73ea3b37ec589398ba024ff14c
                   MATRIX: 868->19|878->22|957->24|983->31|992->33|1071->35|1113->28|1141->39|1170->42|1188->51|1284->138|1323->139|1352->141
                   LINES: 34->3|34->3|36->3|38->7|38->7|40->7|43->5|45->9|47->11|47->11|47->11|47->11|48->12

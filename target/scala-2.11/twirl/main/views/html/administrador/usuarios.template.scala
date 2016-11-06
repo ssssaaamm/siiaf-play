@@ -67,8 +67,8 @@ Seq[Any](format.raw/*5.2*/("""
 object usuarios extends usuarios_Scope0.usuarios_Scope1.usuarios
               /*
                   -- GENERATED --
-                  DATE: Sun Nov 06 01:31:06 CST 2016
-                  SOURCE: /home/samuel/Desarrollo/siiaf/app/views/administrador/usuarios.scala.html
+                  DATE: Sun Nov 06 08:15:22 CST 2016
+                  SOURCE: /home/sarahi/siiaf-play/app/views/administrador/usuarios.scala.html
                   HASH: 6fdddeac2c63e3ab1419c82c32dc69d7a7f3021c
                   MATRIX: 878->19|888->22|967->24|993->31|1002->33|1081->35|1123->28|1151->39|1180->42|1202->55|1282->126|1321->127|1350->129
                   LINES: 34->3|34->3|36->3|38->7|38->7|40->7|43->5|45->9|47->11|47->11|47->11|47->11|48->12
