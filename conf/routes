@@ -39,7 +39,10 @@ POST     /manager/cabezales/remove/:id              controllers.GerenteControlle
 
 GET     /manager/planilla                           controllers.GerenteController.planilla
 GET     /manager/facturacion                        controllers.GerenteController.facturacion
+
 GET     /manager/politica/cobro                     controllers.GerenteController.politica_cobro
+POST    /manager/politica/cobro/                     controllers.GerenteController.politica_cobro_post()
+
 GET     /manager/politica/pago                      controllers.GerenteController.politica_pago
 
 GET     /manager/usuarios                           controllers.GerenteController.usuarios

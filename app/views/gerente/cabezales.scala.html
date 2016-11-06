@@ -45,7 +45,7 @@
 
 
 
-	@for(error <- cabezal_form("nombre").errors) {
+	@for(error <- cabezal_form("placa").errors) {
     	<div class="alert alert-danger">
 			<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
 			<strong>@Messages(error.messages, error.arguments.toArray: _*)</strong>
@@ -53,21 +53,7 @@
 	}
 
 
-	@for(error <- cabezal_form("username").errors) {
-    	<div class="alert alert-danger">
-			<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-			<strong>@Messages(error.messages, error.arguments.toArray: _*)</strong>
-		</div>
-	}
-
-	@for(error <- cabezal_form("password").errors) {
-    	<div class="alert alert-danger">
-			<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-			<strong>@Messages(error.messages, error.arguments.toArray: _*)</strong>
-		</div>
-	}
-
-	@for(error <- cabezal_form("password_confirmation").errors) {
+	@for(error <- cabezal_form("descripcion").errors) {
     	<div class="alert alert-danger">
 			<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
 			<strong>@Messages(error.messages, error.arguments.toArray: _*)</strong>
@@ -141,7 +127,6 @@
 	<table class="table table-hover table-bordered results">
 		<thead>
 			<tr>
-				<th>Id</th>
 				<th class="col-md-2 col-xs-5">Id</th>
 				<th class="col-md-4 col-xs-4">Placa</th>
 				<th class="col-md-6 col-xs-3">Descripcion</th>
@@ -189,7 +174,7 @@
 					        		 </div>
 
 					        		 <div class="form-group">
-					        		 	@textarea(cabezal_form("descripcion"),'rows -> 5, '_showConstraints -> false , '_showErrors -> false,'class -> "form-control", '_label -> "Descripción: ")
+					        		 	@textarea(cabezal.getForm()("descripcion"),'rows -> 5, '_showConstraints -> false , '_showErrors -> false,'class -> "form-control", '_label -> "Descripción: ")
 					        		 </div>
 					        		 
 

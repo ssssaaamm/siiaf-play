@@ -29,7 +29,7 @@ public class GerenteController extends Controller {
         List<Cliente> clientes_list = Cliente.find.findList();
 
         //Si hay errores siempre los retornara
-        if( cabezal_form.hasErrors() ){
+        if( cliente_form.hasErrors() ){
             flash("modal","mod-new");
             return badRequest(clientes.render(cliente_form,clientes_list));
         }
@@ -61,8 +61,12 @@ public class GerenteController extends Controller {
          
             clie.update();  
 
+        }
+
+        flash("exito","Operacion exitosa!");
+
+        return redirect(routes.GerenteController.clientes());
     }
-}
     //remove
     public Result cliente_remove(Long id) {
         Cliente cli = Cliente.find.byId(id);
@@ -88,9 +92,9 @@ public class GerenteController extends Controller {
         List<Motorista> motoristas_list = Motorista.find.findList();
 
         //Si hay errores siempre los retornara
-        if( cabezal_form.hasErrors() ){
+        if( motorista_form.hasErrors() ){
             flash("modal","mod-new");
-            return badRequest(cmotorista.render(motorista_form,motoristas_list));
+            return badRequest(motoristas.render(motorista_form,motoristas_list));
         }
 
         Motorista nuevo =motorista_form.get();
@@ -108,7 +112,7 @@ public class GerenteController extends Controller {
         //Si hay errores siempre los retornara
         if( motorista_form.hasErrors() ){
             flash("modal","mod-edit-"+id.toString());
-            return badRequest(motmotoristas.render(motorista_form,motoristas_list));
+            return badRequest(motoristas.render(motorista_form,motoristas_list));
         }
 
         Motorista mot = Motorista.find.byId(id);
@@ -116,6 +120,8 @@ public class GerenteController extends Controller {
         if (mot != null) {
             mot.codigo=motorista_form.get().codigo;
             mot.nombre=motorista_form.get().nombre;
+            mot.dui=motorista_form.get().dui;
+            mot.nit=motorista_form.get().nit;
             mot.licencia=motorista_form.get().licencia;
            
 
@@ -213,8 +219,61 @@ public class GerenteController extends Controller {
     }
 
     public Result politica_cobro() {
-        return ok(politica_cobro.render());
+        PoliticaCobro politica = PoliticaCobro.find.where().eq("actual",1).findUnique();
+        
+        Form<PoliticaCobro> politica_form = null;
+        
+        if(politica == null){
+            politica_form = Form.form(PoliticaCobro.class);
+        }else{
+            politica_form = politica.getForm();
+        }
+        
+        return ok(politica_cobro.render(politica_form));
     }
+
+
+    public Result politica_cobro_post(){
+
+        //verificar si existe una politica de cobro con el campo 'actual' en true;
+        PoliticaCobro actual = PoliticaCobro.find.where().eq("actual",1).findUnique();
+        
+        List<PoliticaCobro> politicas = PoliticaCobro.find.findList();
+        
+        Form<PoliticaCobro> politica_form = Form.form(PoliticaCobro.class).bindFromRequest();
+        PoliticaCobro nueva = politica_form.get();
+
+
+        PoliticaCobro match = PoliticaCobro.find.where().conjunction().eq("duracion_periodo",nueva.duracion_periodo).eq("tarifa_cobro_km_sen",nueva.tarifa_cobro_km_sen).eq("tarifa_cobro_km_car",nueva.tarifa_cobro_km_car).eq("tarifa_cobro_km_vac",nueva.tarifa_cobro_km_vac).eq("tarifa_sobrepeso",nueva.tarifa_sobrepeso).eq("tarifa_cruce_frontera",nueva.tarifa_cruce_frontera).findUnique();
+
+
+        if(actual!=null){
+            if(match!=null){
+                actual.actual=false;
+                actual.update();
+
+                match.actual=true;
+                match.update();
+            }else{
+                
+                actual.actual=false;
+                actual.update();
+
+                nueva.actual=true;
+                nueva.save();     
+            }
+        }else{
+            nueva.actual=true;
+            nueva.save();  
+        }
+
+        flash("exito","Operacion exitosa");
+        return redirect(routes.GerenteController.politica_cobro());
+        
+
+
+    }
+
 
     public Result politica_pago() {
         return ok(politica_pago.render());

@@ -16,7 +16,6 @@ public class PoliticaCobro extends Model{
 	@Id
 	public Long id;
 
-	@Constraints.Required(message="Debe ingresar la politica de cobro actual")
 	public Boolean actual;
 
 	@Constraints.Required(message="Debe ingresar un periodo")

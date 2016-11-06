@@ -1,4 +1,4 @@
-@(cliente_form: Form[PoliticaCobro])
+@(politica_form: Form[PoliticaCobro])
 @import helper._
 
 @css={
@@ -9,6 +9,115 @@
 	
 }
 
+
+@errores_formulario={
+
+	@if(politica_form.hasGlobalErrors) {
+
+        @for(error <- politica_form.globalErrors) {
+	        <div class="alert alert-danger">
+				<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+				<strong>@Messages(error.messages, error.arguments.toArray: _*)</strong>
+			</div>
+        }
+	}
+
+
+
+	@for(error <- politica_form("duracion_periodo").errors) {
+    	<div class="alert alert-danger">
+			<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+			<strong>@Messages(error.messages, error.arguments.toArray: _*)</strong>
+		</div>
+	}
+
+
+	@for(error <- politica_form("tarifa_cobro_km_sen").errors) {
+    	<div class="alert alert-danger">
+			<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+			<strong>@Messages(error.messages, error.arguments.toArray: _*)</strong>
+		</div>
+	}
+
+
+
+	@for(error <- politica_form("tarifa_cobro_km_car").errors) {
+    	<div class="alert alert-danger">
+			<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+			<strong>@Messages(error.messages, error.arguments.toArray: _*)</strong>
+		</div>
+	}
+
+	@for(error <- politica_form("tarifa_cobro_km_vac").errors) {
+    	<div class="alert alert-danger">
+			<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+			<strong>@Messages(error.messages, error.arguments.toArray: _*)</strong>
+		</div>
+	}
+
+	@for(error <- politica_form("tarifa_sobrepeso").errors) {
+    	<div class="alert alert-danger">
+			<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+			<strong>@Messages(error.messages, error.arguments.toArray: _*)</strong>
+		</div>
+	}
+
+	@for(error <- politica_form("tarifa_cruce_frontera").errors) {
+    	<div class="alert alert-danger">
+			<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+			<strong>@Messages(error.messages, error.arguments.toArray: _*)</strong>
+		</div>
+	}
+
+
+}
+
 @gerente.base("Manager SIIAF","Politica de Cobro","Configuracion","politica_cobro",css,js){
-	configuracion de politica de cobro
+	
+<div class="row">
+	<div class="col-lg-6">
+		@if(flash.containsKey("exito")){
+		<div class="alert alert-success fade in">
+			<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+			<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+			<strong>@flash.get("exito")</strong>
+		</div>
+		}
+
+		@errores_formulario
+
+
+		@form(action=routes.GerenteController.politica_cobro_post()){
+
+
+			<div class="form-group">
+			 	@inputText(politica_form("duracion_periodo"), '_showConstraints -> false, '_showErrors -> false,'class -> "form-control", 'placeholder -> "Duracion de periodo en dias", '_label -> "Duracion Periodo: ")
+			</div>
+
+			<div class="form-group">
+			 	@inputText(politica_form("tarifa_cobro_km_sen"), '_showConstraints -> false, '_showErrors -> false,'class -> "form-control", 'placeholder -> "Tarifa en USD", '_label -> "Tarifa Km Sencillo: ")
+			</div>
+
+			<div class="form-group">
+			 	@inputText(politica_form("tarifa_cobro_km_car"), '_showConstraints -> false, '_showErrors -> false,'class -> "form-control", 'placeholder -> "Tarifa en USD", '_label -> "Tarifa Km Cargado: ")
+			</div>
+
+			<div class="form-group">
+			 	@inputText(politica_form("tarifa_cobro_km_vac"), '_showConstraints -> false, '_showErrors -> false,'class -> "form-control", 'placeholder -> "Tarifa en USD", '_label -> "Tarifa Km Vacio: ")
+			</div>
+
+			<div class="form-group">
+			 	@inputText(politica_form("tarifa_sobrepeso"), '_showConstraints -> false, '_showErrors -> false,'class -> "form-control", 'placeholder -> "Tarifa en USD", '_label -> "Tarifa Sobrepeso: ")
+			</div>
+
+			<div class="form-group">
+			 	@inputText(politica_form("tarifa_cruce_frontera"), '_showConstraints -> false, '_showErrors -> false,'class -> "form-control", 'placeholder -> "Tarifa en USD", '_label -> "Tarifa Cruce Frontera: ")
+			</div>
+
+			<button type="submit" class="btn btn-primary form-control"><span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span> Cambiar Politica de Cobro</button>
+
+		}
+	</div>
+</div>
+	
 }
