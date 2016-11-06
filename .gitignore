@@ -1,5 +1,5 @@
-logs
-target
+logs/
+target/
 /.idea
 /.idea_modules
 /.classpath
@@ -8,7 +8,9 @@ target
 /RUNNING_PID
 logs
 project/project
+project/project/
 project/target
+project/target/
 target
 tmp
 dist
