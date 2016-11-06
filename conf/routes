@@ -1,0 +1,43 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+
+
+# Map static resources from the /public folder to the /assets URL path
+GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)
+
+
+# RUTAS DEL HomeController
+GET     /                           controllers.HomeController.index
+GET     /login                          controllers.HomeController.login
+POST     /login                          controllers.HomeController.login_post
+GET     /logout                          controllers.HomeController.logout
+GET     /about                          controllers.HomeController.about
+
+
+
+# RUTAS DEL AdministradorController
+GET     /admin/usuarios                           controllers.AdministradorController.usuarios
+
+
+# RUTAS DEL GerenteController
+GET     /manager/clientes                           controllers.GerenteController.clientes
+GET     /manager/motoristas                           controllers.GerenteController.motoristas
+GET     /manager/cabezales                           controllers.GerenteController.cabezales
+GET     /manager/planilla                           controllers.GerenteController.planilla
+GET     /manager/facturacion                           controllers.GerenteController.facturacion
+GET     /manager/politica/cobro                           controllers.GerenteController.politica_cobro
+GET     /manager/politica/pago                           controllers.GerenteController.politica_pago
+GET     /manager/usuarios                           controllers.GerenteController.usuarios
+POST     /manager/usuarios/new                           controllers.GerenteController.usuario_new
+POST     /manager/usuarios/edit/:id                           controllers.GerenteController.usuario_edit(id: Long)
+POST     /manager/usuarios/remove/:id                           controllers.GerenteController.usuario_remove(id: Long)
+
+
+# RUTAS DEL LogisticaController
+GET     /logistic/viajes                           controllers.LogisticaController.viajes
+GET     /logistic/planilla                           controllers.LogisticaController.planilla
+GET     /logistic/facturacion                           controllers.LogisticaController.facturacion
+GET     /logistic/politica/cobro                           controllers.LogisticaController.politica_cobro
+GET     /logistic/politica/pago                           controllers.LogisticaController.politica_pago
