@@ -136,12 +136,11 @@ create table politica_pago (
   porcentaje_isss               double,
   porcentaje_afp                double,
   tarifa_pago_km_loc            double,
-  tarifa_cobro_km_int           double,
+  tarifa_pago_km_int            double,
   tarifa_sobrepeso              double,
   tarifa_viatico_km_vv          double,
   tarifa_viatico_km_vc          double,
   tarifa_viatico_km_cc          double,
-  tarifa_cruce_frontera         double,
   constraint pk_politica_pago primary key (id)
 );
 

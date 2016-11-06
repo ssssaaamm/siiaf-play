@@ -16,7 +16,6 @@ public class PoliticaPago extends Model{
 	@Id
 	public Long id;
 
-	@Constraints.Required(message="Debe ingresar la politica de cobro actual")
 	public Boolean actual;
 
 	@Constraints.Required(message="Debe ingresar un periodo")
@@ -35,7 +34,7 @@ public class PoliticaPago extends Model{
 	public Double tarifa_pago_km_loc;
 
 	@Constraints.Required(message="Debe ingresar tarifa de pago viaje internacional")
-	public Double tarifa_cobro_km_int;
+	public Double tarifa_pago_km_int;
 	
 	@Constraints.Required(message="Debe ingresar tarifa para tarifa sobrepeso")
 	public Double tarifa_sobrepeso;
@@ -49,9 +48,6 @@ public class PoliticaPago extends Model{
 	@Constraints.Required(message="Debe ingresar tarifa de pago cargado/cargado")
 	public Double tarifa_viatico_km_cc;
 
-	@Constraints.Required(message="Debe ingresar tarifa para cruce de frontera")
-	public Double tarifa_cruce_frontera;
-	
 	@OneToMany(mappedBy="politica_pago")
 	public List<PeriodoPlanilla> periodos_planillas;
 

@@ -276,7 +276,55 @@ public class GerenteController extends Controller {
 
 
     public Result politica_pago() {
-        return ok(politica_pago.render());
+        
+        PoliticaPago politica = PoliticaPago.find.where().eq("actual",1).findUnique();
+        
+        Form<PoliticaPago> politica_form = null;
+        
+        if(politica == null){
+            politica_form = Form.form(PoliticaPago.class);
+        }else{
+            politica_form = politica.getForm();
+        }
+        
+        return ok(politica_pago.render(politica_form));
+    }
+
+    public Result politica_pago_post(){
+
+        //verificar si existe una politica de cobro con el campo 'actual' en true;
+        PoliticaPago actual = PoliticaPago.find.where().eq("actual",1).findUnique();
+                
+        Form<PoliticaPago> politica_form = Form.form(PoliticaPago.class).bindFromRequest();
+        PoliticaPago nueva = politica_form.get();
+
+
+        PoliticaPago match = PoliticaPago.find.where().conjunction().eq("duracion_periodo",nueva.duracion_periodo).eq("salario_minimo",nueva.salario_minimo).eq("porcentaje_isss",nueva.porcentaje_isss).eq("porcentaje_afp",nueva.porcentaje_afp).eq("tarifa_pago_km_loc",nueva.tarifa_pago_km_loc).eq("tarifa_pago_km_int",nueva.tarifa_pago_km_int).eq("tarifa_sobrepeso",nueva.tarifa_sobrepeso).eq("tarifa_viatico_km_vv",nueva.tarifa_viatico_km_vv).eq("tarifa_viatico_km_vc",nueva.tarifa_viatico_km_vc).eq("tarifa_viatico_km_cc",nueva.tarifa_viatico_km_cc).findUnique();
+
+
+        if(actual!=null){
+            if(match!=null){
+                actual.actual=false;
+                actual.update();
+
+                match.actual=true;
+                match.update();
+            }else{
+                
+                actual.actual=false;
+                actual.update();
+
+                nueva.actual=true;
+                nueva.save();     
+            }
+        }else{
+            nueva.actual=true;
+            nueva.save();  
+        }
+
+        flash("exito","Operacion exitosa");
+        return redirect(routes.GerenteController.politica_pago());
+        
     }
 
 

@@ -41,9 +41,10 @@ GET     /manager/planilla                           controllers.GerenteControlle
 GET     /manager/facturacion                        controllers.GerenteController.facturacion
 
 GET     /manager/politica/cobro                     controllers.GerenteController.politica_cobro
-POST    /manager/politica/cobro/                     controllers.GerenteController.politica_cobro_post()
+POST    /manager/politica/cobro                     controllers.GerenteController.politica_cobro_post()
 
 GET     /manager/politica/pago                      controllers.GerenteController.politica_pago
+POST    /manager/politica/pago                     controllers.GerenteController.politica_pago_post()
 
 GET     /manager/usuarios                           controllers.GerenteController.usuarios
 POST     /manager/usuarios/new                      controllers.GerenteController.usuario_new
