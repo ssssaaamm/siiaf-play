@@ -1,14 +1,9 @@
-2016-11-06 00:41:17,445 [INFO] from application in ForkJoinPool-1-worker-1 - Creating Pool for datasource 'default'
-2016-11-06 00:41:18,115 [INFO] from play.api.db.DefaultDBApi in ForkJoinPool-1-worker-1 - Database [default] connected at jdbc:mysql://localhost/siiaf
-2016-11-06 00:41:19,945 [INFO] from application in ForkJoinPool-1-worker-1 - ApplicationTimer demo: Starting application at 2016-11-06T06:41:19.943Z
-2016-11-06 00:41:21,089 [INFO] from application in ForkJoinPool-1-worker-1 - ApplicationTimer demo: Stopping application at 2016-11-06T06:41:21.089Z after 2s.
-2016-11-06 00:41:21,096 [INFO] from application in ForkJoinPool-1-worker-1 - Shutting down connection pool.
-2016-11-06 00:41:21,246 [INFO] from application in ForkJoinPool-1-worker-1 - Creating Pool for datasource 'default'
-2016-11-06 00:41:21,263 [INFO] from play.api.db.DefaultDBApi in ForkJoinPool-1-worker-1 - Database [default] connected at jdbc:mysql://localhost/siiaf
-2016-11-06 00:41:21,394 [INFO] from application in ForkJoinPool-1-worker-1 - ApplicationTimer demo: Starting application at 2016-11-06T06:41:21.394Z
-2016-11-06 00:41:21,396 [ERROR] from application in netty-event-loop-6 - 
+2016-11-06 01:32:48,802 [INFO] from application in ForkJoinPool-1-worker-1 - Creating Pool for datasource 'default'
+2016-11-06 01:32:50,207 [INFO] from play.api.db.DefaultDBApi in ForkJoinPool-1-worker-1 - Database [default] connected at jdbc:mysql://localhost/siiaf
+2016-11-06 01:32:55,020 [INFO] from application in ForkJoinPool-1-worker-1 - ApplicationTimer demo: Starting application at 2016-11-06T07:32:55.016Z
+2016-11-06 01:32:55,641 [ERROR] from application in netty-event-loop-3 - 
 
-! @721l6dki6 - Internal server error, for (GET) [/] ->
+! @721ld7k8e - Internal server error, for (GET) [/] ->
  
 play.api.db.evolutions.InvalidDatabaseRevision: Database 'default' needs evolution![An SQL script need to be run on your database.]
 	at play.api.db.evolutions.ApplicationEvolutions$$anonfun$play$api$db$evolutions$ApplicationEvolutions$$runEvolutions$1.apply$mcV$sp(ApplicationEvolutions.scala:77)
@@ -60,19 +55,11 @@ play.api.db.evolutions.InvalidDatabaseRevision: Database 'default' needs evoluti
 	at java.util.concurrent.ForkJoinPool$WorkQueue.runTask(ForkJoinPool.java:1056)
 	at java.util.concurrent.ForkJoinPool.runWorker(ForkJoinPool.java:1692)
 	at java.util.concurrent.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:157)
-2016-11-06 00:41:51,700 [INFO] from application in ForkJoinPool-1-worker-2 - ApplicationTimer demo: Stopping application at 2016-11-06T06:41:51.700Z after 30s.
-2016-11-06 00:41:51,701 [INFO] from application in ForkJoinPool-1-worker-2 - Shutting down connection pool.
-2016-11-06 00:41:51,860 [INFO] from application in ForkJoinPool-1-worker-2 - Creating Pool for datasource 'default'
-2016-11-06 00:41:51,875 [INFO] from play.api.db.DefaultDBApi in ForkJoinPool-1-worker-2 - Database [default] connected at jdbc:mysql://localhost/siiaf
-2016-11-06 00:41:52,010 [INFO] from application in ForkJoinPool-1-worker-2 - ApplicationTimer demo: Starting application at 2016-11-06T06:41:52.009Z
-2016-11-06 00:41:52,342 [INFO] from play.api.Play in ForkJoinPool-1-worker-2 - Application started (Dev)
-2016-11-06 01:13:26,833 [ERROR] from application in netty-event-loop-4 - 
+2016-11-06 01:41:01,679 [ERROR] from application in netty-event-loop-4 - 
 
-! @721laj8pg - Internal server error, for (GET) [/manager/usuarios] ->
+! @721le9cpa - Internal server error, for (GET) [/] ->
  
-play.sbt.PlayExceptions$CompilationException: Compilation error[cannot find symbol
-  symbol:   class Form
-  location: class models.Cliente]
+play.sbt.PlayExceptions$CompilationException: Compilation error[value cliente_new is not a member of controllers.GerenteController]
 	at play.sbt.PlayExceptions$CompilationException$.apply(PlayExceptions.scala:27)
 	at play.sbt.PlayExceptions$CompilationException$.apply(PlayExceptions.scala:27)
 	at scala.Option.map(Option.scala:145)
@@ -96,15 +83,47 @@ play.sbt.PlayExceptions$CompilationException: Compilation error[cannot find symb
 	at play.core.server.DevServerStart$$anonfun$mainDev$1$$anon$1$$anonfun$get$1.apply(DevServerStart.scala:121)
 	at scala.concurrent.impl.Future$PromiseCompletingRunnable.liftedTree1$1(Future.scala:24)
 	at scala.concurrent.impl.Future$PromiseCompletingRunnable.run(Future.scala:24)
-	at akka.dispatch.TaskInvocation.run(AbstractDispatcher.scala:39)
-	at akka.dispatch.ForkJoinExecutorConfigurator$AkkaForkJoinTask.exec(AbstractDispatcher.scala:409)
-	at scala.concurrent.forkjoin.ForkJoinTask.doExec(ForkJoinTask.java:260)
-	at scala.concurrent.forkjoin.ForkJoinPool$WorkQueue.runTask(ForkJoinPool.java:1339)
-	at scala.concurrent.forkjoin.ForkJoinPool.runWorker(ForkJoinPool.java:1979)
-	at scala.concurrent.forkjoin.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:107)
-2016-11-06 01:17:01,233 [INFO] from application in application-akka.actor.default-dispatcher-62 - ApplicationTimer demo: Stopping application at 2016-11-06T07:17:01.233Z after 2109s.
-2016-11-06 01:17:01,234 [INFO] from application in application-akka.actor.default-dispatcher-62 - Shutting down connection pool.
-2016-11-06 01:17:01,388 [INFO] from application in application-akka.actor.default-dispatcher-62 - Creating Pool for datasource 'default'
-2016-11-06 01:17:01,397 [INFO] from play.api.db.DefaultDBApi in application-akka.actor.default-dispatcher-62 - Database [default] connected at jdbc:mysql://localhost/siiaf
-2016-11-06 01:17:01,559 [INFO] from application in application-akka.actor.default-dispatcher-62 - ApplicationTimer demo: Starting application at 2016-11-06T07:17:01.559Z
-2016-11-06 01:17:01,679 [INFO] from play.api.Play in application-akka.actor.default-dispatcher-62 - Application started (Dev)
+	at java.util.concurrent.ForkJoinTask$RunnableExecuteAction.exec(ForkJoinTask.java:1402)
+	at java.util.concurrent.ForkJoinTask.doExec(ForkJoinTask.java:289)
+	at java.util.concurrent.ForkJoinPool$WorkQueue.runTask(ForkJoinPool.java:1056)
+	at java.util.concurrent.ForkJoinPool.runWorker(ForkJoinPool.java:1692)
+	at java.util.concurrent.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:157)
+2016-11-06 01:47:24,323 [ERROR] from application in netty-event-loop-1 - 
+
+! @721lf5706 - Internal server error, for (GET) [/] ->
+ 
+play.sbt.PlayExceptions$CompilationException: Compilation error[value cabezal_new is not a member of controllers.GerenteController]
+	at play.sbt.PlayExceptions$CompilationException$.apply(PlayExceptions.scala:27)
+	at play.sbt.PlayExceptions$CompilationException$.apply(PlayExceptions.scala:27)
+	at scala.Option.map(Option.scala:145)
+	at play.sbt.run.PlayReload$$anonfun$taskFailureHandler$1.apply(PlayReload.scala:49)
+	at play.sbt.run.PlayReload$$anonfun$taskFailureHandler$1.apply(PlayReload.scala:44)
+	at scala.Option.map(Option.scala:145)
+	at play.sbt.run.PlayReload$.taskFailureHandler(PlayReload.scala:44)
+	at play.sbt.run.PlayReload$.compileFailure(PlayReload.scala:40)
+	at play.sbt.run.PlayReload$$anonfun$compile$1.apply(PlayReload.scala:17)
+	at play.sbt.run.PlayReload$$anonfun$compile$1.apply(PlayReload.scala:17)
+	at scala.util.Either$LeftProjection.map(Either.scala:377)
+	at play.sbt.run.PlayReload$.compile(PlayReload.scala:17)
+	at play.sbt.run.PlayRun$$anonfun$playRunTask$1$$anonfun$apply$2$$anonfun$apply$3$$anonfun$2.apply(PlayRun.scala:61)
+	at play.sbt.run.PlayRun$$anonfun$playRunTask$1$$anonfun$apply$2$$anonfun$apply$3$$anonfun$2.apply(PlayRun.scala:61)
+	at play.runsupport.Reloader$$anonfun$reload$1.apply(Reloader.scala:339)
+	at play.runsupport.Reloader$$anon$3.run(Reloader.scala:44)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at play.runsupport.Reloader$.play$runsupport$Reloader$$withReloaderContextClassLoader(Reloader.scala:40)
+	at play.runsupport.Reloader.reload(Reloader.scala:337)
+	at play.core.server.DevServerStart$$anonfun$mainDev$1$$anon$1$$anonfun$get$1.apply(DevServerStart.scala:123)
+	at play.core.server.DevServerStart$$anonfun$mainDev$1$$anon$1$$anonfun$get$1.apply(DevServerStart.scala:121)
+	at scala.concurrent.impl.Future$PromiseCompletingRunnable.liftedTree1$1(Future.scala:24)
+	at scala.concurrent.impl.Future$PromiseCompletingRunnable.run(Future.scala:24)
+	at java.util.concurrent.ForkJoinTask$RunnableExecuteAction.exec(ForkJoinTask.java:1402)
+	at java.util.concurrent.ForkJoinTask.doExec(ForkJoinTask.java:289)
+	at java.util.concurrent.ForkJoinPool$WorkQueue.runTask(ForkJoinPool.java:1056)
+	at java.util.concurrent.ForkJoinPool.runWorker(ForkJoinPool.java:1692)
+	at java.util.concurrent.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:157)
+2016-11-06 01:48:23,930 [INFO] from application in ForkJoinPool-1-worker-1 - ApplicationTimer demo: Stopping application at 2016-11-06T07:48:23.930Z after 928s.
+2016-11-06 01:48:23,981 [INFO] from application in ForkJoinPool-1-worker-1 - Shutting down connection pool.
+2016-11-06 01:48:25,115 [INFO] from application in ForkJoinPool-1-worker-1 - Creating Pool for datasource 'default'
+2016-11-06 01:48:25,223 [INFO] from play.api.db.DefaultDBApi in ForkJoinPool-1-worker-1 - Database [default] connected at jdbc:mysql://localhost/siiaf
+2016-11-06 01:48:25,744 [INFO] from application in ForkJoinPool-1-worker-1 - ApplicationTimer demo: Starting application at 2016-11-06T07:48:25.742Z
+2016-11-06 01:48:26,671 [INFO] from play.api.Play in ForkJoinPool-1-worker-1 - Application started (Dev)

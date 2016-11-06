@@ -67,8 +67,8 @@ Seq[Any](format.raw/*5.2*/("""
 object planilla extends planilla_Scope0.planilla_Scope1.planilla
               /*
                   -- GENERATED --
-                  DATE: Sun Nov 06 00:23:13 CST 2016
-                  SOURCE: /home/sarahi/siiaf-play/app/views/gerente/planilla.scala.html
+                  DATE: Sun Nov 06 01:31:08 CST 2016
+                  SOURCE: /home/samuel/Desarrollo/siiaf/app/views/gerente/planilla.scala.html
                   HASH: 3e855e2b53d5fb48f77cec91e89ad11fc5d13e33
                   MATRIX: 872->19|882->22|961->24|987->31|996->33|1075->35|1117->28|1145->39|1174->42|1189->49|1290->140|1330->141|1359->143
                   LINES: 34->3|34->3|36->3|38->7|38->7|40->7|43->5|45->9|47->11|47->11|47->11|47->11|48->12

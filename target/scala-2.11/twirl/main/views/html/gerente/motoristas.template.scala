@@ -67,8 +67,8 @@ Seq[Any](format.raw/*5.2*/("""
 object motoristas extends motoristas_Scope0.motoristas_Scope1.motoristas
               /*
                   -- GENERATED --
-                  DATE: Sun Nov 06 00:23:13 CST 2016
-                  SOURCE: /home/sarahi/siiaf-play/app/views/gerente/motoristas.scala.html
+                  DATE: Sun Nov 06 01:31:08 CST 2016
+                  SOURCE: /home/samuel/Desarrollo/siiaf/app/views/gerente/motoristas.scala.html
                   HASH: 5af426c67423ffd52ad3db655ef612a549179949
                   MATRIX: 878->19|888->22|967->24|993->31|1002->33|1081->35|1123->28|1151->39|1180->42|1195->49|1283->128|1322->129|1351->131
                   LINES: 34->3|34->3|36->3|38->7|38->7|40->7|43->5|45->9|47->11|47->11|47->11|47->11|48->12

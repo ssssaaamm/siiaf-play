@@ -23,16 +23,29 @@ GET     /admin/usuarios                           controllers.AdministradorContr
 
 # RUTAS DEL GerenteController
 GET     /manager/clientes                           controllers.GerenteController.clientes
-GET     /manager/motoristas                           controllers.GerenteController.motoristas
-GET     /manager/cabezales                           controllers.GerenteController.cabezales
+POST     /manager/clientes/new                      controllers.GerenteController.cliente_new
+POST     /manager/clientes/edit/:id                 controllers.GerenteController.cliente_edit(id: Long)
+POST     /manager/clientes/remove/:id               controllers.GerenteController.cliente_remove(id:Long)
+
+GET     /manager/motoristas                         controllers.GerenteController.motoristas
+POST     /manager/motoristas/new                    controllers.GerenteController.motorista_new
+POST     /manager/motoristas/edit/:id               controllers.GerenteController.motorista_edit(id: Long)
+POST     /manager/motoristas/remove/:id             controllers.GerenteController.motorista_remove(id:Long)
+
+GET     /manager/cabezales                          controllers.GerenteController.cabezales
+POST     /manager/cabezales/new                     controllers.GerenteController.cabezal_new
+POST     /manager/cabezales/edit/:id                controllers.GerenteController.cabezal_edit(id: Long)
+POST     /manager/cabezales/remove/:id              controllers.GerenteController.cabezal_remove(id:Long)
+
 GET     /manager/planilla                           controllers.GerenteController.planilla
-GET     /manager/facturacion                           controllers.GerenteController.facturacion
-GET     /manager/politica/cobro                           controllers.GerenteController.politica_cobro
-GET     /manager/politica/pago                           controllers.GerenteController.politica_pago
+GET     /manager/facturacion                        controllers.GerenteController.facturacion
+GET     /manager/politica/cobro                     controllers.GerenteController.politica_cobro
+GET     /manager/politica/pago                      controllers.GerenteController.politica_pago
+
 GET     /manager/usuarios                           controllers.GerenteController.usuarios
-POST     /manager/usuarios/new                           controllers.GerenteController.usuario_new
-POST     /manager/usuarios/edit/:id                           controllers.GerenteController.usuario_edit(id: Long)
-POST     /manager/usuarios/remove/:id                           controllers.GerenteController.usuario_remove(id: Long)
+POST     /manager/usuarios/new                      controllers.GerenteController.usuario_new
+POST     /manager/usuarios/edit/:id                 controllers.GerenteController.usuario_edit(id: Long)
+POST     /manager/usuarios/remove/:id               controllers.GerenteController.usuario_remove(id: Long)
 
 
 # RUTAS DEL LogisticaController

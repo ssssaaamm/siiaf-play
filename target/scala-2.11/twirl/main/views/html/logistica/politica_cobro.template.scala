@@ -67,8 +67,8 @@ Seq[Any](format.raw/*5.2*/("""
 object politica_cobro extends politica_cobro_Scope0.politica_cobro_Scope1.politica_cobro
               /*
                   -- GENERATED --
-                  DATE: Sun Nov 06 00:23:13 CST 2016
-                  SOURCE: /home/sarahi/siiaf-play/app/views/logistica/politica_cobro.scala.html
+                  DATE: Sun Nov 06 01:31:06 CST 2016
+                  SOURCE: /home/samuel/Desarrollo/siiaf/app/views/logistica/politica_cobro.scala.html
                   HASH: 6c411f2a0fded298c2583a82095951441de2c31b
                   MATRIX: 892->19|902->22|981->24|1007->31|1016->33|1095->35|1137->28|1165->39|1194->42|1212->51|1306->136|1345->137|1374->139
                   LINES: 34->3|34->3|36->3|38->7|38->7|40->7|43->5|45->9|47->11|47->11|47->11|47->11|48->12

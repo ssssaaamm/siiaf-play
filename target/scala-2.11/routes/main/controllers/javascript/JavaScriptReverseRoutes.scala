@@ -1,7 +1,7 @@
 
 // @GENERATOR:play-routes-compiler
-// @SOURCE:/home/sarahi/siiaf-play/conf/routes
-// @DATE:Sun Nov 06 00:23:12 CST 2016
+// @SOURCE:/home/samuel/Desarrollo/siiaf/conf/routes
+// @DATE:Sun Nov 06 01:40:18 CST 2016
 
 import play.api.routing.JavaScriptReverseRoute
 import play.api.mvc.{ QueryStringBindable, PathBindable, Call, JavascriptLiteral }
@@ -43,7 +43,17 @@ package controllers.javascript {
     }
 
   
-    // @LINE:28
+    // @LINE:32
+    def motorista_edit: JavaScriptReverseRoute = JavaScriptReverseRoute(
+      "controllers.GerenteController.motorista_edit",
+      """
+        function(id0) {
+          return _wA({method:"POST", url:"""" + _prefix + { _defaultPrefix } + """" + "manager/motoristas/edit/" + (""" + implicitly[PathBindable[Long]].javascriptUnbind + """)("id", id0)})
+        }
+      """
+    )
+  
+    // @LINE:40
     def planilla: JavaScriptReverseRoute = JavaScriptReverseRoute(
       "controllers.GerenteController.planilla",
       """
@@ -53,7 +63,17 @@ package controllers.javascript {
       """
     )
   
-    // @LINE:29
+    // @LINE:26
+    def cliente_new: JavaScriptReverseRoute = JavaScriptReverseRoute(
+      "controllers.GerenteController.cliente_new",
+      """
+        function() {
+          return _wA({method:"POST", url:"""" + _prefix + { _defaultPrefix } + """" + "manager/clientes/new"})
+        }
+      """
+    )
+  
+    // @LINE:41
     def facturacion: JavaScriptReverseRoute = JavaScriptReverseRoute(
       "controllers.GerenteController.facturacion",
       """
@@ -63,7 +83,7 @@ package controllers.javascript {
       """
     )
   
-    // @LINE:32
+    // @LINE:45
     def usuarios: JavaScriptReverseRoute = JavaScriptReverseRoute(
       "controllers.GerenteController.usuarios",
       """
@@ -73,7 +93,7 @@ package controllers.javascript {
       """
     )
   
-    // @LINE:26
+    // @LINE:30
     def motoristas: JavaScriptReverseRoute = JavaScriptReverseRoute(
       "controllers.GerenteController.motoristas",
       """
@@ -83,7 +103,27 @@ package controllers.javascript {
       """
     )
   
-    // @LINE:35
+    // @LINE:38
+    def cabezal_remove: JavaScriptReverseRoute = JavaScriptReverseRoute(
+      "controllers.GerenteController.cabezal_remove",
+      """
+        function(id0) {
+          return _wA({method:"POST", url:"""" + _prefix + { _defaultPrefix } + """" + "manager/cabezales/remove/" + (""" + implicitly[PathBindable[Long]].javascriptUnbind + """)("id", id0)})
+        }
+      """
+    )
+  
+    // @LINE:28
+    def cliente_remove: JavaScriptReverseRoute = JavaScriptReverseRoute(
+      "controllers.GerenteController.cliente_remove",
+      """
+        function(id0) {
+          return _wA({method:"POST", url:"""" + _prefix + { _defaultPrefix } + """" + "manager/clientes/remove/" + (""" + implicitly[PathBindable[Long]].javascriptUnbind + """)("id", id0)})
+        }
+      """
+    )
+  
+    // @LINE:48
     def usuario_remove: JavaScriptReverseRoute = JavaScriptReverseRoute(
       "controllers.GerenteController.usuario_remove",
       """
@@ -94,6 +134,16 @@ package controllers.javascript {
     )
   
     // @LINE:31
+    def motorista_new: JavaScriptReverseRoute = JavaScriptReverseRoute(
+      "controllers.GerenteController.motorista_new",
+      """
+        function() {
+          return _wA({method:"POST", url:"""" + _prefix + { _defaultPrefix } + """" + "manager/motoristas/new"})
+        }
+      """
+    )
+  
+    // @LINE:43
     def politica_pago: JavaScriptReverseRoute = JavaScriptReverseRoute(
       "controllers.GerenteController.politica_pago",
       """
@@ -103,7 +153,7 @@ package controllers.javascript {
       """
     )
   
-    // @LINE:27
+    // @LINE:35
     def cabezales: JavaScriptReverseRoute = JavaScriptReverseRoute(
       "controllers.GerenteController.cabezales",
       """
@@ -113,7 +163,17 @@ package controllers.javascript {
       """
     )
   
-    // @LINE:33
+    // @LINE:37
+    def cabezal_edit: JavaScriptReverseRoute = JavaScriptReverseRoute(
+      "controllers.GerenteController.cabezal_edit",
+      """
+        function(id0) {
+          return _wA({method:"POST", url:"""" + _prefix + { _defaultPrefix } + """" + "manager/cabezales/edit/" + (""" + implicitly[PathBindable[Long]].javascriptUnbind + """)("id", id0)})
+        }
+      """
+    )
+  
+    // @LINE:46
     def usuario_new: JavaScriptReverseRoute = JavaScriptReverseRoute(
       "controllers.GerenteController.usuario_new",
       """
@@ -133,7 +193,17 @@ package controllers.javascript {
       """
     )
   
-    // @LINE:34
+    // @LINE:36
+    def cabezal_new: JavaScriptReverseRoute = JavaScriptReverseRoute(
+      "controllers.GerenteController.cabezal_new",
+      """
+        function() {
+          return _wA({method:"POST", url:"""" + _prefix + { _defaultPrefix } + """" + "manager/cabezales/new"})
+        }
+      """
+    )
+  
+    // @LINE:47
     def usuario_edit: JavaScriptReverseRoute = JavaScriptReverseRoute(
       "controllers.GerenteController.usuario_edit",
       """
@@ -143,7 +213,27 @@ package controllers.javascript {
       """
     )
   
-    // @LINE:30
+    // @LINE:27
+    def cliente_edit: JavaScriptReverseRoute = JavaScriptReverseRoute(
+      "controllers.GerenteController.cliente_edit",
+      """
+        function(id0) {
+          return _wA({method:"POST", url:"""" + _prefix + { _defaultPrefix } + """" + "manager/clientes/edit/" + (""" + implicitly[PathBindable[Long]].javascriptUnbind + """)("id", id0)})
+        }
+      """
+    )
+  
+    // @LINE:33
+    def motorista_remove: JavaScriptReverseRoute = JavaScriptReverseRoute(
+      "controllers.GerenteController.motorista_remove",
+      """
+        function(id0) {
+          return _wA({method:"POST", url:"""" + _prefix + { _defaultPrefix } + """" + "manager/motoristas/remove/" + (""" + implicitly[PathBindable[Long]].javascriptUnbind + """)("id", id0)})
+        }
+      """
+    )
+  
+    // @LINE:42
     def politica_cobro: JavaScriptReverseRoute = JavaScriptReverseRoute(
       "controllers.GerenteController.politica_cobro",
       """
@@ -155,7 +245,7 @@ package controllers.javascript {
   
   }
 
-  // @LINE:39
+  // @LINE:52
   class ReverseLogisticaController(_prefix: => String) {
 
     def _defaultPrefix: String = {
@@ -163,7 +253,7 @@ package controllers.javascript {
     }
 
   
-    // @LINE:40
+    // @LINE:53
     def planilla: JavaScriptReverseRoute = JavaScriptReverseRoute(
       "controllers.LogisticaController.planilla",
       """
@@ -173,7 +263,7 @@ package controllers.javascript {
       """
     )
   
-    // @LINE:41
+    // @LINE:54
     def facturacion: JavaScriptReverseRoute = JavaScriptReverseRoute(
       "controllers.LogisticaController.facturacion",
       """
@@ -183,7 +273,7 @@ package controllers.javascript {
       """
     )
   
-    // @LINE:43
+    // @LINE:56
     def politica_pago: JavaScriptReverseRoute = JavaScriptReverseRoute(
       "controllers.LogisticaController.politica_pago",
       """
@@ -193,7 +283,7 @@ package controllers.javascript {
       """
     )
   
-    // @LINE:39
+    // @LINE:52
     def viajes: JavaScriptReverseRoute = JavaScriptReverseRoute(
       "controllers.LogisticaController.viajes",
       """
@@ -203,7 +293,7 @@ package controllers.javascript {
       """
     )
   
-    // @LINE:42
+    // @LINE:55
     def politica_cobro: JavaScriptReverseRoute = JavaScriptReverseRoute(
       "controllers.LogisticaController.politica_cobro",
       """

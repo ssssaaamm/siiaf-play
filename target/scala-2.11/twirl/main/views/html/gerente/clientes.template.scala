@@ -67,8 +67,8 @@ Seq[Any](format.raw/*5.2*/("""
 object clientes extends clientes_Scope0.clientes_Scope1.clientes
               /*
                   -- GENERATED --
-                  DATE: Sun Nov 06 00:23:13 CST 2016
-                  SOURCE: /home/sarahi/siiaf-play/app/views/gerente/clientes.scala.html
+                  DATE: Sun Nov 06 01:31:08 CST 2016
+                  SOURCE: /home/samuel/Desarrollo/siiaf/app/views/gerente/clientes.scala.html
                   HASH: 1ddd7d1d0176fbb00f65fd2301fe50a49b1677d7
                   MATRIX: 872->19|882->22|961->24|987->31|996->33|1075->35|1117->28|1145->39|1174->42|1189->49|1271->122|1310->123|1339->125
                   LINES: 34->3|34->3|36->3|38->7|38->7|40->7|43->5|45->9|47->11|47->11|47->11|47->11|48->12

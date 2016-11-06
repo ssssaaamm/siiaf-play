@@ -67,8 +67,8 @@ Seq[Any](format.raw/*5.2*/("""
 object politica_pago extends politica_pago_Scope0.politica_pago_Scope1.politica_pago
               /*
                   -- GENERATED --
-                  DATE: Sun Nov 06 00:23:13 CST 2016
-                  SOURCE: /home/sarahi/siiaf-play/app/views/logistica/politica_pago.scala.html
+                  DATE: Sun Nov 06 01:31:06 CST 2016
+                  SOURCE: /home/samuel/Desarrollo/siiaf/app/views/logistica/politica_pago.scala.html
                   HASH: ebe7a89832e4b81a83dee07e90fca7a639f4eced
                   MATRIX: 889->19|899->22|978->24|1004->31|1013->33|1092->35|1134->28|1162->39|1191->42|1209->51|1297->130|1336->131|1365->133
                   LINES: 34->3|34->3|36->3|38->7|38->7|40->7|43->5|45->9|47->11|47->11|47->11|47->11|48->12

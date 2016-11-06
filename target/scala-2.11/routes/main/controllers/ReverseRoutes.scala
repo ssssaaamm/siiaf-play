@@ -1,7 +1,7 @@
 
 // @GENERATOR:play-routes-compiler
-// @SOURCE:/home/sarahi/siiaf-play/conf/routes
-// @DATE:Sun Nov 06 00:23:12 CST 2016
+// @SOURCE:/home/samuel/Desarrollo/siiaf/conf/routes
+// @DATE:Sun Nov 06 01:40:18 CST 2016
 
 import play.api.mvc.{ QueryStringBindable, PathBindable, Call, JavascriptLiteral }
 import play.core.routing.{ HandlerDef, ReverseRouteContext, queryString, dynamicString }
@@ -35,49 +35,85 @@ package controllers {
     }
 
   
-    // @LINE:28
+    // @LINE:32
+    def motorista_edit(id:Long): Call = {
+      import ReverseRouteContext.empty
+      Call("POST", _prefix + { _defaultPrefix } + "manager/motoristas/edit/" + implicitly[PathBindable[Long]].unbind("id", id))
+    }
+  
+    // @LINE:40
     def planilla(): Call = {
       import ReverseRouteContext.empty
       Call("GET", _prefix + { _defaultPrefix } + "manager/planilla")
     }
   
-    // @LINE:29
+    // @LINE:26
+    def cliente_new(): Call = {
+      import ReverseRouteContext.empty
+      Call("POST", _prefix + { _defaultPrefix } + "manager/clientes/new")
+    }
+  
+    // @LINE:41
     def facturacion(): Call = {
       import ReverseRouteContext.empty
       Call("GET", _prefix + { _defaultPrefix } + "manager/facturacion")
     }
   
-    // @LINE:32
+    // @LINE:45
     def usuarios(): Call = {
       import ReverseRouteContext.empty
       Call("GET", _prefix + { _defaultPrefix } + "manager/usuarios")
     }
   
-    // @LINE:26
+    // @LINE:30
     def motoristas(): Call = {
       import ReverseRouteContext.empty
       Call("GET", _prefix + { _defaultPrefix } + "manager/motoristas")
     }
   
-    // @LINE:35
+    // @LINE:38
+    def cabezal_remove(id:Long): Call = {
+      import ReverseRouteContext.empty
+      Call("POST", _prefix + { _defaultPrefix } + "manager/cabezales/remove/" + implicitly[PathBindable[Long]].unbind("id", id))
+    }
+  
+    // @LINE:28
+    def cliente_remove(id:Long): Call = {
+      import ReverseRouteContext.empty
+      Call("POST", _prefix + { _defaultPrefix } + "manager/clientes/remove/" + implicitly[PathBindable[Long]].unbind("id", id))
+    }
+  
+    // @LINE:48
     def usuario_remove(id:Long): Call = {
       import ReverseRouteContext.empty
       Call("POST", _prefix + { _defaultPrefix } + "manager/usuarios/remove/" + implicitly[PathBindable[Long]].unbind("id", id))
     }
   
     // @LINE:31
+    def motorista_new(): Call = {
+      import ReverseRouteContext.empty
+      Call("POST", _prefix + { _defaultPrefix } + "manager/motoristas/new")
+    }
+  
+    // @LINE:43
     def politica_pago(): Call = {
       import ReverseRouteContext.empty
       Call("GET", _prefix + { _defaultPrefix } + "manager/politica/pago")
     }
   
-    // @LINE:27
+    // @LINE:35
     def cabezales(): Call = {
       import ReverseRouteContext.empty
       Call("GET", _prefix + { _defaultPrefix } + "manager/cabezales")
     }
   
-    // @LINE:33
+    // @LINE:37
+    def cabezal_edit(id:Long): Call = {
+      import ReverseRouteContext.empty
+      Call("POST", _prefix + { _defaultPrefix } + "manager/cabezales/edit/" + implicitly[PathBindable[Long]].unbind("id", id))
+    }
+  
+    // @LINE:46
     def usuario_new(): Call = {
       import ReverseRouteContext.empty
       Call("POST", _prefix + { _defaultPrefix } + "manager/usuarios/new")
@@ -89,13 +125,31 @@ package controllers {
       Call("GET", _prefix + { _defaultPrefix } + "manager/clientes")
     }
   
-    // @LINE:34
+    // @LINE:36
+    def cabezal_new(): Call = {
+      import ReverseRouteContext.empty
+      Call("POST", _prefix + { _defaultPrefix } + "manager/cabezales/new")
+    }
+  
+    // @LINE:47
     def usuario_edit(id:Long): Call = {
       import ReverseRouteContext.empty
       Call("POST", _prefix + { _defaultPrefix } + "manager/usuarios/edit/" + implicitly[PathBindable[Long]].unbind("id", id))
     }
   
-    // @LINE:30
+    // @LINE:27
+    def cliente_edit(id:Long): Call = {
+      import ReverseRouteContext.empty
+      Call("POST", _prefix + { _defaultPrefix } + "manager/clientes/edit/" + implicitly[PathBindable[Long]].unbind("id", id))
+    }
+  
+    // @LINE:33
+    def motorista_remove(id:Long): Call = {
+      import ReverseRouteContext.empty
+      Call("POST", _prefix + { _defaultPrefix } + "manager/motoristas/remove/" + implicitly[PathBindable[Long]].unbind("id", id))
+    }
+  
+    // @LINE:42
     def politica_cobro(): Call = {
       import ReverseRouteContext.empty
       Call("GET", _prefix + { _defaultPrefix } + "manager/politica/cobro")
@@ -103,38 +157,38 @@ package controllers {
   
   }
 
-  // @LINE:39
+  // @LINE:52
   class ReverseLogisticaController(_prefix: => String) {
     def _defaultPrefix: String = {
       if (_prefix.endsWith("/")) "" else "/"
     }
 
   
-    // @LINE:40
+    // @LINE:53
     def planilla(): Call = {
       import ReverseRouteContext.empty
       Call("GET", _prefix + { _defaultPrefix } + "logistic/planilla")
     }
   
-    // @LINE:41
+    // @LINE:54
     def facturacion(): Call = {
       import ReverseRouteContext.empty
       Call("GET", _prefix + { _defaultPrefix } + "logistic/facturacion")
     }
   
-    // @LINE:43
+    // @LINE:56
     def politica_pago(): Call = {
       import ReverseRouteContext.empty
       Call("GET", _prefix + { _defaultPrefix } + "logistic/politica/pago")
     }
   
-    // @LINE:39
+    // @LINE:52
     def viajes(): Call = {
       import ReverseRouteContext.empty
       Call("GET", _prefix + { _defaultPrefix } + "logistic/viajes")
     }
   
-    // @LINE:42
+    // @LINE:55
     def politica_cobro(): Call = {
       import ReverseRouteContext.empty
       Call("GET", _prefix + { _defaultPrefix } + "logistic/politica/cobro")
