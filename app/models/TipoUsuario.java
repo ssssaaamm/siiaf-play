@@ -16,7 +16,7 @@ public class TipoUsuario extends Model{
 	public Long id;
 
 	@Constraints.Required(message="Debe ingresar el codigo")
-	public int codigo;
+	public Integer codigo;
 
 	@Constraints.Required(message="Debe ingresar el nombre")
 	public String nombre;
