@@ -25,8 +25,8 @@ create table cabezal (
 create table cliente (
   id                            bigint auto_increment not null,
   nombre                        varchar(255),
+  nit                           varchar(255),
   descripcion                   varchar(255),
-  detalle_cobro_id              bigint,
   constraint pk_cliente primary key (id)
 );
 
@@ -53,6 +53,7 @@ create table detalle_cobro (
   total_cantidad_agregados      integer,
   total_mont_agregados          double,
   periodo_facturacion_id        bigint,
+  cliente_id                    bigint,
   constraint pk_detalle_cobro primary key (id)
 );
 
@@ -89,6 +90,8 @@ create table motorista (
   id                            bigint auto_increment not null,
   codigo                        varchar(255),
   nombre                        varchar(255),
+  dui                           varchar(255),
+  nit                           varchar(255),
   licencia                      varchar(255),
   constraint pk_motorista primary key (id)
 );
@@ -176,11 +179,11 @@ create table viaje (
 alter table boleta add constraint fk_boleta_viaje_id foreign key (viaje_id) references viaje (id) on delete restrict on update restrict;
 create index ix_boleta_viaje_id on boleta (viaje_id);
 
-alter table cliente add constraint fk_cliente_detalle_cobro_id foreign key (detalle_cobro_id) references detalle_cobro (id) on delete restrict on update restrict;
-create index ix_cliente_detalle_cobro_id on cliente (detalle_cobro_id);
-
 alter table detalle_cobro add constraint fk_detalle_cobro_periodo_facturacion_id foreign key (periodo_facturacion_id) references periodo_facturacion (id) on delete restrict on update restrict;
 create index ix_detalle_cobro_periodo_facturacion_id on detalle_cobro (periodo_facturacion_id);
+
+alter table detalle_cobro add constraint fk_detalle_cobro_cliente_id foreign key (cliente_id) references cliente (id) on delete restrict on update restrict;
+create index ix_detalle_cobro_cliente_id on detalle_cobro (cliente_id);
 
 alter table detalle_pago add constraint fk_detalle_pago_motorista_id foreign key (motorista_id) references motorista (id) on delete restrict on update restrict;
 create index ix_detalle_pago_motorista_id on detalle_pago (motorista_id);
@@ -217,11 +220,11 @@ create index ix_viaje_cabezal_id on viaje (cabezal_id);
 alter table boleta drop foreign key fk_boleta_viaje_id;
 drop index ix_boleta_viaje_id on boleta;
 
-alter table cliente drop foreign key fk_cliente_detalle_cobro_id;
-drop index ix_cliente_detalle_cobro_id on cliente;
-
 alter table detalle_cobro drop foreign key fk_detalle_cobro_periodo_facturacion_id;
 drop index ix_detalle_cobro_periodo_facturacion_id on detalle_cobro;
+
+alter table detalle_cobro drop foreign key fk_detalle_cobro_cliente_id;
+drop index ix_detalle_cobro_cliente_id on detalle_cobro;
 
 alter table detalle_pago drop foreign key fk_detalle_pago_motorista_id;
 drop index ix_detalle_pago_motorista_id on detalle_pago;

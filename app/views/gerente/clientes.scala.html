@@ -1,13 +1,260 @@
+@(cliente_form: Form[Cliente], clientes_list: List[Cliente] )
 @import helper._
 
 @css={
-	
+	<link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/bootstrap-table.css")">
 }
 
 @js={
-	
+	<script src="@routes.Assets.versioned("javascripts/bootstrap-table.js")" type="text/javascript"></script>
+
+	<!--fix modal open at edit-->
+	@if(flash.containsKey("modal")) {
+		<script>
+	    	$(window).load(function(){
+	        	$('#@flash.get("modal")').modal('show');
+	    	});
+	    </script>
+	}
+
+
+	<!-- fix modal close at edit -->
+	<script>
+		$('.modal').on('hidden.bs.modal', function () {
+			if(window.location.pathname!='@routes.GerenteController.clientes'){
+				
+				window.location='@routes.GerenteController.clientes';
+			}	
+		});
+	</script>
 }
 
+
+
+@errores_formulario={
+
+	@if(cliente_form.hasGlobalErrors) {
+
+        @for(error <- cliente_form.globalErrors) {
+	        <div class="alert alert-danger">
+				<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+				<strong>@Messages(error.messages, error.arguments.toArray: _*)</strong>
+			</div>
+        }
+	}
+
+
+
+	@for(error <- cliente_form("nombre").errors) {
+    	<div class="alert alert-danger">
+			<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+			<strong>@Messages(error.messages, error.arguments.toArray: _*)</strong>
+		</div>
+	}
+
+
+	@for(error <- cliente_form("nit").errors) {
+    	<div class="alert alert-danger">
+			<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+			<strong>@Messages(error.messages, error.arguments.toArray: _*)</strong>
+		</div>
+	}
+
+
+
+	@for(error <- cliente_form("descripcion").errors) {
+    	<div class="alert alert-danger">
+			<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+			<strong>@Messages(error.messages, error.arguments.toArray: _*)</strong>
+		</div>
+	}
+
+	@for(error <- cliente_form("password").errors) {
+    	<div class="alert alert-danger">
+			<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+			<strong>@Messages(error.messages, error.arguments.toArray: _*)</strong>
+		</div>
+	}
+
+
+}
+
+
+
+
 @gerente.base("Manager SIIAF","Clientes","Gestion de clientes","clientes",css,js){
-	gestion de clientes
+	<button type="button" id="main-add-button" class="btn btn-primary" data-toggle="modal" data-target="#mod-new"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Agregar Cliente</button>
+
+	@if(flash.containsKey("exito")){
+		<div class="alert alert-success fade in">
+			<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+			<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+			<strong>@flash.get("exito")</strong>
+		</div>
+	}
+
+
+  	<!-- Modal -->
+	<div class="modal fade" id="mod-new" role="dialog">
+
+		<div class="modal-dialog">
+
+		<!-- Modal content-->
+		<div class="modal-content">
+			@form(action=routes.GerenteController.cliente_new()){
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="modal-title">Agregar nuevo cliente</h4>
+				</div>
+				@errores_formulario
+				<div class="modal-body">
+
+
+					 <div class="form-group">
+						@inputText(cliente_form("id"), '_showConstraints -> false ,'readonly -> "readonly", '_showErrors -> false,'class -> "form-control", 'placeholder -> "Id del cliente",'_label -> "Id: ")
+					 </div>
+
+	        		 <div class="form-group">
+	        		 	@inputText(cliente_form("nombre"), '_showConstraints -> false , '_showErrors -> false,'class -> "form-control", 'placeholder -> "Nombre de la empresa Cliente", '_label -> "Nombre: ")
+	        		 </div>
+
+	        		 <div class="form-group">
+	        		 	@inputText(cliente_form("nit"), '_showConstraints -> false , '_showErrors -> false,'class -> "form-control", 'placeholder -> "NIT de la empresa", '_label -> "NIT: ")
+	        		 </div>
+
+					 <div class="form-group">
+						@textarea(cliente_form("descripcion"), 'rows -> 5, '_showConstraints -> false, '_showErrors -> false ,'class -> "form-control", 'placeholder -> "De una brebe descripcion de la empresa",'_label -> "Descripcion: ")
+					 </div>
+
+
+				</div>
+				<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+						<button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Agregar</button>
+				</div>
+			}
+		</div>
+
+		</div>
+	</div>
+
+                	
+
+
+
+
+
+	<div class="table-responsive">
+		<div class="form-group pull-right">
+		<input type="text" class="search form-control" placeholder="Busqueda">
+	</div>
+	<span class="counter pull-right"></span>
+	<table class="table table-hover table-bordered results">
+		<thead>
+			<tr>
+				<th>Id</th>
+				<th class="col-md-5 col-xs-5">Nombre</th>
+				<th class="col-md-4 col-xs-4">Descripcion</th>
+				<th class="col-md-3 col-xs-3 center-column">Editar</th>
+				<th class="col-md-3 col-xs-3 center-column">Eliminar</th>
+			</tr>
+			<tr class="warning no-result">
+				<td colspan="4"><i class="fa fa-warning"></i> No hay resultados</td>
+			</tr>
+		</thead>
+		<tbody>
+			@for(cliente <- clientes_list){
+				<tr>
+					<td>@cliente.id</td>
+					<td>@cliente.nombre</td>
+					<td>@cliente.nit</td>
+					<td>@cliente.descripcion</td>
+					<td><button class="btn btn-success btn-xs" data-toggle="modal" data-target="#mod-edit-@cliente.id"><span class="glyphicon glyphicon-edit"></span> Editar</button></td>
+					<td><button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#mod-remove-@cliente.id"><span class="glyphicon glyphicon-trash"></span> Eliminar</button></td>
+				</tr>
+
+
+
+				<!-- Modal -->
+				<div class="modal fade" id="mod-edit-@cliente.id" role="dialog">
+					
+					<div class="modal-dialog">
+
+					<!-- Modal content-->
+					<div class="modal-content">
+						@form(action=routes.GerenteController.cliente_edit(cliente.id)){
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal">&times;</button>
+								<h4 class="modal-title">Editar cliente: @cliente.nombre</h4>
+								</div>
+								@errores_formulario
+								<div class="modal-body">
+
+
+									 <div class="form-group">
+					        		 	@inputText(cliente.getForm()("id"), '_showConstraints -> false, 'readonly -> "readonly" , '_showErrors -> false,'class -> "form-control", 'placeholder -> "Id", '_label -> "Id: ")
+					        		 </div>
+
+					        		 <div class="form-group">
+					        		 	@inputText(cliente.getForm()("nombre"), '_showConstraints -> false , '_showErrors -> false,'class -> "form-control", 'placeholder -> "Nombre del empresa", '_label -> "Nombre: ")
+					        		 </div>
+
+					        		 <div class="form-group">
+					        		 	@inputText(cliente.getForm()("nit"), '_showConstraints -> false , '_showErrors -> false,'class -> "form-control", 'placeholder -> "NIT de la empresa", '_label -> "NIT: ")
+					        		 </div>
+
+					        		 <div class="form-group">
+										@textarea(cliente_form("descripcion"), 'rows -> 5, '_showConstraints -> false, '_showErrors -> false ,'class -> "form-control", 'placeholder -> "De una brebe descripcion de la empresa",'_label -> "Descripcion: ")
+									 </div>
+
+
+
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+									<button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span> Guardar</button>
+								</div>
+							</div>
+						}
+					</div>
+				</div>
+
+
+
+
+
+				<!-- Modal -->
+				<div class="modal fade" id="mod-remove-@cliente.id" role="dialog">
+					<div class="modal-dialog">
+
+					<!-- Modal content-->
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal">&times;</button>
+							<h4 class="modal-title">Eliminar cliente: @cliente.nombre</h4>
+							</div>
+							<div class="modal-body">
+
+								¿Esta seguro que desea eliminar el cliente?.
+								El cliente ya no tendra acceso al sistema.
+
+
+							</div>
+							<div class="modal-footer">
+								<form>
+								<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>							
+								<button type="submit" class="btn btn-danger" formmethod="POST" formaction="@routes.GerenteController.cliente_remove(cliente.id)"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Eliminar</button>
+								</form>
+							</div>
+						</div>
+
+					</div>
+				</div>
+
+
+			}
+		</tbody>
+	</table>
+	</div>
+
 }

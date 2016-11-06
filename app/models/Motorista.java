@@ -21,6 +21,12 @@ public class Motorista extends Model{
 
 	@Constraints.Required(message="Debe ingresar el nombre")
 	public String nombre;
+
+	@Constraints.Required(message="Debe ingresar un número de DUI")
+	public String dui;
+
+	@Constraints.Required(message="Debe ingresar un número de NIT")
+	public String nit;
 	
 	
 	@Constraints.Required(message="Debe ingresar un número de licencia")

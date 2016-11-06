@@ -60,8 +60,8 @@ public class DetalleCobro extends Model{
 	@ManyToOne
 	public PeriodoFacturacion periodo_facturacion;
 	
-	@OneToMany(mappedBy="detalle_cobro")
-	public List<Cliente> clientes;	
+	@ManyToOne
+	public Cliente cliente;	
 
 
 	public static Finder<Long, DetalleCobro> find = new Finder<Long,DetalleCobro>(DetalleCobro.class);

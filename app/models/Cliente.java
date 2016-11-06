@@ -18,13 +18,15 @@ public class Cliente extends Model{
 	
 	@Constraints.Required(message="Debe ingresar el nombre")
 	public String nombre;
-	
+
+	@Constraints.Required(message="Debe ingresar NIT de la empresa")
+	public String nit;	
 	
 	@Constraints.Required(message="Debe ingresar una descripcion")
 	public String descripcion;
 
-	@ManyToOne
-	public DetalleCobro detalle_cobro;
+	@OneToMany(mappedBy="cliente")
+	public List<DetalleCobro> detalles_cobro;
 
 	public static Finder<Long, Cliente> find = new Finder<Long,Cliente>(Cliente.class);
 
