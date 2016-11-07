@@ -163,11 +163,11 @@ create table usuario (
 
 create table viaje (
   id                            bigint auto_increment not null,
-  tipo                          varchar(255),
+  tipo                          integer,
   fecha_registro                datetime(6),
   total_km                      double,
   viaticos                      tinyint(1) default 0,
-  tipo_viatico                  varchar(255),
+  tipo_viatico                  integer,
   periodo_facturacion_id        bigint,
   periodo_planilla_id           bigint,
   motorista_id                  bigint,
