@@ -5,12 +5,13 @@
 
 create table boleta (
   id                            bigint auto_increment not null,
+  codigo                        varchar(255),
   destino                       varchar(255),
   km_asignados                  double,
-  tipo_carga                    varchar(255),
-  sobrepreso                    tinyint(1) default 0,
+  tipo_carga                    integer,
+  sentido                       integer,
+  sobrepeso                     tinyint(1) default 0,
   cruce_frontera                tinyint(1) default 0,
-  sentido                       varchar(255),
   viaje_id                      bigint,
   constraint pk_boleta primary key (id)
 );

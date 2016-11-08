@@ -15,6 +15,9 @@ public class Boleta extends Model{
 	@Id
 	public Long id;
 
+	@Constraints.Required(message="Debe ingresar el codigo de boleta")
+	public String codigo;
+
 	@Constraints.Required(message="Debe ingresar un destino")
 	public String destino;
 
@@ -22,14 +25,15 @@ public class Boleta extends Model{
 	public Double km_asignados;
 	
 	@Constraints.Required(message="Debe ingresar un tipo de carga")
-	public String tipo_carga;
+	public Integer tipo_carga;
 
-	public Boolean sobrepreso;
+	@Constraints.Required(message="Debe seleccionar el sentido del viaje")
+	public Integer sentido;
 
-	public Boolean cruce_frontera;
+	public Boolean sobrepeso=false;
 
-	public String sentido;
-	
+	public Boolean cruce_frontera=false;
+
 	@ManyToOne
 	public Viaje viaje;
 	

@@ -20,16 +20,13 @@ public class Viaje extends Model{
 	//@Column(length=1)
 	public Integer tipo; 
 
-	@Constraints.Required(message="Debe ingresar una fecha")
 	@Formats.DateTime(pattern="dd/mm/yyyy")
 	public Date fecha_registro;
 	
-	@Constraints.Required(message="Incluir el total de kilometros")
 	public Double total_km;
 	
 	public Boolean viaticos=false;
 
-	@Constraints.Required(message="Debe ingresar un tipo de viaticos")
 	//@Column(length=2)
 	public Integer tipo_viatico;
 	
@@ -39,9 +36,11 @@ public class Viaje extends Model{
 	@ManyToOne
 	public PeriodoPlanilla periodo_planilla;
 
+	@Constraints.Required(message="Debe ingresar un motorista")
 	@ManyToOne
 	public Motorista motorista;
 
+	@Constraints.Required(message="Debe ingresar un motorista")
 	@ManyToOne 
 	public Cabezal cabezal;
 	
