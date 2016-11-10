@@ -15,6 +15,9 @@ public class Boleta extends Model{
 	@Id
 	public Long id;
 
+	@Constraints.Required(message="Debe ingresar el codigo de boleta")
+	public String codigo;
+
 	@Constraints.Required(message="Debe ingresar un destino")
 	public String destino;
 
@@ -22,15 +25,17 @@ public class Boleta extends Model{
 	public Double km_asignados;
 	
 	@Constraints.Required(message="Debe ingresar un tipo de carga")
-	public String tipo_carga;
+	public Integer tipo_carga;
 
-	public Boolean sobrepreso;
+	public Boolean sobrepeso;
 
 	public Boolean cruce_frontera;
 
-	public String sentido;
+	public Integer sentido;
 	
 	@ManyToOne
 	public Viaje viaje;
+
+	public static Finder<Long, Boleta> find = new Finder<Long,Boleta>(Boleta.class);
 	
 }

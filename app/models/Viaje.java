@@ -44,6 +44,11 @@ public class Viaje extends Model{
 
 	@ManyToOne 
 	public Cabezal cabezal;
+
+	@Constraints.Required(message="Debe ingresar un cliente")
+	@ManyToOne
+	public Cliente cliente;
+
 	
 	@OneToMany(mappedBy="viaje")
 	public List<Boleta> boletas;

@@ -26,6 +26,9 @@ public class Cliente extends Model{
 	public String descripcion;
 
 	@OneToMany(mappedBy="cliente")
+	public List<Viaje> viajes;
+
+	@OneToMany(mappedBy="cliente")
 	public List<DetalleCobro> detalles_cobro;
 
 	public static Finder<Long, Cliente> find = new Finder<Long,Cliente>(Cliente.class);
@@ -35,5 +38,14 @@ public class Cliente extends Model{
     	Form<Cliente> returning=Form.form(Cliente.class).fill(c);
     	return returning;
     }
-	
+
+    public static Map<String,String> options(){
+	  	LinkedHashMap<String,String> opciones = new LinkedHashMap<String,String>();
+	  	//List<Categoria> categorias=Categoria.find.orderBy("nombre").findList();
+	  	for(Cliente c : Cliente.find.orderBy("nombre").findList()){
+	  		opciones.put(c.id.toString(), c.nombre);
+	  	}
+	  	return opciones;
+	  }
+		
 }

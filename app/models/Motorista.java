@@ -45,5 +45,14 @@ public class Motorista extends Model{
     	Form<Motorista> returning=Form.form(Motorista.class).fill(m);
     	return returning;
     }
+
+    public static Map<String,String> options(){
+	  	LinkedHashMap<String,String> opciones = new LinkedHashMap<String,String>();
+	  	//List<Categoria> categorias=Categoria.find.orderBy("nombre").findList();
+	  	for(Motorista c : Motorista.find.orderBy("nombre").findList()){
+	  		opciones.put(c.id.toString(), c.nombre);
+	  	}
+	  	return opciones;
+	  }
 	
 }

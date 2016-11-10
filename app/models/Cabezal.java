@@ -29,5 +29,15 @@ public class Cabezal extends Model{
     	Form<Cabezal> returning=Form.form(Cabezal.class).fill(c);
     	return returning;
     }
+
+
+    public static Map<String,String> options(){
+	  	LinkedHashMap<String,String> opciones = new LinkedHashMap<String,String>();
+	  	//List<Categoria> categorias=Categoria.find.orderBy("nombre").findList();
+	  	for(Cabezal c : Cabezal.find.orderBy("placa").findList()){
+	  		opciones.put(c.id.toString(), c.placa);
+	  	}
+	  	return opciones;
+	}
 	
 }

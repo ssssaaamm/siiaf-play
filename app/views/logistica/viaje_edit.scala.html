@@ -1,0 +1,256 @@
+@(viaje: Viaje )
+@import helper._
+
+@css={
+	<link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/bootstrap-table.css")">
+	<link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/datepicker.css")">
+}
+
+@js={
+	<script src="@routes.Assets.versioned("javascripts/bootstrap-table.js")" type="text/javascript"></script>
+	<script src="@routes.Assets.versioned("javascripts/bootstrap-datepicker.js")" type="text/javascript"></script>
+	<script src="@routes.Assets.versioned("javascripts/jquery-cloneya.js")" type="text/javascript"></script>
+	
+	<!-- configuracion de datepicker -->
+	<script>
+	     $('.datepicker').datepicker({
+		    format: 'dd/mm/yyyy'
+		 });
+	</script>
+
+	<!-- clone form -->
+	<script>
+		$('.clone-wrapper').cloneya({
+            serializeIndex     : true,
+            serializeID     : true,
+            minimum		    : 1,
+            maximum         : 10,
+            cloneThis		: '.toclone',
+        });
+	</script>
+
+
+	@for( (boleta,i) <- viaje.boletas.zipWithIndex){
+		<script>
+			document.getElementsByName('codigo[@i]')[0].value="@boleta.codigo";
+			document.getElementsByName('destino[@i]')[0].value="@boleta.destino";
+			document.getElementsByName('km_asignados[@i]')[0].value="@boleta.km_asignados";
+			document.getElementsByName('tipo_carga[@i]')[0].value="@boleta.tipo_carga";
+			document.getElementsByName('sentido[@i]')[0].value="@boleta.sentido";
+			document.getElementsByName('sobrepeso[@i]')[0].checked="@boleta.sobrepeso";
+			document.getElementsByName('cruce_frontera[@i]')[0].checked="@boleta.cruce_frontera";
+
+			@if(i!=viaje.boletas.size()-1){
+				@if(i==0){
+					$('.clone-wrapper').triggerHandler('clone.cloneya',[$('#clone@i')]);
+				}else{
+					$('.clone-wrapper').triggerHandler('clone.cloneya',[$('#clone0@i')]);
+				}
+			}
+			
+			
+		</script>
+	}
+	
+
+	<!-- fix checkbox enable disable select for new -->
+	<script>
+		document.getElementById('check-viatico').onchange = function() {
+		    document.getElementById('select-viatico').disabled = !this.checked;
+		};
+	</script>
+
+
+}
+
+
+
+
+@logistica.base("Logistica SIIAF","Viajes","Editar viaje: "+viaje.id,"viajes",css,js){
+	
+		@if(flash.containsKey("error")){
+			<div class="alert alert-danger fade in">
+				<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+				<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+				<strong>@flash.get("error")</strong>
+			</div>
+		}
+
+		@if(flash.containsKey("exito")){
+			<div class="alert alert-success fade in">
+				<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+				<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+				<strong>@flash.get("exito")</strong>
+			</div>
+		}
+
+
+		<a href="@routes.LogisticaController.viajes()" class="btn btn-success"><span class="glyphicon glyphicon-arrow-left"></span></a>
+		@form(action=routes.LogisticaController.viaje_edit_post(viaje.id), 'class->"form-horizontal", 'autocomplete->"off", '_id -> "viaje-new-form"){
+
+
+			
+
+				<div class="panel panel-default">
+					<br/>
+					
+
+					<div class="form-group">
+						<label class="control-label col-sm-2" >Tipo:</label>
+						<div class="col-sm-8">
+							<select class="form-control" name="tipo" >
+								<option value="" @if(viaje.tipo==null){selected} disabled>Seleccione...</option>
+								<option value="1" @if(viaje.tipo==1){selected}>Local</option>
+								<option value="2" @if(viaje.tipo==2){selected}>Internacional</option>
+							</select>
+						</div>
+					</div>
+						
+  				
+					<div class="form-group">
+						<label class="control-label col-sm-2"  >Cabezal:</label>
+						<div class="col-sm-8">
+							<select class="form-control" name="cabezal" >
+								<option value="" selected disabled>Seleccione...</option>
+								@for(cabezal <- Cabezal.find.all() ){
+									<option value="@cabezal.id" @if(viaje.cabezal.id==cabezal.id){selected}>@cabezal.placa</option>
+								}
+							</select>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label class="control-label col-sm-2"  >Motorista:</label>
+						<div class="col-sm-8">
+							<select class="form-control" name="motorista" >
+								<option value="" selected disabled>Seleccione...</option>
+								@for(motorista <- Motorista.find.all() ){
+									<option value="@motorista.id" @if(viaje.motorista.id==motorista.id){selected} >@motorista.nombre</option>
+								}
+							</select>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label class="control-label col-sm-2"  >Cliente:</label>
+						<div class="col-sm-8">
+							<select class="form-control" name="cliente" >
+								<option value="" selected disabled>Seleccione...</option>
+								@for(cliente <- Cliente.find.all() ){
+									<option value="@cliente.id" @if(viaje.cliente.id==cliente.id){selected}>@cliente.nombre</option>
+								}
+							</select>
+						</div>
+					</div>
+
+				    
+					<div class="form-group">
+						<div class="col-sm-offset-2 col-sm-10">
+							<div class="checkbox">
+								<label><input type="checkbox" name="viaticos" id="check-viatico" @if(viaje.viaticos==true){checked}>Viaticos</label>
+							</div>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label class="control-label col-sm-2" >Tipo Viatico:</label>
+						<div class="col-sm-8">
+							<select class="form-control" @if(viaje.viaticos==false){disabled} name="tipo_viatico" id="select-viatico">
+								<option value=""  disabled @if(viaje.tipo_viatico==null){selected}>Seleccione...</option>
+								<option value="1" @if(viaje.tipo_viatico==1){selected}>Vacio/Vacio</option>
+								<option value="2" @if(viaje.tipo_viatico==2){selected}>Vacio/Cargado</option>
+								<option value="3" @if(viaje.tipo_viatico==3){selected}>Cargado/Cargado</option>
+							</select>
+						</div>
+					</div>
+				</div><!--pannel-->
+
+
+				@for( (boleta,i) <- viaje.boletas.subList(0,1).zipWithIndex){
+					<div class="clone-wrapper" >
+						<!--panel boleta-->
+						<div class="panel panel-default toclone " id="clone0">
+							
+							<button type="button" class="delete btn btn-danger pull-right" >-</button>
+							<button type="button" class="clone btn btn-success pull-right">+</button>
+							
+							<div class="row">
+								<p class="text-center"><strong>Boleta</strong></p>
+							</div>
+							
+								
+
+								<div class="form-group">
+								<label class="col-xs-1 control-label"></label>
+							
+
+
+								<input type="hidden" name="id[@i]" readonly="readonly" class="form-control" placeholder="Id" value="@boleta.id">
+
+		
+								<div class=" col-xs-2">
+									<label class="control-label">Codigo</label>
+									<input type="text" name="codigo[@i]" class="form-control" placeholder="Codigo" value="@boleta.codigo">
+								</div>
+
+
+								<div class="col-xs-2">
+									<label class="control-label">Destino</label>
+									<input type="text" name="destino[@i]" class="form-control" placeholder="Destino" value="@boleta.destino">
+								</div>
+
+								<div class="col-xs-2">
+									<label class="control-label">Kilometros</label>
+									<input type="text" name="km_asignados[@i]" class="form-control" placeholder="Kms" value="@boleta.km_asignados">
+								</div>
+
+								<div class="col-xs-2">
+									<label class="control-label">Carga</label>
+									<select name="tipo_carga[@i]" class="form-control">
+										<option value="" @if(boleta.tipo_carga==null){selected} disabled>Seleccione</option>
+										<option value="1" @if(boleta.tipo_carga==1){selected}>Vacio</option>
+										<option value="2" @if(boleta.tipo_carga==2){selected}>Sencillo</option>
+										<option value="3" @if(boleta.tipo_carga==3){selected}>Cargado</option>
+									</select>
+								</div>
+
+								<div class="col-xs-2">
+									<label class="control-label">Sentido</label>
+									<select name="sentido[@i]" class="form-control">
+										<option value="" @if(boleta.sentido==null){selected} disabled>Seleccione</option>
+										<option value="3" @if(boleta.sentido==3){selected}>No definido</option>
+										<option value="1" @if(boleta.sentido==1){selected}>Ida</option>
+										<option value="2" @if(boleta.sentido==2){selected}>Regreso</option>
+									</select>
+								</div>
+
+								
+								<div class="col-sm-offset-1 col-lg-4">
+									<div class="checkbox">
+										<label><input type="checkbox" @if(boleta.sobrepeso==true){checked} name="sobrepeso[@i]" class="form-control">Sobrepeso</label>
+									</div>
+								</div>
+
+								<div class="col-lg-4">
+									<div class="checkbox">
+										<label><input type="checkbox" @if(boleta.cruce_frontera==true){checked} name="cruce_frontera[@i]" class="form-control">Cruce Frontera</label>
+									</div>
+								</div>					
+															   
+						    </div>
+						    <br/>
+						</div>
+						<!--fin panel boleta-->
+						
+					</div>
+				}
+				
+				
+				
+
+				<a href="@routes.LogisticaController.viajes()" class="btn btn-success"><span class="glyphicon glyphicon-arrow-left"></span></a>
+				<button type="submit" class="btn btn-primary pull-right"><span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span> Guardar</button>
+		}
+
+	
+}

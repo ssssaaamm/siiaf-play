@@ -55,7 +55,8 @@ POST     /manager/usuarios/remove/:id               controllers.GerenteControlle
 # RUTAS DEL LogisticaController
 GET      /logistic/viajes                          controllers.LogisticaController.viajes
 POST     /logistic/viajes/new                       controllers.LogisticaController.viaje_new
-POST     /logistic/viajes/edit/:id                  controllers.LogisticaController.viaje_edit(id: Long)
+GET      /logistic/viajes/edit/:id                  controllers.LogisticaController.viaje_edit(id: Long)
+POST     /logistic/viajes/edit/:id                  controllers.LogisticaController.viaje_edit_post(id: Long)
 POST     /logistic/viajes/remove/:id                controllers.LogisticaController.viaje_remove(id:Long)
 
 GET     /logistic/planilla                           controllers.LogisticaController.planilla

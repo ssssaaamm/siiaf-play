@@ -5,12 +5,13 @@
 
 create table boleta (
   id                            bigint auto_increment not null,
+  codigo                        varchar(255),
   destino                       varchar(255),
   km_asignados                  double,
-  tipo_carga                    varchar(255),
-  sobrepreso                    tinyint(1) default 0,
+  tipo_carga                    integer,
+  sobrepeso                     tinyint(1) default 0,
   cruce_frontera                tinyint(1) default 0,
-  sentido                       varchar(255),
+  sentido                       integer,
   viaje_id                      bigint,
   constraint pk_boleta primary key (id)
 );
@@ -172,6 +173,7 @@ create table viaje (
   periodo_planilla_id           bigint,
   motorista_id                  bigint,
   cabezal_id                    bigint,
+  cliente_id                    bigint,
   constraint pk_viaje primary key (id)
 );
 
@@ -213,6 +215,9 @@ create index ix_viaje_motorista_id on viaje (motorista_id);
 alter table viaje add constraint fk_viaje_cabezal_id foreign key (cabezal_id) references cabezal (id) on delete restrict on update restrict;
 create index ix_viaje_cabezal_id on viaje (cabezal_id);
 
+alter table viaje add constraint fk_viaje_cliente_id foreign key (cliente_id) references cliente (id) on delete restrict on update restrict;
+create index ix_viaje_cliente_id on viaje (cliente_id);
+
 
 # --- !Downs
 
@@ -253,6 +258,9 @@ drop index ix_viaje_motorista_id on viaje;
 
 alter table viaje drop foreign key fk_viaje_cabezal_id;
 drop index ix_viaje_cabezal_id on viaje;
+
+alter table viaje drop foreign key fk_viaje_cliente_id;
+drop index ix_viaje_cliente_id on viaje;
 
 drop table if exists boleta;
 
