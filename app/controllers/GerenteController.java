@@ -19,7 +19,7 @@ public class GerenteController extends Controller {
     //list
     public Result clientes() {
         Form<Cliente> cliente_form = Form.form(Cliente.class);
-        List<Cliente> clientes_list = Cliente.find.findList();
+        List<Cliente> clientes_list = Cliente.find.where().eq("activo",true).findList();
         return ok(clientes.render(cliente_form,clientes_list));
     }
     //new  
@@ -71,7 +71,8 @@ public class GerenteController extends Controller {
     public Result cliente_remove(Long id) {
         Cliente cli = Cliente.find.byId(id);
         if(cli != null){
-            cli.delete();
+            cli.activo=false;
+            cli.update();
             flash("exito","Operacion exitosa!");
             return redirect(routes.GerenteController.clientes());
         }
@@ -82,7 +83,7 @@ public class GerenteController extends Controller {
     //list
     public Result motoristas() {
         Form<Motorista> motorista_form = Form.form(Motorista.class);
-        List<Motorista> motoristas_list = Motorista.find.findList();
+        List<Motorista> motoristas_list = Motorista.find.where().eq("activo",true).findList();
         return ok(motoristas.render(motorista_form,motoristas_list));
     }
     //new
@@ -136,7 +137,8 @@ public class GerenteController extends Controller {
     public Result motorista_remove(Long id) {
         Motorista mot = Motorista.find.byId(id);
         if(mot != null){
-            mot.delete();
+            mot.activo=false;
+            mot.update();
             flash("exito","Operacion exitosa!");
             return redirect(routes.GerenteController.motoristas());
         }
@@ -147,7 +149,7 @@ public class GerenteController extends Controller {
     //list
     public Result cabezales() {
         Form<Cabezal> cabezal_form = Form.form(Cabezal.class);
-        List<Cabezal> cabezales_list = Cabezal.find.findList();
+        List<Cabezal> cabezales_list = Cabezal.find.where().eq("activo",true).findList();
         return ok(cabezales.render(cabezal_form,cabezales_list));
         }
 
@@ -200,7 +202,8 @@ public class GerenteController extends Controller {
     public Result cabezal_remove(Long id) {
         Cabezal cab = Cabezal.find.byId(id);
         if(cab != null){
-            cab.delete();
+            cab.activo=false;
+            cab.update();
             flash("exito","Operacion exitosa!");
             return redirect(routes.GerenteController.cabezales());
         }
@@ -241,19 +244,27 @@ public class GerenteController extends Controller {
         List<PoliticaCobro> politicas = PoliticaCobro.find.findList();
         
         Form<PoliticaCobro> politica_form = Form.form(PoliticaCobro.class).bindFromRequest();
+
+        if( politica_form.hasErrors() ){
+            return badRequest(politica_cobro.render(politica_form));
+        }
+
         PoliticaCobro nueva = politica_form.get();
 
 
         PoliticaCobro match = PoliticaCobro.find.where().conjunction().eq("duracion_periodo",nueva.duracion_periodo).eq("tarifa_cobro_km_sen",nueva.tarifa_cobro_km_sen).eq("tarifa_cobro_km_car",nueva.tarifa_cobro_km_car).eq("tarifa_cobro_km_vac",nueva.tarifa_cobro_km_vac).eq("tarifa_sobrepeso",nueva.tarifa_sobrepeso).eq("tarifa_cruce_frontera",nueva.tarifa_cruce_frontera).findUnique();
 
 
+
         if(actual!=null){
             if(match!=null){
-                actual.actual=false;
-                actual.update();
+                if(!actual.equals(match)){
+                    actual.actual=false;
+                    actual.update();
 
-                match.actual=true;
-                match.update();
+                    match.actual=true;
+                    match.update();
+                }
             }else{
                 
                 actual.actual=false;
@@ -296,6 +307,12 @@ public class GerenteController extends Controller {
         PoliticaPago actual = PoliticaPago.find.where().eq("actual",1).findUnique();
                 
         Form<PoliticaPago> politica_form = Form.form(PoliticaPago.class).bindFromRequest();
+
+        if( politica_form.hasErrors() ){
+            return badRequest(politica_pago.render(politica_form));
+        }
+
+
         PoliticaPago nueva = politica_form.get();
 
 
@@ -304,11 +321,13 @@ public class GerenteController extends Controller {
 
         if(actual!=null){
             if(match!=null){
-                actual.actual=false;
-                actual.update();
+                if(!actual.equals(match)){
+                    actual.actual=false;
+                    actual.update();
 
-                match.actual=true;
-                match.update();
+                    match.actual=true;
+                    match.update();
+                }
             }else{
                 
                 actual.actual=false;

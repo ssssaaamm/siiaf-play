@@ -1,4 +1,4 @@
-@(viaje_form: Form[Viaje], viajes_list: List[Viaje] )
+@(viajes_list: List[Viaje], cabezales: List[Cabezal], motoristas: List[Motorista], clientes: List[Cliente])
 @import helper._
 
 @css={
@@ -14,7 +14,7 @@
 	<!-- configuracion de datepicker -->
 	<script>
 	     $('.datepicker').datepicker({
-		    format: 'dd/mm/yyyy'
+		    format: 'dd/MM/yyyy'
 		 });
 	</script>
 
@@ -94,6 +94,15 @@
 	}
 
 
+	@if(flash.containsKey("error")){
+		<div class="alert alert-danger fade in">
+			<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+			<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+			<strong>@flash.get("error")</strong>
+		</div>
+	}
+
+
 
 
 
@@ -141,7 +150,7 @@
 							<div class="col-sm-8">
 								<select class="form-control" name="cabezal" >
 									<option value="" selected disabled>Seleccione...</option>
-									@for(cabezal <- Cabezal.find.all() ){
+									@for(cabezal <- cabezales ){
 										<option value="@cabezal.id">@cabezal.placa</option>
 									}
 								</select>
@@ -153,7 +162,7 @@
 							<div class="col-sm-8">
 								<select class="form-control" name="motorista" >
 									<option value="" selected disabled>Seleccione...</option>
-									@for(motorista <- Motorista.find.all() ){
+									@for(motorista <- motoristas ){
 										<option value="@motorista.id">@motorista.nombre</option>
 									}
 								</select>
@@ -165,7 +174,7 @@
 							<div class="col-sm-8">
 								<select class="form-control" name="cliente" >
 									<option value="" selected disabled>Seleccione...</option>
-									@for(cliente <- Cliente.find.all() ){
+									@for(cliente <- clientes ){
 										<option value="@cliente.id">@cliente.nombre</option>
 									}
 								</select>
@@ -321,7 +330,7 @@
 			@for(viaje <- viajes_list){
 				<tr>
 					<td>@if(viaje.tipo==1){Local}else{@if(viaje.tipo==2){Internacional}}</td>
-					<td>@viaje.fecha_registro.format("dd/mm/yyyy")</td>
+					<td>@viaje.fecha_registro.format("dd/MM/yyyy")</td>
 					<td>@viaje.total_km</td>
 					<td>@if(viaje.viaticos==true){Si}else{@if(viaje.viaticos==false){No}}</td>
 					<td>@if(viaje.tipo_viatico==1){V/V}else{@if(viaje.tipo_viatico==2){V/C}else{@if(viaje.tipo_viatico==3){C/C}}}</td>

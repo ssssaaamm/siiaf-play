@@ -1,4 +1,4 @@
-@(viaje: Viaje )
+@(viaje: Viaje,  cabezales: List[Cabezal], motoristas: List[Motorista], clientes: List[Cliente])
 @import helper._
 
 @css={
@@ -112,7 +112,7 @@
 						<div class="col-sm-8">
 							<select class="form-control" name="cabezal" >
 								<option value="" selected disabled>Seleccione...</option>
-								@for(cabezal <- Cabezal.find.all() ){
+								@for(cabezal <- cabezales ){
 									<option value="@cabezal.id" @if(viaje.cabezal.id==cabezal.id){selected}>@cabezal.placa</option>
 								}
 							</select>
@@ -124,7 +124,7 @@
 						<div class="col-sm-8">
 							<select class="form-control" name="motorista" >
 								<option value="" selected disabled>Seleccione...</option>
-								@for(motorista <- Motorista.find.all() ){
+								@for(motorista <- motoristas ){
 									<option value="@motorista.id" @if(viaje.motorista.id==motorista.id){selected} >@motorista.nombre</option>
 								}
 							</select>
@@ -136,7 +136,7 @@
 						<div class="col-sm-8">
 							<select class="form-control" name="cliente" >
 								<option value="" selected disabled>Seleccione...</option>
-								@for(cliente <- Cliente.find.all() ){
+								@for(cliente <- clientes ){
 									<option value="@cliente.id" @if(viaje.cliente.id==cliente.id){selected}>@cliente.nombre</option>
 								}
 							</select>

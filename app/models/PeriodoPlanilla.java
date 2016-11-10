@@ -27,9 +27,6 @@ public class PeriodoPlanilla extends Model{
 	@ManyToOne
 	public PoliticaPago politica_pago;
 
-	@OneToOne
-	public PeriodoFacturacion periodo_facturacion;
-
 	@OneToMany(mappedBy="periodo_planilla")
 	public List<DetallePago> detalle_pagos;
 

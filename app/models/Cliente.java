@@ -25,6 +25,8 @@ public class Cliente extends Model{
 	@Constraints.Required(message="Debe ingresar una descripcion")
 	public String descripcion;
 
+	public boolean activo=true;
+
 	@OneToMany(mappedBy="cliente")
 	public List<Viaje> viajes;
 

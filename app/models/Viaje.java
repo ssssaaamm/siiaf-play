@@ -21,11 +21,11 @@ public class Viaje extends Model{
 	public Integer tipo; 
 
 	@Constraints.Required(message="Debe ingresar una fecha")
-	@Formats.DateTime(pattern="dd/mm/yyyy")
+	@Formats.DateTime(pattern="dd/MM/yyyy")
 	public Date fecha_registro;
 	
 	@Constraints.Required(message="Incluir el total de kilometros")
-	public Double total_km;
+	public Double total_km=0.0;
 	
 	public Boolean viaticos=false;
 
@@ -50,7 +50,7 @@ public class Viaje extends Model{
 	public Cliente cliente;
 
 	
-	@OneToMany(mappedBy="viaje")
+	@OneToMany(mappedBy="viaje",cascade=CascadeType.ALL)
 	public List<Boleta> boletas;
 
 	public static Finder<Long, Viaje> find = new Finder<Long,Viaje>(Viaje.class);

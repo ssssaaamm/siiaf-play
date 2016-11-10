@@ -22,7 +22,9 @@ public class Cabezal extends Model{
 	@Constraints.Required(message="Debe ingresar una descripcion")
 	public String descripcion;
 
-		public static Finder<Long, Cabezal> find = new Finder<Long,Cabezal>(Cabezal.class);
+	public boolean activo=true;
+
+	public static Finder<Long, Cabezal> find = new Finder<Long,Cabezal>(Cabezal.class);
 
     public Form<Cabezal> getForm(){
     	Cabezal c = Cabezal.find.byId(this.id);

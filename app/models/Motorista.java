@@ -31,6 +31,8 @@ public class Motorista extends Model{
 	
 	@Constraints.Required(message="Debe ingresar un número de licencia")
 	public String licencia;
+
+	public boolean activo=true;
 	
 	@OneToMany
 	public List<DetallePago> detalle_pagos;

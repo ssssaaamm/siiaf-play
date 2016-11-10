@@ -20,6 +20,7 @@ create table cabezal (
   id                            bigint auto_increment not null,
   placa                         varchar(255),
   descripcion                   varchar(255),
+  activo                        tinyint(1) default 0,
   constraint pk_cabezal primary key (id)
 );
 
@@ -28,6 +29,7 @@ create table cliente (
   nombre                        varchar(255),
   nit                           varchar(255),
   descripcion                   varchar(255),
+  activo                        tinyint(1) default 0,
   constraint pk_cliente primary key (id)
 );
 
@@ -94,6 +96,7 @@ create table motorista (
   dui                           varchar(255),
   nit                           varchar(255),
   licencia                      varchar(255),
+  activo                        tinyint(1) default 0,
   constraint pk_motorista primary key (id)
 );
 
@@ -112,8 +115,6 @@ create table periodo_planilla (
   fecha_fin                     datetime(6),
   actual                        tinyint(1) default 0,
   politica_pago_id              bigint,
-  periodo_facturacion_id        bigint,
-  constraint uq_periodo_planilla_periodo_facturacion_id unique (periodo_facturacion_id),
   constraint pk_periodo_planilla primary key (id)
 );
 
@@ -198,8 +199,6 @@ create index ix_periodo_facturacion_politica_cobro_id on periodo_facturacion (po
 alter table periodo_planilla add constraint fk_periodo_planilla_politica_pago_id foreign key (politica_pago_id) references politica_pago (id) on delete restrict on update restrict;
 create index ix_periodo_planilla_politica_pago_id on periodo_planilla (politica_pago_id);
 
-alter table periodo_planilla add constraint fk_periodo_planilla_periodo_facturacion_id foreign key (periodo_facturacion_id) references periodo_facturacion (id) on delete restrict on update restrict;
-
 alter table usuario add constraint fk_usuario_tipo_id foreign key (tipo_id) references tipo_usuario (id) on delete restrict on update restrict;
 create index ix_usuario_tipo_id on usuario (tipo_id);
 
@@ -241,8 +240,6 @@ drop index ix_periodo_facturacion_politica_cobro_id on periodo_facturacion;
 
 alter table periodo_planilla drop foreign key fk_periodo_planilla_politica_pago_id;
 drop index ix_periodo_planilla_politica_pago_id on periodo_planilla;
-
-alter table periodo_planilla drop foreign key fk_periodo_planilla_periodo_facturacion_id;
 
 alter table usuario drop foreign key fk_usuario_tipo_id;
 drop index ix_usuario_tipo_id on usuario;
