@@ -27,9 +27,9 @@ public class Boleta extends Model{
 	@Constraints.Required(message="Debe ingresar un tipo de carga")
 	public Integer tipo_carga;
 
-	public Boolean sobrepeso;
+	public Boolean sobrepeso=false;
 
-	public Boolean cruce_frontera;
+	public Boolean cruce_frontera=false;
 
 	public Integer sentido;
 	

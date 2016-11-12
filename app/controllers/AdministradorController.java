@@ -16,33 +16,67 @@ import models.*;
 public class AdministradorController extends Controller {
 
 
-	///EMPLEADOS
-
-	//list
+	//USUARIOS
+    //list
     public Result usuarios() {
-        
-        return ok(usuarios.render());
+        Form<Usuario> usuario_form = Form.form(Usuario.class);
+        List<Usuario> usuarios_list = Usuario.find.findList();
+        return ok(usuarios.render(usuario_form,usuarios_list));
     }
-
-
     //add
-    public Result usuarios_new() {
+    public Result usuario_new() {
+        Form<Usuario> usuario_form = Form.form(Usuario.class).bindFromRequest();
+        Map<String, String[]> values = request().body().asFormUrlEncoded();
+        List<Usuario> usuarios_list = Usuario.find.findList();
 
-    	return ok("usuario new");
+        //Si hay errores siempre los retornara
+        if( usuario_form.hasErrors() ){
+            flash("modal","mod-new");
+            return badRequest(usuarios.render(usuario_form,usuarios_list));
+        }
+
+        Usuario nuevo = usuario_form.get();
+        nuevo.save();
+
+        flash("exito","Operacion exitosa!");
+
+        return redirect(routes.AdministradorController.usuarios());
     }
-
-
     //edit
     public Result usuario_edit(Long id) {
+        Form<Usuario> usuario_form = Form.form(Usuario.class).bindFromRequest();
+        List<Usuario> usuarios_list = Usuario.find.findList();
 
-    	return ok("edit suario");
+        //Si hay errores siempre los retornara
+        if( usuario_form.hasErrors() ){
+            flash("modal","mod-edit-"+id.toString());
+            return badRequest(usuarios.render(usuario_form,usuarios_list));
+        }
+
+        Usuario user = Usuario.find.byId(id);
+
+        if ( user != null) {
+            user.nombre=usuario_form.get().nombre;
+            user.username=usuario_form.get().username;
+            user.password=usuario_form.get().password;
+            user.tipo.id=usuario_form.get().tipo.id;
+
+            user.update();
+        }        
+
+        flash("exito","Operacion exitosa!");
+
+        return redirect(routes.AdministradorController.usuarios());
     }
-
-
-    //delete
+    //remove
     public Result usuario_remove(Long id){
-    	return ok("usuario remove");
+        Usuario user = Usuario.find.byId(id);
+        if(user != null){
+            user.delete();
+            flash("exito","Operacion exitosa!");
+            return redirect(routes.AdministradorController.usuarios());
+        }
+        return redirect(routes.AdministradorController.usuarios());
     }
-
 
 }//cierre de clase

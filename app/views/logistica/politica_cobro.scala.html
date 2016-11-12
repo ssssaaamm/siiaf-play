@@ -1,3 +1,4 @@
+@(politica_form: Form[PoliticaCobro])
 @import helper._
 
 @css={
@@ -8,6 +9,42 @@
 	
 }
 
-@logistica.base("Logistic SIIAF","Politica de Cobro","Politica Actual","politica_cobro",css,js){
-	consulta de politica de cobro
+
+@logistica.base("Logistica SIIAF","Politica de Cobro","(politica actual)","politica_cobro",css,js){
+	
+<div class="row">
+	<div class="col-lg-6">
+		
+
+		<form>
+
+
+			<div class="form-group">
+			 	@inputText(politica_form("duracion_periodo"),'disabled->"true", '_showConstraints -> false, '_showErrors -> false,'class -> "form-control", 'placeholder -> "Duracion de periodo en dias", '_label -> "Duracion Periodo: ")
+			</div>
+
+			<div class="form-group">
+			 	@inputText(politica_form("tarifa_cobro_km_sen"),'disabled->"true", '_showConstraints -> false, '_showErrors -> false,'class -> "form-control", 'placeholder -> "Tarifa en USD", '_label -> "Tarifa Km Sencillo: ")
+			</div>
+
+			<div class="form-group">
+			 	@inputText(politica_form("tarifa_cobro_km_car"), 'disabled->"true",'_showConstraints -> false, '_showErrors -> false,'class -> "form-control", 'placeholder -> "Tarifa en USD", '_label -> "Tarifa Km Cargado: ")
+			</div>
+
+			<div class="form-group">
+			 	@inputText(politica_form("tarifa_cobro_km_vac"), 'disabled->"true",'_showConstraints -> false, '_showErrors -> false,'class -> "form-control", 'placeholder -> "Tarifa en USD", '_label -> "Tarifa Km Vacio: ")
+			</div>
+
+			<div class="form-group">
+			 	@inputText(politica_form("tarifa_sobrepeso"), 'disabled->"true",'_showConstraints -> false, '_showErrors -> false,'class -> "form-control", 'placeholder -> "Tarifa en USD", '_label -> "Tarifa Sobrepeso: ")
+			</div>
+
+			<div class="form-group">
+			 	@inputText(politica_form("tarifa_cruce_frontera"), 'disabled->"true",'_showConstraints -> false, '_showErrors -> false,'class -> "form-control", 'placeholder -> "Tarifa en USD", '_label -> "Tarifa Cruce Frontera: ")
+			</div>
+
+		</form>
+	</div>
+</div>
+	
 }

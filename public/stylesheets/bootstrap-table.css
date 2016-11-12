@@ -3,16 +3,40 @@
 }
 
 
-.results tr[visible='false'],
-.no-result{
+.results1 tr[visible='false'],
+.no-result1{
   display:none;
 }
 
-.results tr[visible='true']{
+.results1 tr[visible='true']{
   display:table-row;
 }
 
-.counter{
+.counter1{
+  padding:8px; 
+  color: #736e6d;
+}
+
+
+
+
+
+
+.center-column{
+   text-align: center;   
+}
+
+
+.results2 tr[visible='false'],
+.no-result2{
+  display:none;
+}
+
+.results2 tr[visible='true']{
+  display:table-row;
+}
+
+.counter2{
   padding:8px; 
   color: #736e6d;
 }

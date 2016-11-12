@@ -1,4 +1,15 @@
 
+insert into tipo_usuario (codigo,nombre,descripcion) values (1,'Administrador','crea usuarios');
+insert into tipo_usuario (codigo,nombre,descripcion) values (2,'Gerente','crea usuarios');
+insert into tipo_usuario (codigo,nombre,descripcion) values (3,'Auxiliar Logistica','crea usuarios');
+
+
+insert into usuario (nombre,username,password,tipo_id) values ('Anonimo','administrador','administrador',1);
+insert into usuario (nombre,username,password,tipo_id) values ('Anonimo','gerente','gerente',2);
+insert into usuario (nombre,username,password,tipo_id) values ('Anonimo','logistica','logistica',3);
+
+
+
 insert into motorista (codigo,nombre,dui,nit,licencia,activo) values ('123','Samuel Soul','456896','659879','04899',1);
 insert into motorista (codigo,nombre,dui,nit,licencia,activo) values ('123','Jon Soul','456896','659879','04899',1);
 insert into motorista (codigo,nombre,dui,nit,licencia,activo) values ('123','Pedro Soul','456896','659879','04899',1);

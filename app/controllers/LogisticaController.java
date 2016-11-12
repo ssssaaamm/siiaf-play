@@ -7,6 +7,8 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.io.File;
 import org.joda.time.DateTimeComparator;
+import java.lang.Thread;
+import java.lang.Runnable;
 
 import views.html.logistica.*;
 import models.*;
@@ -21,13 +23,30 @@ public class LogisticaController extends Controller {
      //list
     public Result viajes() {
 
-        List<Viaje> viajes_list = Viaje.find.findList();
+        PeriodoFacturacion pf = PeriodoFacturacion.find.where().eq("actual",true).findUnique();
+        PeriodoPlanilla pp = PeriodoPlanilla.find.where().eq("actual",true).findUnique();
+
+        List<Viaje> viajes_facturacion_list = null;
+        List<Viaje> viajes_planilla_list = null;
+
+        if(pf!=null){
+            viajes_facturacion_list = pf.viajes;
+        }else{
+            viajes_facturacion_list = Viaje.find.findList();
+        }
+
+        if(pp!=null){
+            viajes_planilla_list = pp.viajes;
+        }else{
+            viajes_planilla_list = Viaje.find.findList();
+        }
+
         List<Cabezal> cabezales = Cabezal.find.where().eq("activo",true).findList();
         List<Cliente> clientes = Cliente.find.where().eq("activo",true).findList();
         List<Motorista> motoristas = Motorista.find.where().eq("activo",true).findList();
 
-        return ok(viajes.render(viajes_list,cabezales,motoristas,clientes));
-        }
+        return ok(viajes.render(viajes_facturacion_list,viajes_planilla_list,cabezales,motoristas,clientes));
+    }
 
     //new get
 
@@ -103,7 +122,7 @@ public class LogisticaController extends Controller {
                 if(pf1 != null){
                     if(DateTimeComparator.getDateOnlyInstance().compare(nuevo.fecha_registro,pf1.fecha_inicio) < 0){
                         //(nos encontramos en periodos anteriores) verificar la hora del sistema (servidor), la hora esta retrasada
-                        flash("error","No se pueden registrar los viajes. La hora del sistema es incorrecta");
+                        flash("global_error","No se pueden registrar los viajes. La hora del sistema es incorrecta");
                         return redirect(routes.LogisticaController.viajes());
                     }else{
                         if( DateTimeComparator.getDateOnlyInstance().compare(nuevo.fecha_registro,pf1.fecha_fin) > 0){
@@ -112,7 +131,7 @@ public class LogisticaController extends Controller {
                             
                             if(pc_actual==null){
                                 //no ha configurado politica de facturacion
-                                flash("error","No se pueden registrar los viajes. No ha configurado la politica de cobros para facturacion");
+                                flash("global_error","No se pueden registrar los viajes. No ha configurado la politica de cobros para facturacion");
                                 return redirect(routes.LogisticaController.viajes());
                             }
 
@@ -145,6 +164,15 @@ public class LogisticaController extends Controller {
                                 pf2.save();
                                 pf1.update();
 
+                                //agregamos detalle de cobro inicializado a cero para los clientes
+                                for(Cliente cliente : Cliente.find.where().eq("activo",true).findList()){
+                                    DetalleCobro detallec = new DetalleCobro();
+                                    detallec.periodo_facturacion = pf2;
+                                    detallec.cliente = cliente;
+                                    detallec.save();
+                                }
+
+
                                 pf1=pf2;
 
                                 if(DateTimeComparator.getDateOnlyInstance().compare(nuevo.fecha_registro,pf2.fecha_inicio) >= 0 && DateTimeComparator.getDateOnlyInstance().compare(nuevo.fecha_registro,pf2.fecha_fin) <= 0){     
@@ -162,7 +190,7 @@ public class LogisticaController extends Controller {
                     PoliticaCobro pc_actual=PoliticaCobro.find.where().eq("actual",true).findUnique();
                     if(pc_actual==null){
                         //no ha configurado politica de facturacion
-                        flash("error","No se pueden registrar los viajes. No ha configurado la politica de cobros para facturacion");
+                        flash("global_error","No se pueden registrar los viajes. No ha configurado la politica de cobros para facturacion");
                         return redirect(routes.LogisticaController.viajes());
                     }
 
@@ -187,6 +215,17 @@ public class LogisticaController extends Controller {
                     pf3.actual=true;
                     
                     pf3.save();
+
+
+                    //agregamos detalle de cobro inicializado a cero para los clientes
+                    for(Cliente cliente : Cliente.find.where().eq("activo",true).findList()){
+                        DetalleCobro detallec = new DetalleCobro();
+                        detallec.periodo_facturacion = pf3;
+                        detallec.cliente = cliente;
+                        detallec.save();
+                    }
+
+
                     nuevo.periodo_facturacion=pf3;
                 }
 
@@ -196,7 +235,7 @@ public class LogisticaController extends Controller {
                 if(pp1 != null){
                     if(DateTimeComparator.getDateOnlyInstance().compare(nuevo.fecha_registro,pp1.fecha_inicio) < 0){
                         //(nos encontramos en periodos anteriores) verificar la hora del sistema (servidor), la hora esta retrasada
-                        flash("error","No se pueden registrar los viajes. La hora del sistema es incorrecta");
+                        flash("global_error","No se pueden registrar los viajes. La hora del sistema es incorrecta");
                         return redirect(routes.LogisticaController.viajes());
                     }else{
                         if(DateTimeComparator.getDateOnlyInstance().compare(nuevo.fecha_registro,pp1.fecha_fin) > 0){
@@ -205,7 +244,7 @@ public class LogisticaController extends Controller {
                             
                             if(pp_actual==null){
                                 //no ha configurado politica de planilla
-                                flash("error","No se pueden registrar los viajes. No ha configurado la politica de pago para planilla");
+                                flash("global_error","No se pueden registrar los viajes. No ha configurado la politica de pago para planilla");
                                 return redirect(routes.LogisticaController.viajes());
                             }
 
@@ -238,6 +277,16 @@ public class LogisticaController extends Controller {
                                 pp2.save();
                                 pp1.update();
 
+
+                                //agregamos detalle de pago inicializado a cero para los motoristas
+                                for(Motorista motorista : Motorista.find.where().eq("activo",true).findList()){
+                                    DetallePago detallep = new DetallePago();
+                                    detallep.periodo_planilla = pp2;
+                                    detallep.motorista = motorista;
+                                    detallep.save();
+                                }
+
+
                                 pp1=pp2;
 
                                 if(DateTimeComparator.getDateOnlyInstance().compare(nuevo.fecha_registro,pp2.fecha_inicio) >= 0 && DateTimeComparator.getDateOnlyInstance().compare(nuevo.fecha_registro,pp2.fecha_fin) <= 0){     
@@ -255,7 +304,7 @@ public class LogisticaController extends Controller {
                     PoliticaPago pp_actual=PoliticaPago.find.where().eq("actual",true).findUnique();
                     if(pp_actual==null){
                         //no ha configurado politica de planilla
-                        flash("error","No se pueden registrar los viajes. No ha configurado la politica de pago para planilla");
+                        flash("global_error","No se pueden registrar los viajes. No ha configurado la politica de pago para planilla");
                         return redirect(routes.LogisticaController.viajes());
                     }
 
@@ -282,11 +331,46 @@ public class LogisticaController extends Controller {
                     pp3.actual=true;
                     
                     pp3.save();
+
+
+
+                    //agregamos detalle de pago inicializado a cero para los motoristas
+                    for(Motorista motorista : Motorista.find.where().eq("activo",true).findList()){
+                        DetallePago detallep = new DetallePago();
+                        detallep.periodo_planilla = pp3;
+                        detallep.motorista = motorista;
+                        detallep.save();
+                    }
+
+
                     nuevo.periodo_planilla=pp3;
                 }
 
                 //al fin guardamos el viaje :)
                 nuevo.save();
+
+
+                //pero aun tenemos que recalcular detalle de cobro :/
+                final Cliente cliente = nuevo.cliente;
+                Thread c = new Thread(new Runnable() {
+                    public void run() {
+                        actualizarDetalleCobro(cliente);
+                    }
+                });
+                c.start();
+        
+                
+                //y tambien tenemos que recalcular detalle de pago :(
+                final Motorista motorista = nuevo.motorista;
+                Thread m = new Thread(new Runnable() {
+                    public void run() {
+                        actualizarDetallePago(motorista);
+                    }
+                });
+                m.start();
+
+                
+                //finalmente al usuario le hacemos buena cara, sin importar que nos haya llevado putas aqui adentro
                 flash("exito","Operacion exitosa!");
 
             }else{
@@ -394,6 +478,26 @@ public class LogisticaController extends Controller {
                 if(temp.boletas.size()>0){
                     
                     temp.update();
+
+                    //recalcular detalle de cobro en segundo plano
+                    final Cliente cliente = temp.cliente;
+                    Thread c = new Thread(new Runnable() {
+                        public void run() {
+                            actualizarDetalleCobro(cliente);
+                        }
+                    });
+                    c.start();
+            
+                    
+                    //recalcular detalle de pago en segundo plano
+                    final Motorista motorista = temp.motorista;
+                    Thread m = new Thread(new Runnable() {
+                        public void run() {
+                            actualizarDetallePago(motorista);
+                        }
+                    });
+                    m.start();
+
                     flash("exito","Operacion exitosa!");
 
                 }else{
@@ -402,7 +506,7 @@ public class LogisticaController extends Controller {
                 }
 
 
-            }
+            }//fin if sin else
 
         }else{
             //datos invalidos para viaje debe mostrarse error en formulario
@@ -417,7 +521,30 @@ public class LogisticaController extends Controller {
     public Result viaje_remove(Long id) {
         Viaje via = Viaje.find.byId(id);
         if(via != null){
+            
             via.delete();
+
+
+            //recalcular detalle de cobro en segundo plano
+            final Cliente cliente = via.cliente;
+            Thread c = new Thread(new Runnable() {
+                public void run() {
+                    actualizarDetalleCobro(cliente);
+                }
+            });
+            c.start();
+    
+            
+            //recalcular detalle de pago en segundo plano
+            final Motorista motorista = via.motorista;
+            Thread m = new Thread(new Runnable() {
+                public void run() {
+                    actualizarDetallePago(motorista);
+                }
+            });
+            m.start();
+
+
             flash("exito","Operacion exitosa!");
             return redirect(routes.LogisticaController.viajes());
         }
@@ -433,11 +560,389 @@ public class LogisticaController extends Controller {
     }
 
     public Result politica_cobro() {
-        return ok(politica_cobro.render());
+        return ok(politica_cobro.render(PoliticaCobro.find.where().eq("actual",true).findUnique().getForm()));
     }
 
     public Result politica_pago() {
-        return ok(politica_pago.render());
+        return ok(politica_pago.render(PoliticaPago.find.where().eq("actual",true).findUnique().getForm()));
     }
+
+    private void actualizarDetalleCobro(Cliente cliente){
+        PeriodoFacturacion periodo = PeriodoFacturacion.find.where().eq("actual",true).findUnique();
+        PoliticaCobro politica = periodo.politica_cobro;
+        DetalleCobro detalle = DetalleCobro.find.where().conjunction().eq("cliente",cliente).eq("periodo_facturacion",periodo).findUnique();
+        List<Viaje> viajes=Viaje.find.where().conjunction().eq("periodo_facturacion",periodo).eq("cliente",cliente).findList();
+                
+
+        Integer total_viajes_locales=0;
+
+        Double total_km_sen_locales=0.0;
+
+        Double total_km_car_locales=0.0;
+
+        Double total_km_vac_locales=0.0;
+
+        Double total_km_locales=0.0;
+
+        Double total_mont_sen_locales=0.0;
+
+        Double total_mont_car_locales=0.0;
+
+        Double total_mont_vac_locales=0.0;
+
+        Double total_mont_locales=0.0;
+
+        Integer total_viajes_internacionales=0;
+
+        Double total_km_sen_internacionales=0.0;
+        
+        Double total_km_car_internacionales=0.0;
+
+        Double total_km_vac_internacionales=0.0;
+
+        Double total_km_internacionales=0.0;
+        
+        Double total_mont_sen_internacionales=0.0;
+
+        Double total_mont_car_internacionales=0.0;
+
+        Double total_mont_vac_internacionales=0.0;
+
+        Double total_mont_internacionales=0.0;
+            
+        Integer total_cantidad_agregados=0;
+
+        Double total_mont_agregados=0.0;
+
+        for(Viaje viaje : viajes){
+            if(viaje.tipo==1){//si el viaje es local
+                total_viajes_locales++;
+
+                for(Boleta b : viaje.boletas){
+
+                    switch(b.tipo_carga){
+
+                        case 1://vacio
+                            total_km_vac_locales+=b.km_asignados;
+                            
+                        break;
+
+                        case 2://sencillo
+                            total_km_sen_locales+=b.km_asignados;
+                            
+                        break;
+
+                        case 3://cargado
+                            total_km_car_locales+=b.km_asignados;
+                            
+                        break;
+                    }
+
+                    if(b.sobrepeso==true){
+                        total_cantidad_agregados+=1;
+                    }
+
+                }//fin for boletas
+                                
+
+            }else{//el viaje es internacional
+                total_viajes_internacionales++;
+
+                for(Boleta b : viaje.boletas){
+
+                    switch(b.tipo_carga){
+
+                        case 1://vacio
+                            total_km_vac_internacionales+=b.km_asignados;
+                            
+                        break;
+
+                        case 2://sencillo
+                            total_km_sen_internacionales+=b.km_asignados;
+                            
+                        break;
+
+                        case 3://cargado
+                            total_km_car_internacionales+=b.km_asignados;
+                            
+                        break;
+                    }
+
+                    if(b.sobrepeso==true){
+                        total_cantidad_agregados+=1;
+                    }
+
+                }//fin for boletas
+    
+            }//fin else
+        }//fin for
+
+        
+
+        total_mont_agregados+=(total_cantidad_agregados*politica.tarifa_sobrepeso);
+
+        total_mont_vac_locales+=(total_km_vac_locales*politica.tarifa_cobro_km_vac);
+        total_mont_vac_internacionales+=(total_km_vac_internacionales*politica.tarifa_cobro_km_vac);
+
+        total_mont_sen_locales+=(total_km_sen_locales*politica.tarifa_cobro_km_sen);
+        total_mont_sen_internacionales+=(total_km_sen_internacionales*politica.tarifa_cobro_km_sen);
+
+        total_mont_car_locales+=(total_km_car_locales*politica.tarifa_cobro_km_car);
+        total_mont_car_internacionales+=(total_km_car_internacionales*politica.tarifa_cobro_km_car);
+
+        total_km_internacionales+=(total_km_sen_internacionales+total_km_car_internacionales+total_km_vac_internacionales);
+        total_mont_internacionales+=(total_mont_vac_internacionales+total_mont_sen_internacionales+total_mont_car_internacionales);
+        
+        total_km_locales+=(total_km_sen_locales+total_km_car_locales+total_km_vac_locales);
+        total_mont_locales+=(total_mont_vac_locales+total_mont_sen_locales+total_mont_car_locales);
+
+
+        detalle.total_viajes_locales=total_viajes_locales;
+
+        detalle.total_km_sen_locales=total_km_sen_locales;
+
+        detalle.total_km_car_locales=total_km_car_locales;
+
+        detalle.total_km_vac_locales=total_km_vac_locales;
+
+        detalle.total_km_locales=total_km_locales;
+
+        detalle.total_mont_sen_locales=total_mont_sen_locales;
+
+        detalle.total_mont_car_locales=total_mont_car_locales;
+
+        detalle.total_mont_vac_locales=total_mont_vac_locales;
+
+        detalle.total_mont_locales=total_mont_locales;
+
+        detalle.total_viajes_internacionales=total_viajes_internacionales;
+
+        detalle.total_km_sen_internacionales=total_km_sen_internacionales;
+        
+        detalle.total_km_car_internacionales=total_km_car_internacionales;
+
+        detalle.total_km_vac_internacionales=total_km_vac_internacionales;
+
+        detalle.total_km_internacionales=total_km_internacionales;
+        
+        detalle.total_mont_sen_internacionales=total_mont_sen_internacionales;
+
+        detalle.total_mont_car_internacionales=total_mont_car_internacionales;
+
+        detalle.total_mont_vac_internacionales=total_mont_vac_internacionales;
+
+        detalle.total_mont_internacionales=total_mont_internacionales;
+            
+        detalle.total_cantidad_agregados=total_cantidad_agregados;
+
+        detalle.total_mont_agregados=total_mont_agregados;
+
+        detalle.update();
+
+    }//fin metodo
+
+
+
+    private void actualizarDetallePago(Motorista motorista){
+        PeriodoPlanilla periodo = PeriodoPlanilla.find.where().eq("actual",true).findUnique();
+        PoliticaPago politica = periodo.politica_pago;
+        DetallePago detalle = DetallePago.find.where().conjunction().eq("motorista",motorista).eq("periodo_planilla",periodo).findUnique();
+        List<Viaje> viajes=Viaje.find.where().conjunction().eq("periodo_facturacion",periodo).eq("motorista",motorista).findList();
+        
+
+        Integer total_viajes_locales=0;
+
+        Double total_km_locales=0.0;
+
+        Double total_monto_locales=0.0;
+
+        Integer total_viajes_internacionales=0;
+
+        Double total_km_internacionales=0.0;
+        
+        Double total_monto_internacionales=0.0;
+            
+        Integer total_cantidad_agregados=0;
+
+        Double total_monto_agregados=0.0;
+
+        Integer total_cantidad_viaticos_vv=0;
+
+        Integer total_cantidad_viaticos_vc=0;
+
+        Integer total_cantidad_viaticos_cc=0;
+
+        Integer total_cantidad_viaticos=0;
+
+        Double total_monto_viaticos_vv=0.0;
+
+        Double total_monto_viaticos_vc=0.0;
+
+        Double total_monto_viaticos_cc=0.0;
+
+        Double total_monto_viaticos=0.0;
+
+        Double salario_ganado=0.0;
+
+        Double delta_salario_minimo=0.0;
+
+        //Double bono=0.0;
+
+        Double total_pago_periodo=0.0;
+
+        Double isss=0.0;
+
+        Double afp=0.0;
+
+
+        for(Viaje viaje : viajes){
+            
+            if(viaje.tipo==1){//si el viaje es local
+
+                total_viajes_locales+=1;
+
+                for(Boleta b : viaje.boletas){
+                    total_km_locales+=b.km_asignados;
+
+                    if(b.sobrepeso==true){
+                        total_cantidad_agregados+=1;
+                    }
+
+                }//fin for
+
+
+                if(viaje.viaticos==true){
+
+                    switch(viaje.tipo_viatico){
+
+                        case 1:// V/V
+                            total_cantidad_viaticos_vv+=1;                            
+                        break;
+                        
+                        case 2:// V/C
+                            total_cantidad_viaticos_vc+=1;  
+                        break;
+                        
+                        case 3:// C/C
+                            total_cantidad_viaticos_cc+=1;
+                        break;
+
+                    }//fin switch
+                }//fin if
+
+
+            }else{//el viaje es internacional
+
+                total_viajes_internacionales+=1;
+
+                for(Boleta b : viaje.boletas){
+                    total_km_internacionales+=b.km_asignados;
+
+                    if(b.sobrepeso==true){
+                        total_cantidad_agregados+=1;
+                    }
+
+                }//fin for
+
+
+                if(viaje.viaticos==true){
+
+                    switch(viaje.tipo_viatico){
+
+                        case 1:// V/V
+                            total_cantidad_viaticos_vv+=1;                            
+                        break;
+                        
+                        case 2:// V/C
+                            total_cantidad_viaticos_vc+=1;  
+                        break;
+                        
+                        case 3:// C/C
+                            total_cantidad_viaticos_cc+=1;
+                        break;
+
+                    }//fin switch
+                }//fin if
+
+                
+
+            }//fin else
+
+        }//fin for viajes
+
+
+        total_monto_locales+=(total_km_locales*politica.tarifa_pago_km_loc);
+        total_monto_internacionales+=(total_km_internacionales*politica.tarifa_pago_km_int);
+
+        total_monto_agregados+=(total_cantidad_agregados*politica.porcentaje_sobrepeso);
+        
+
+        total_cantidad_viaticos+=(total_cantidad_viaticos_vv+total_cantidad_viaticos_vc+total_cantidad_viaticos_cc);
+        total_monto_viaticos_vv+=(total_cantidad_viaticos_vv*politica.tarifa_viatico_vv);
+        total_monto_viaticos_vc+=(total_cantidad_viaticos_vc*politica.tarifa_viatico_vc);
+        total_monto_viaticos_cc+=(total_cantidad_viaticos_cc*politica.tarifa_viatico_cc);
+        total_monto_viaticos+=(total_monto_viaticos_vv+total_monto_viaticos_vc+total_monto_viaticos_cc);
+        salario_ganado+=(total_monto_locales+total_monto_internacionales+total_monto_agregados+total_monto_viaticos);
+
+        delta_salario_minimo=(salario_ganado-politica.salario_minimo);
+
+        if(delta_salario_minimo<0){
+            total_pago_periodo=politica.salario_minimo+detalle.bono;
+        }else{
+            total_pago_periodo=salario_ganado+detalle.bono;
+        }
+
+        isss = total_pago_periodo*politica.porcentaje_isss;
+
+        afp = total_pago_periodo*politica.porcentaje_afp;
+
+
+        detalle.total_viajes_locales=total_viajes_locales;
+
+        detalle.total_km_locales=total_km_locales;
+
+        detalle.total_monto_locales=total_monto_locales;
+
+        detalle.total_viajes_internacionales=total_viajes_internacionales;
+
+        detalle.total_km_internacionales=total_km_internacionales;
+        
+        detalle.total_monto_internacionales=total_monto_internacionales;
+            
+        detalle.total_cantidad_agregados=total_cantidad_agregados;
+
+        detalle.total_monto_agregados=total_monto_agregados;
+
+        detalle.total_cantidad_viaticos_vv=total_cantidad_viaticos_vv;
+
+        detalle.total_cantidad_viaticos_vc=total_cantidad_viaticos_vc;
+
+        detalle.total_cantidad_viaticos_cc=total_cantidad_viaticos_cc;
+
+        detalle.total_cantidad_viaticos=total_cantidad_viaticos;
+
+        detalle.total_monto_viaticos_vv=total_monto_viaticos_vv;
+
+        detalle.total_monto_viaticos_vc=total_monto_viaticos_vc;
+
+        detalle.total_monto_viaticos_cc=total_monto_viaticos_cc;
+
+        detalle.total_monto_viaticos=total_monto_viaticos;
+
+        detalle.salario_ganado=salario_ganado;
+
+        detalle.delta_salario_minimo=delta_salario_minimo;
+
+        detalle.bono=detalle.bono;
+
+        detalle.total_pago_periodo=total_pago_periodo;
+
+        detalle.isss=isss;
+
+        detalle.afp=afp;
+
+        detalle.update();
+
+    }//fin metodo
 
 }

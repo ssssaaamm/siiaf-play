@@ -37,16 +37,16 @@ public class PoliticaPago extends Model{
 	public Double tarifa_pago_km_int;
 	
 	@Constraints.Required(message="Debe ingresar tarifa para tarifa sobrepeso")
-	public Double tarifa_sobrepeso;
+	public Double porcentaje_sobrepeso;
 
 	@Constraints.Required(message="Debe ingresar tarifa de pago vacio/vacio")
-	public Double tarifa_viatico_km_vv;
+	public Double tarifa_viatico_vv;
 
 	@Constraints.Required(message="Debe ingresar tarifa de pago vacio/cargado")
-	public Double tarifa_viatico_km_vc;
+	public Double tarifa_viatico_vc;
 
 	@Constraints.Required(message="Debe ingresar tarifa de pago cargado/cargado")
-	public Double tarifa_viatico_km_cc;
+	public Double tarifa_viatico_cc;
 
 	@OneToMany(mappedBy="politica_pago")
 	public List<PeriodoPlanilla> periodos_planillas;

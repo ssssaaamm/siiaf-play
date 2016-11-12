@@ -13,6 +13,7 @@ GET     /                           controllers.HomeController.index
 GET     /login                          controllers.HomeController.login
 POST     /login                          controllers.HomeController.login_post
 GET     /logout                          controllers.HomeController.logout
+POST     /set/password                controllers.HomeController.set_password
 GET     /about                          controllers.HomeController.about
 
 

@@ -37,8 +37,14 @@
 			document.getElementsByName('km_asignados[@i]')[0].value="@boleta.km_asignados";
 			document.getElementsByName('tipo_carga[@i]')[0].value="@boleta.tipo_carga";
 			document.getElementsByName('sentido[@i]')[0].value="@boleta.sentido";
-			document.getElementsByName('sobrepeso[@i]')[0].checked="@boleta.sobrepeso";
-			document.getElementsByName('cruce_frontera[@i]')[0].checked="@boleta.cruce_frontera";
+
+			@if(boleta.sobrepeso){
+				document.getElementsByName('sobrepeso[@i]')[0].checked="@boleta.sobrepeso";
+			}
+			@if(boleta.cruce_frontera){
+				document.getElementsByName('cruce_frontera[@i]')[0].checked="@boleta.cruce_frontera";
+			}
+			
 
 			@if(i!=viaje.boletas.size()-1){
 				@if(i==0){

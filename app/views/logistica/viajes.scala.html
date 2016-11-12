@@ -1,4 +1,4 @@
-@(viajes_list: List[Viaje], cabezales: List[Cabezal], motoristas: List[Motorista], clientes: List[Cliente])
+@(viajes_facturacion_list: List[Viaje], viajes_planilla_list: List[Viaje], cabezales: List[Cabezal], motoristas: List[Motorista], clientes: List[Cliente])
 @import helper._
 
 @css={
@@ -82,33 +82,222 @@
 
 
 @logistica.base("Logistica SIIAF","Viajes","Gestion de viajes","viajes",css,js){
-	<button type="button" id="main-add-button" class="btn btn-primary" data-toggle="modal" data-target="#mod-new"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Agregar Viaje</button>
+	<button type="button" id="main-add-button" class="btn btn-primary pull-right" data-toggle="modal" data-target="#mod-new"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Agregar Viaje</button>
 	<!-- <button type="button" id="main-add-button" class="btn btn-primary" data-toggle="modal" data-target="#mod-new"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Agregar Viaje</button> -->
 
 	@if(flash.containsKey("exito")){
-		<div class="alert alert-success fade in">
+		<div class="row">
+		<div class="alert alert-success fade in col-lg-10">
 			<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
 			<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
 			<strong>@flash.get("exito")</strong>
 		</div>
-	}
-
-
-	@if(flash.containsKey("error")){
-		<div class="alert alert-danger fade in">
-			<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-			<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-			<strong>@flash.get("error")</strong>
 		</div>
 	}
 
 
+	@if(flash.containsKey("global_error")){
+		<div class="row">
+		<div class="alert alert-danger fade in col-lg-10">
+			<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+			<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+			<strong>@flash.get("global_error")</strong>
+		</div>
+		</div>
+	}
+
+
+	  <ul class="nav nav-tabs">
+	    <li class="active"><a data-toggle="tab" href="#facturacion_tab">Periodo Facturacion</a></li>
+	    <li><a data-toggle="tab" href="#planilla_tab">Periodo Planilla</a></li>
+	  </ul>
+
+	  <div class="tab-content">
+	    <div id="facturacion_tab" class="tab-pane fade in active">
+	      <br/>
+	      
+
+
+
+
+	    <!-- TABLA -->
+		<div class="table-responsive">
+			<div class="form-group pull-right">
+			<input type="text" class="search1 form-control" placeholder="Busqueda">
+		</div>
+		<span class="counter1 pull-right"></span>
+		<table class="table table-hover table-bordered results1">
+			<thead>
+				<tr>
+					<th class="col-md-2 col-xs-1">Tipo</th>
+					<th class="col-md-2 col-xs-1">Registrado</th>
+					<th class="col-md-2 col-xs-2">Cliente</th>
+					<th class="col-md-2 col-xs-2">Motorista</th>
+					<th class="col-md-2 col-xs-1">Total Kms </th>
+					<th class="col-md-1 col-xs-1">Viatico</th>
+					<th class="col-md-2 col-xs-2">Tipo viatico</th>
+					<th class="col-md-1 col-xs-1">Boletas</th>
+					<th class="col-md-1 col-xs-1 center-column">Editar</th>
+					<th class="col-md-1 col-xs-1 center-column">Eliminar</th>
+				</tr>
+				<tr class="warning no-result1">
+					<td colspan="4"><i class="fa fa-warning"></i> No hay resultados</td>
+				</tr>
+			</thead>
+			<tbody>
+				@for(viaje <- viajes_facturacion_list){
+					<tr>
+						<td>@if(viaje.tipo==1){Local}else{@if(viaje.tipo==2){Internacional}}</td>
+						<td>@viaje.fecha_registro.format("dd/MM/yyyy")</td>
+						<td>@viaje.cliente.nombre</td>
+						<td>@viaje.motorista.nombre</td>
+						<td>@viaje.total_km</td>
+						<td>@if(viaje.viaticos==true){Si}else{@if(viaje.viaticos==false){No}}</td>
+						<td>@if(viaje.tipo_viatico==1){V/V}else{@if(viaje.tipo_viatico==2){V/C}else{@if(viaje.tipo_viatico==3){C/C}}}</td>
+						<td><a href="#" data-toggle="modal" data-target="#mod-bol-@viaje.id"><center>--@viaje.boletas.length--</center></a></td>
+						<td><a href="@routes.LogisticaController.viaje_edit(viaje.id)" class="btn btn-success btn-xs" ><span class="glyphicon glyphicon-edit"></span> Editar</button></td>
+						<td><button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#mod-remove-@viaje.id"><span class="glyphicon glyphicon-trash"></span> Eliminar</button></td>
+					</tr>
+
+
+
+					<!-- Modal remove-->
+					<div class="modal fade" id="mod-remove-@viaje.id" role="dialog">
+						<div class="modal-dialog">
+
+						<!-- Modal content-->
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal">&times;</button>
+								<h4 class="modal-title">Eliminar viaje: @viaje.tipo</h4>
+								</div>
+								<div class="modal-body">
+
+									¿Esta seguro que desea eliminar el viaje?.
+									El detalle de pago para el empleado que lo realizo sera actualizado.
+									Ademas detalle de cobro para el cliente a quien fue realizado sera actualizado
+
+								</div>
+								<div class="modal-footer">
+									<form>
+									<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>							
+									<button type="submit" class="btn btn-danger" formmethod="POST" formaction="@routes.LogisticaController.viaje_remove(viaje.id)"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Eliminar</button>
+									</form>
+								</div>
+							</div>
+
+						</div>
+					</div>
+					<!-- Fin Modal remove-->
+
+				}
+			</tbody>
+		</table>
+		</div>
+		<!-- FIN TABLA -->
 
 
 
 
 
-	<!--Fin modal nuevo viaje-->
+	    </div>
+	    <div id="planilla_tab" class="tab-pane fade">
+	      <br/>
+	      
+
+
+
+	      	<!-- TABLA -->
+		<div class="table-responsive">
+			<div class="form-group pull-right">
+			<input type="text" class="search2 form-control" placeholder="Busqueda">
+		</div>
+		<span class="counter2 pull-right"></span>
+		<table class="table table-hover table-bordered results2">
+			<thead>
+				<tr>
+					<th class="col-md-2 col-xs-2">Tipo</th>
+					<th class="col-md-2 col-xs-2">Registrado</th>
+					<th class="col-md-2 col-xs-2">Cliente</th>
+					<th class="col-md-2 col-xs-2">Motorista</th>
+					<th class="col-md-2 col-xs-2">Total Kms </th>
+					<th class="col-md-1 col-xs-1">Viatico</th>
+					<th class="col-md-2 col-xs-2">Tipo viatico</th>
+					<th class="col-md-1 col-xs-1">Boletas</th>
+					<th class="col-md-1 col-xs-1 center-column">Editar</th>
+					<th class="col-md-1 col-xs-1 center-column">Eliminar</th>
+				</tr>
+				<tr class="warning no-result2">
+					<td colspan="4"><i class="fa fa-warning"></i> No hay resultados</td>
+				</tr>
+			</thead>
+			<tbody>
+				@for(viaje <- viajes_planilla_list){
+					<tr>
+						<td>@if(viaje.tipo==1){Local}else{@if(viaje.tipo==2){Internacional}}</td>
+						<td>@viaje.fecha_registro.format("dd/MM/yyyy")</td>
+						<td>@viaje.cliente.nombre</td>
+						<td>@viaje.motorista.nombre</td>
+						<td>@viaje.total_km</td>
+						<td>@if(viaje.viaticos==true){Si}else{@if(viaje.viaticos==false){No}}</td>
+						<td>@if(viaje.tipo_viatico==1){V/V}else{@if(viaje.tipo_viatico==2){V/C}else{@if(viaje.tipo_viatico==3){C/C}}}</td>
+						<td><a href="#" data-toggle="modal" data-target="#mod-bol-@viaje.id"><center>--@viaje.boletas.length--</center></a></td>
+						<td><a href="@routes.LogisticaController.viaje_edit(viaje.id)" class="btn btn-success btn-xs" ><span class="glyphicon glyphicon-edit"></span> Editar</button></td>
+						<td><button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#mod-remove-@viaje.id"><span class="glyphicon glyphicon-trash"></span> Eliminar</button></td>
+					</tr>
+
+
+
+					<!-- Modal remove -->
+					<div class="modal fade" id="mod-remove-@viaje.id" role="dialog">
+						<div class="modal-dialog">
+						<!-- Modal content-->
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal">&times;</button>
+								<h4 class="modal-title">Eliminar viaje: @viaje.tipo</h4>
+								</div>
+								<div class="modal-body">
+
+									¿Esta seguro que desea eliminar el viaje?.
+
+								</div>
+								<div class="modal-footer">
+									<form>
+									<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>							
+									<button type="submit" class="btn btn-danger" formmethod="POST" formaction="@routes.LogisticaController.viaje_remove(viaje.id)"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Eliminar</button>
+									</form>
+								</div>
+							</div>
+
+						</div>
+					</div>
+					<!-- Fin Modal remove -->
+
+
+
+
+					
+
+				}
+			</tbody>
+		</table>
+		</div>
+		<!-- FIN TABLA -->
+
+
+
+
+	    </div>
+	  </div>
+
+
+
+
+
+
+
+	<!--Inicio modal nuevo viaje-->
 	<div class="modal fade" id="mod-new" role="dialog">
 
 		<div class="modal-dialog modal-lg modal-admin">
@@ -291,131 +480,113 @@
 		</div>
 	</div>
 	<!--Fin modal nuevo viaje-->
-  	
 
 
-
-                	
-
-
-
-
-
-
-
-
-	<!-- TABLA -->
-	<div class="table-responsive">
-		<div class="form-group pull-right">
-		<input type="text" class="search form-control" placeholder="Busqueda">
-	</div>
-	<span class="counter pull-right"></span>
-	<table class="table table-hover table-bordered results">
-		<thead>
-			<tr>
-				<th class="col-md-2 col-xs-2">Tipo</th>
-				<th class="col-md-2 col-xs-2">Fecha registro</th>
-				<th class="col-md-2 col-xs-2">Total Kms </th>
-				<th class="col-md-1 col-xs-1">Viatico</th>
-				<th class="col-md-2 col-xs-2">Tipo viatico</th>
-				<th class="col-md-1 col-xs-1">Boletas</th>
-				<th class="col-md-1 col-xs-1 center-column">Editar</th>
-				<th class="col-md-1 col-xs-1 center-column">Eliminar</th>
-			</tr>
-			<tr class="warning no-result">
-				<td colspan="4"><i class="fa fa-warning"></i> No hay resultados</td>
-			</tr>
-		</thead>
-		<tbody>
-			@for(viaje <- viajes_list){
-				<tr>
-					<td>@if(viaje.tipo==1){Local}else{@if(viaje.tipo==2){Internacional}}</td>
-					<td>@viaje.fecha_registro.format("dd/MM/yyyy")</td>
-					<td>@viaje.total_km</td>
-					<td>@if(viaje.viaticos==true){Si}else{@if(viaje.viaticos==false){No}}</td>
-					<td>@if(viaje.tipo_viatico==1){V/V}else{@if(viaje.tipo_viatico==2){V/C}else{@if(viaje.tipo_viatico==3){C/C}}}</td>
-					<td><a href="#">@viaje.boletas.length</a></td>
-					<td><a href="@routes.LogisticaController.viaje_edit(viaje.id)" class="btn btn-success btn-xs" ><span class="glyphicon glyphicon-edit"></span> Editar</button></td>
-					<td><button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#mod-remove-@viaje.id"><span class="glyphicon glyphicon-trash"></span> Eliminar</button></td>
-				</tr>
-
-
-
-
-
-
-
-
-
-				
-
-
-				
-
-
-
-
-
-				<!-- Modal -->
-				<div class="modal fade" id="mod-remove-@viaje.id" role="dialog">
-					<div class="modal-dialog">
-
-					<!-- Modal content-->
-					<div class="modal-content">
-						<div class="modal-header">
-							<button type="button" class="close" data-dismiss="modal">&times;</button>
-							<h4 class="modal-title">Eliminar viaje: @viaje.tipo</h4>
-							</div>
-							<div class="modal-body">
-
-								¿Esta seguro que desea eliminar el viaje?.
-
-							</div>
-							<div class="modal-footer">
-								<form>
-								<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>							
-								<button type="submit" class="btn btn-danger" formmethod="POST" formaction="@routes.LogisticaController.viaje_remove(viaje.id)"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Eliminar</button>
-								</form>
-							</div>
-						</div>
-
+	<!-- CREACION DE MODALES viajes periodo planilla-->
+	@for(viaje <- viajes_planilla_list){
+		<!-- Modal  show boletas-->
+		<div class="modal fade" id="mod-bol-@viaje.id" role="dialog">
+			<div class="modal-dialog modal-lg">
+			<!-- Modal content-->
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="modal-title">Boletas de viaje: @viaje.id</h4>
+					</div>
+					<div class="modal-body">
+				       <div class="table-responsive">
+						  <table class="table table-hover">
+						    <thead>
+								<tr>
+									<th>Codigo</th>
+									<th>Destino</th>
+									<th>Kilometros</th>
+									<th>Carga</th>
+									<th>Sobrepeso</th>
+									<th>Frontera</th>
+									<th>Sentido</th>
+								</tr>
+							</thead>
+							<tbody>
+								@for(boleta <- viaje.boletas){
+									<tr>
+										<td>@boleta.codigo</td>
+										<td>@boleta.destino</td>
+										<td>@boleta.km_asignados</td>
+										<td>@if(boleta.tipo_carga==1){Vacio}else{@if(boleta.tipo_carga==2){Sencillo}else{Cargado}}</td>
+										<td>@if(boleta.sobrepeso==true){Si}else{No}</td>
+										<td>@if(boleta.cruce_frontera==true){Si}else{No}</td>
+										<td>@if(boleta.sentido==1){Ida}else{@if(boleta.sentido==2){Regreso}else{Indefinido}}</td>
+									</tr>
+								}
+							</tbody>
+						  </table>
+						</div> 
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>							
 					</div>
 				</div>
 
+			</div>
+		</div>
+		<!-- Modal  show boletas-->
+	}
+	<!-- fin creacion modales planilla -->
 
 
+	<!-- CREACION DE MODALES viajes periodo planilla-->
+	@for(viaje <- viajes_facturacion_list){
+		<!-- Modal  show boletas-->
+		<div class="modal fade" id="mod-bol-@viaje.id" role="dialog">
+			<div class="modal-dialog modal-lg">
+			<!-- Modal content-->
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="modal-title">Boletas de viaje: @viaje.id</h4>
+					</div>
+					<div class="modal-body">
+				       <div class="table-responsive">
+						  <table class="table table-hover">
+						    <thead>
+								<tr>
+									<th>Codigo</th>
+									<th>Destino</th>
+									<th>Kilometros</th>
+									<th>Carga</th>
+									<th>Sobrepeso</th>
+									<th>Frontera</th>
+									<th>Sentido</th>
+								</tr>
+							</thead>
+							<tbody>
+								@for(boleta <- viaje.boletas){
+									<tr>
+										<td>@boleta.codigo</td>
+										<td>@boleta.destino</td>
+										<td>@boleta.km_asignados</td>
+										<td>@if(boleta.tipo_carga==1){Vacio}else{@if(boleta.tipo_carga==2){Sencillo}else{Cargado}}</td>
+										<td>@if(boleta.sobrepeso==true){Si}else{No}</td>
+										<td>@if(boleta.cruce_frontera==true){Si}else{No}</td>
+										<td>@if(boleta.sentido==1){Ida}else{@if(boleta.sentido==2){Regreso}else{Indefinido}}</td>
+									</tr>
+								}
+							</tbody>
+						  </table>
+						</div> 
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>							
+					</div>
+				</div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+			</div>
+		</div>
+		<!-- Modal  show boletas-->
+	}
+	<!-- fin creacion modales facturacion -->
   	
 
-
-
-
-
-
-
-
-
-
-
-
-			}
-		</tbody>
-	</table>
-	</div>
-	<!-- FIN TABLA -->
 
 }

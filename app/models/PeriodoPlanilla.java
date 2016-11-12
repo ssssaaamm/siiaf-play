@@ -30,6 +30,9 @@ public class PeriodoPlanilla extends Model{
 	@OneToMany(mappedBy="periodo_planilla")
 	public List<DetallePago> detalle_pagos;
 
+	@OneToMany(mappedBy="periodo_planilla")
+	public List<Viaje> viajes;
+
 	public static Finder<Long, PeriodoPlanilla> find = new Finder<Long,PeriodoPlanilla>(PeriodoPlanilla.class);
 
     public Form<PeriodoPlanilla> getForm(){

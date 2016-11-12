@@ -70,7 +70,7 @@
 		</div>
 	}
 	
-	@for(error <- politica_form("tarifa_sobrepeso").errors) {
+	@for(error <- politica_form("porcentaje_sobrepeso").errors) {
     	<div class="alert alert-danger">
 			<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
 			<strong>@Messages(error.messages, error.arguments.toArray: _*)</strong>
@@ -143,18 +143,18 @@
 			</div>
 
 			<div class="form-group">
-			 	@inputText(politica_form("tarifa_sobrepeso"), '_showConstraints -> false, '_showErrors -> false,'class -> "form-control", 'placeholder -> "14.75", '_label -> "Tarifa Sobrepeso: ")
+			 	@inputText(politica_form("porcentaje_sobrepeso"), '_showConstraints -> false, '_showErrors -> false,'class -> "form-control", 'placeholder -> "0.50", '_label -> "Porcentaje Sobrepeso: ")
 			</div>
 
 			<div class="form-group">
-			 	@inputText(politica_form("tarifa_viatico_km_vv"), '_showConstraints -> false, '_showErrors -> false,'class -> "form-control", 'placeholder -> "14.75", '_label -> "Tarifa viatico V/V: ")
+			 	@inputText(politica_form("tarifa_viatico_vv"), '_showConstraints -> false, '_showErrors -> false,'class -> "form-control", 'placeholder -> "14.75", '_label -> "Tarifa viatico V/V: ")
 			</div>
 			
 			<div class="form-group">
-			 	@inputText(politica_form("tarifa_viatico_km_vc"), '_showConstraints -> false, '_showErrors -> false,'class -> "form-control", 'placeholder -> "14.75", '_label -> "Tarifa viatico V/C: ")
+			 	@inputText(politica_form("tarifa_viatico_vc"), '_showConstraints -> false, '_showErrors -> false,'class -> "form-control", 'placeholder -> "14.75", '_label -> "Tarifa viatico V/C: ")
 			</div>
 			<div class="form-group">
-			 	@inputText(politica_form("tarifa_viatico_km_cc"), '_showConstraints -> false, '_showErrors -> false,'class -> "form-control", 'placeholder -> "14.75", '_label -> "Tarifa viatico C/C: ")
+			 	@inputText(politica_form("tarifa_viatico_cc"), '_showConstraints -> false, '_showErrors -> false,'class -> "form-control", 'placeholder -> "14.75", '_label -> "Tarifa viatico C/C: ")
 			</div>
 			
 			<button type="submit" class="btn btn-primary form-control"><span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span> Cambiar Politica de Cobro</button>
