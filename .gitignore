@@ -1,16 +1,6 @@
-logs/
-target/
-/.idea
-/.idea_modules
-/.classpath
-/.project
-/.settings
-/RUNNING_PID
 logs
 project/project
-project/project/
 project/target
-project/target/
 target
 tmp
 dist
