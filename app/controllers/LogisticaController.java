@@ -552,7 +552,8 @@ public class LogisticaController extends Controller {
     }
 
     public Result planilla() {
-        return ok(planilla.render());
+        List<DetallePago> detalles = DetallePago.find.where().eq("periodo_planilla",PeriodoPlanilla.find.where().eq("actual",true).findUnique()).findList();
+        return ok(planilla.render(detalles));
     }
 
     public Result facturacion() {
