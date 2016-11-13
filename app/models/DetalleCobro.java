@@ -56,7 +56,8 @@ public class DetalleCobro extends Model{
 
 	public Double total_mont_agregados=0.0;
 
-	
+	public Double total_cobro_periodo=0.0;
+		
 	@ManyToOne
 	public PeriodoFacturacion periodo_facturacion;
 	

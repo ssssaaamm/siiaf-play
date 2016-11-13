@@ -214,12 +214,15 @@ public class GerenteController extends Controller {
 
 
     public Result planilla() {
-        return ok(planilla.render());
+        List<DetallePago> detalles = DetallePago.find.where().eq("periodo_planilla",PeriodoPlanilla.find.where().eq("actual",true).findUnique()).findList();
+        return ok(planilla.render(detalles));
     }
 
     public Result facturacion() {
-        return ok(facturacion.render());
+        List<DetalleCobro> detalles = DetalleCobro.find.where().eq("periodo_facturacion",PeriodoFacturacion.find.where().eq("actual",true).findUnique()).findList();
+        return ok(facturacion.render(detalles));
     }
+
 
     public Result politica_cobro() {
         PoliticaCobro politica = PoliticaCobro.find.where().eq("actual",1).findUnique();

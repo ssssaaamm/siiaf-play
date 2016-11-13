@@ -552,11 +552,13 @@ public class LogisticaController extends Controller {
     }
 
     public Result planilla() {
-        return ok(planilla.render());
+        List<DetallePago> detalles = DetallePago.find.where().eq("periodo_planilla",PeriodoPlanilla.find.where().eq("actual",true).findUnique()).findList();
+        return ok(planilla.render(detalles));
     }
 
     public Result facturacion() {
-        return ok(facturacion.render());
+        List<DetalleCobro> detalles = DetalleCobro.find.where().eq("periodo_facturacion",PeriodoFacturacion.find.where().eq("actual",true).findUnique()).findList();
+        return ok(facturacion.render(detalles));
     }
 
     public Result politica_cobro() {
@@ -794,6 +796,9 @@ public class LogisticaController extends Controller {
 
         Double afp=0.0;
 
+        //para el calculo de el porcentaje de valores agregados que recibe el empleado
+        //Double monto_agre
+
 
         for(Viaje viaje : viajes){
             
@@ -806,6 +811,7 @@ public class LogisticaController extends Controller {
 
                     if(b.sobrepeso==true){
                         total_cantidad_agregados+=1;
+                        total_monto_agregados+=(politica.porcentaje_sobrepeso*viaje.periodo_facturacion.politica_cobro.tarifa_sobrepeso);
                     }
 
                 }//fin for
@@ -840,6 +846,7 @@ public class LogisticaController extends Controller {
 
                     if(b.sobrepeso==true){
                         total_cantidad_agregados+=1;
+                        total_monto_agregados+=(politica.porcentaje_sobrepeso*viaje.periodo_facturacion.politica_cobro.tarifa_sobrepeso);
                     }
 
                 }//fin for
@@ -874,7 +881,8 @@ public class LogisticaController extends Controller {
         total_monto_locales+=(total_km_locales*politica.tarifa_pago_km_loc);
         total_monto_internacionales+=(total_km_internacionales*politica.tarifa_pago_km_int);
 
-        total_monto_agregados+=(total_cantidad_agregados*politica.porcentaje_sobrepeso);
+        //el total de abajo se calcula en el cliclo for
+        //total_monto_agregados=(total_cantidad_agregados*politica.porcentaje_sobrepeso*total_monto_agregados);
         
 
         total_cantidad_viaticos+=(total_cantidad_viaticos_vv+total_cantidad_viaticos_vc+total_cantidad_viaticos_cc);
