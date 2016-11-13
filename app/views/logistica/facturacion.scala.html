@@ -1,13 +1,126 @@
+@(detalles: List[DetalleCobro])
+@import scala.math.BigDecimal
 @import helper._
 
 @css={
-	
+	<link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/bootstrap-table.css")">
+	<link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/vertical-table.css")">
+<style>
+	.popover-content {
+  height: 200px;
+  overflow-y: auto;
+ }
+ </style>
 }
 
 @js={
-	
+	<script src="@routes.Assets.versioned("javascripts/bootstrap-table.js")" type="text/javascript"></script>
+	<script src="@routes.Assets.versioned("javascripts/export/tableExport.js")" type="text/javascript"></script>
+	<script src="@routes.Assets.versioned("javascripts/export/jquery.base64.js")" type="text/javascript"></script>
+	<script src="@routes.Assets.versioned("javascripts/export/html2canvas.js")" type="text/javascript"></script>
+	<script src="@routes.Assets.versioned("javascripts/export/jspdf/libs/sprintf.js")" type="text/javascript"></script>
+	<script src="@routes.Assets.versioned("javascripts/export/jspdf/jspdf.js")" type="text/javascript"></script>
+	<script src="@routes.Assets.versioned("javascripts/export/jspdf/libs/base64.js")" type="text/javascript"></script>
+
+	<script>
+		$(document).ready(function(){
+		    $('[data-toggle="popover"]').popover();
+		});
+
+
+		$(document).on('click', function (e) {
+		    $('[data-toggle="popover"],[data-original-title]').each(function () {
+		        //the 'is' for buttons that trigger popups
+		        //the 'has' for icons within a button that triggers a popup
+		        if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {                
+		            (($(this).popover('hide').data('bs.popover')||{}).inState||{}).click = false  // fix for BS 3.3.6
+		        }
+
+		    });
+		});
+</script>				
 }
 
-@logistica.base("Manager SIIAF","Facturacion de Clientes","Detalle Facturacion","facturacion",css,js){
-	consulata de facturacion
+@logistica.base("Logistic SIIAF","Facturacion de Clientes","Detalles de cobro","planilla",css,js){
+	
+
+	<div class="table-responsive">
+		<button type="button" class="btn btn-warning" onclick="$('#planilla-table').tableExport({type:'excel',escape:'false'});"><span class="glyphicon glyphicon-export"> Exportar excel</span></button>
+	  <div class="form-group pull-right">
+			<input type="text" class="search1 form-control" placeholder="Busqueda">
+	  </div>
+	  <span class="counter1 pull-right"></span>
+	  <table class="table table-hover table-bordered results1" id="planilla-table">
+		  <thead>
+			<tr>
+				
+				<th></th>
+				<th colspan="6"><center>Locales</center></th>
+				<th colspan="6"><center>Internacionales</center></th>
+				<th colspan="2"><center>V. Agregados</center></th>
+				<th></th><!-- total_cobro_periodo -->
+				
+
+			</tr>
+			<tr class="warning no-result1">
+				<td colspan="4"><i class="fa fa-warning"></i> No hay resultados</td>
+			</tr>
+		
+			
+			<tr>
+				<th rowspan="1"><center>Cliente</center></th>
+				<th><center>Sencillo</center></th><!-- kilometros locales sencillos-->
+				<th><center>Monto</center></th><!-- monto locales sencillos-->
+				<th><center>Vacio</center></th><!-- kilometros locales vacio -->
+				<th><center>Monto</center></th><!-- monto locales vacio-->
+				<th><center>Cargado</center></th><!-- kilometros locales cargado -->
+				<th><center>Monto</center></th><!-- monto locales cargado-->
+				
+				<th><center>Sencillo</center></th><!-- kilometros internacionales sencillos-->
+				<th><center>Monto</center></th><!-- monto internacionales sencillos-->
+				<th><center>Vacio</center></th><!-- kilometros internacionales vacio -->
+				<th><center>Monto</center></th><!-- monto internacionales vacio-->
+				<th><center>Cargado</center></th><!-- kilometros internacionales cargado -->
+				<th><center>Monto</center></th><!-- monto internacionales cargado-->
+
+				<th><center>Cantidad</center></th>
+				<th><center>Monto</center></th>
+				
+				<th><center>Total cobro</center></th>
+			</tr>
+		</thead>
+		<tbody>
+			@for(detalle <- detalles){
+				<tr>
+					<td>@detalle.cliente.nombre</td><!-- nombre -->
+					<!-- <td>@detalle.total_viajes_locales</td> viajes locales --> 
+					<td>@BigDecimal(detalle.total_km_sen_locales).setScale(2, BigDecimal.RoundingMode.HALF_UP).toDouble km</td> <!-- km locales-->
+					<td>$@BigDecimal(detalle.total_mont_sen_locales).setScale(2, BigDecimal.RoundingMode.HALF_UP).toDouble</td><!-- monto locales -->
+					<td>@BigDecimal(detalle.total_km_vac_locales).setScale(2, BigDecimal.RoundingMode.HALF_UP).toDouble km</td> <!-- km locales-->
+					<td>$@BigDecimal(detalle.total_mont_vac_locales).setScale(2, BigDecimal.RoundingMode.HALF_UP).toDouble</td><!-- monto locales -->
+					<td>@BigDecimal(detalle.total_km_car_locales).setScale(2, BigDecimal.RoundingMode.HALF_UP).toDouble km</td> <!-- km locales-->
+					<td>$@BigDecimal(detalle.total_mont_car_locales).setScale(2, BigDecimal.RoundingMode.HALF_UP).toDouble</td><!-- monto locales -->
+
+
+					<td>@BigDecimal(detalle.total_km_sen_internacionales).setScale(2, BigDecimal.RoundingMode.HALF_UP).toDouble km</td> <!-- km internacionales-->
+					<td>$@BigDecimal(detalle.total_mont_sen_internacionales).setScale(2, BigDecimal.RoundingMode.HALF_UP).toDouble</td><!-- mont internacionales -->
+					<td>@BigDecimal(detalle.total_km_vac_internacionales).setScale(2, BigDecimal.RoundingMode.HALF_UP).toDouble km</td> <!-- km  internecionas-->
+					<td>$@BigDecimal(detalle.total_mont_vac_internacionales).setScale(2, BigDecimal.RoundingMode.HALF_UP).toDouble</td><!-- mont internacionales -->
+					<td>@BigDecimal(detalle.total_km_car_internacionales).setScale(2, BigDecimal.RoundingMode.HALF_UP).toDouble km</td> <!-- km  internecionas-->
+					<td>$@BigDecimal(detalle.total_mont_car_internacionales).setScale(2, BigDecimal.RoundingMode.HALF_UP).toDouble</td><!-- mont internacionales -->
+					
+					<td>@BigDecimal(detalle.total_cantidad_agregados).setScale(2, BigDecimal.RoundingMode.HALF_UP).toDouble km</td> <!-- km internacionales-->
+					<td>@BigDecimal(detalle.total_mont_agregados).setScale(2, BigDecimal.RoundingMode.HALF_UP).toDouble km</td> <!-- km internacionales-->
+					<td>@BigDecimal(detalle.total_cobro_periodo).setScale(2, BigDecimal.RoundingMode.HALF_UP).toDouble km</td> <!-- km internacionales-->
+
+
+
+
+					
+				</tr>
+			}
+				
+		</tbody>
+	</table>
+
 }

@@ -23,21 +23,21 @@
 	<script src="@routes.Assets.versioned("javascripts/export/jspdf/libs/base64.js")" type="text/javascript"></script>
 
 	<script>
-$(document).ready(function(){
-    $('[data-toggle="popover"]').popover();
-});
+		$(document).ready(function(){
+		    $('[data-toggle="popover"]').popover();
+		});
 
 
-$(document).on('click', function (e) {
-    $('[data-toggle="popover"],[data-original-title]').each(function () {
-        //the 'is' for buttons that trigger popups
-        //the 'has' for icons within a button that triggers a popup
-        if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {                
-            (($(this).popover('hide').data('bs.popover')||{}).inState||{}).click = false  // fix for BS 3.3.6
-        }
+		$(document).on('click', function (e) {
+		    $('[data-toggle="popover"],[data-original-title]').each(function () {
+		        //the 'is' for buttons that trigger popups
+		        //the 'has' for icons within a button that triggers a popup
+		        if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {                
+		            (($(this).popover('hide').data('bs.popover')||{}).inState||{}).click = false  // fix for BS 3.3.6
+		        }
 
-    });
-});
+		    });
+		});
 </script>				
 }
 
@@ -97,7 +97,7 @@ $(document).on('click', function (e) {
 				<tr>
 					<td>@detalle.motorista.nombre</td><!-- nombre -->
 					<!-- <td>@detalle.total_viajes_locales</td> viajes locales --> 
-					<td><a href="#vl@detalle.id" title="<center><strong>@detalle.total_viajes_locales viajes</strong></center>" class="popover-content" data-toggle="popover"  data-html="true" data-content='<strong>Fecha viaje</strong> &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp <strong>Kms</strong><br/>@for(viaje <- Viaje.find.where().conjunction().eq("periodo_planilla",detalle.periodo_planilla).eq("motorista",detalle.motorista).eq("tipo",1).findList()){@viaje.fecha_registro.format("dd-MM-yyyy") &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp @viaje.total_km <br/>}'>@BigDecimal(detalle.total_km_locales).setScale(2, BigDecimal.RoundingMode.HALF_UP).toDouble km</a></td> <!-- km locales-->
+					<td><a title="<center><strong>@detalle.total_viajes_locales viajes</strong></center>" class="popover-content" data-toggle="popover"  data-html="true" data-content='<strong>Fecha viaje</strong> &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp <strong>Kms</strong><br/>@for(viaje <- Viaje.find.where().conjunction().eq("periodo_planilla",detalle.periodo_planilla).eq("motorista",detalle.motorista).eq("tipo",1).findList()){@viaje.fecha_registro.format("dd-MM-yyyy") &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp @viaje.total_km <br/>}'>@BigDecimal(detalle.total_km_locales).setScale(2, BigDecimal.RoundingMode.HALF_UP).toDouble km</a></td> <!-- km locales-->
 					<td>$@BigDecimal(detalle.total_monto_locales).setScale(2, BigDecimal.RoundingMode.HALF_UP).toDouble</td><!-- monto locales -->
 					<!-- <td>@detalle.total_viajes_internacionales</td>  viajes internacionales -->
 					<td><a href="#" title="<center><strong>@detalle.total_viajes_locales viajes</strong></center>" class="popover-content" data-toggle="popover"  data-html="true" data-content='<strong>Fecha viaje</strong> &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp <strong>Kms</strong><br/>@for(viaje <- Viaje.find.where().conjunction().eq("periodo_planilla",detalle.periodo_planilla).eq("motorista",detalle.motorista).eq("tipo",2).findList()){@viaje.fecha_registro.format("dd-MM-yyyy") &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp @viaje.total_km <br/>}'>@BigDecimal(detalle.total_km_internacionales).setScale(2, BigDecimal.RoundingMode.HALF_UP).toDouble km</a></td><!-- km internacionales -->

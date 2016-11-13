@@ -55,6 +55,7 @@ create table detalle_cobro (
   total_mont_internacionales    double,
   total_cantidad_agregados      integer,
   total_mont_agregados          double,
+  total_cobro_periodo           double,
   periodo_facturacion_id        bigint,
   cliente_id                    bigint,
   constraint pk_detalle_cobro primary key (id)
