@@ -18,9 +18,11 @@ public class TipoUsuario extends Model{
 	@Constraints.Required(message="Debe ingresar el codigo")
 	public Integer codigo;
 
+	@Column(length=50)
 	@Constraints.Required(message="Debe ingresar el nombre")
 	public String nombre;
 
+	@Column(length=150)
 	@Constraints.Required(message="Debe ingresar una breve descripcion")
 	public String descripcion;
 

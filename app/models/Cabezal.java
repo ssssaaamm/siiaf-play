@@ -16,10 +16,13 @@ import com.avaje.ebean.*;
 public class Cabezal extends Model{
 	@Id
 	public Long id;
+	
+	@Column(length=10)	
 
 	@Constraints.Required(message="Debe ingresar una placa para el cabezal")
 	public String placa;
 	
+	@Column(length=150)		
 	@Constraints.Required(message="Debe ingresar una descripcion")
 	public String descripcion;
 

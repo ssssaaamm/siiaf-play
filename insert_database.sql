@@ -51,4 +51,9 @@ insert into cliente (nombre,nit,descripcion,activo) values ('Fud','9811-120756-0
 
 
 
+INSERT INTO politica_cobro (id, actual, duracion_periodo, tarifa_cobro_km_sen, tarifa_cobro_km_car, tarifa_cobro_km_vac, tarifa_sobrepeso, tarifa_cruce_frontera) VALUES (NULL, 1, 30, 0.1, 0.2, 0.3, 0.5, 0.6);
 
+
+
+
+INSERT INTO politica_pago (id, actual, duracion_periodo, salario_minimo, porcentaje_isss, porcentaje_afp, tarifa_pago_km_loc, tarifa_pago_km_int, porcentaje_sobrepeso, tarifa_viatico_vv, tarifa_viatico_vc, tarifa_viatico_cc) VALUES (NULL, 1, 30, 200, 0.0625, 0.0775, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7);

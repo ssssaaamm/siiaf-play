@@ -16,19 +16,23 @@ public class Motorista extends Model{
 	@Id
 	public Long id;
 
+	@Column(length=10)
 	@Constraints.Required(message="Debe ingresar un codigo")
 	public String codigo;
-
+	
+	@Column(length=50)
 	@Constraints.Required(message="Debe ingresar el nombre")
 	public String nombre;
-
+	
+	@Column(length=10)
 	@Constraints.Required(message="Debe ingresar un número de DUI")
 	public String dui;
-
+	
+	@Column(length=18)
 	@Constraints.Required(message="Debe ingresar un número de NIT")
 	public String nit;
 	
-	
+	@Column(length=18)	
 	@Constraints.Required(message="Debe ingresar un número de licencia")
 	public String licencia;
 

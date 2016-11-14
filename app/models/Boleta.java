@@ -14,10 +14,12 @@ import com.avaje.ebean.*;
 public class Boleta extends Model{
 	@Id
 	public Long id;
-
+	
+	@Column(length=10)	
 	@Constraints.Required(message="Debe ingresar el codigo de boleta")
 	public String codigo;
-
+	
+	@Column(length=10)	
 	@Constraints.Required(message="Debe ingresar un destino")
 	public String destino;
 

@@ -5,8 +5,8 @@
 
 create table boleta (
   id                            bigint auto_increment not null,
-  codigo                        varchar(255),
-  destino                       varchar(255),
+  codigo                        varchar(10),
+  destino                       varchar(10),
   km_asignados                  double,
   tipo_carga                    integer,
   sobrepeso                     tinyint(1) default 0,
@@ -18,8 +18,8 @@ create table boleta (
 
 create table cabezal (
   id                            bigint auto_increment not null,
-  placa                         varchar(255),
-  descripcion                   varchar(255),
+  placa                         varchar(10),
+  descripcion                   varchar(150),
   activo                        tinyint(1) default 0,
   constraint uq_cabezal_placa unique (placa),
   constraint pk_cabezal primary key (id)
@@ -27,9 +27,9 @@ create table cabezal (
 
 create table cliente (
   id                            bigint auto_increment not null,
-  nombre                        varchar(255),
-  nit                           varchar(255),
-  descripcion                   varchar(255),
+  nombre                        varchar(50),
+  nit                           varchar(18),
+  descripcion                   varchar(150),
   activo                        tinyint(1) default 0,
   constraint uq_cliente_nit unique (nit),
   constraint pk_cliente primary key (id)
@@ -94,11 +94,11 @@ create table detalle_pago (
 
 create table motorista (
   id                            bigint auto_increment not null,
-  codigo                        varchar(255),
-  nombre                        varchar(255),
-  dui                           varchar(255),
-  nit                           varchar(255),
-  licencia                      varchar(255),
+  codigo                        varchar(10),
+  nombre                        varchar(50),
+  dui                           varchar(10),
+  nit                           varchar(18),
+  licencia                      varchar(18),
   activo                        tinyint(1) default 0,
   constraint uq_motorista_codigo_dui_nit_licencia unique (codigo,dui,nit,licencia),
   constraint pk_motorista primary key (id)
@@ -153,16 +153,16 @@ create table politica_pago (
 create table tipo_usuario (
   id                            bigint auto_increment not null,
   codigo                        integer,
-  nombre                        varchar(255),
-  descripcion                   varchar(255),
+  nombre                        varchar(50),
+  descripcion                   varchar(150),
   constraint pk_tipo_usuario primary key (id)
 );
 
 create table usuario (
   id                            bigint auto_increment not null,
-  nombre                        varchar(255),
-  username                      varchar(255),
-  password                      varchar(255),
+  nombre                        varchar(50),
+  username                      varchar(50),
+  password                      varchar(50),
   tipo_id                       bigint,
   constraint uq_usuario_username unique (username),
   constraint pk_usuario primary key (id)

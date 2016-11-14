@@ -15,13 +15,16 @@ import com.avaje.ebean.*;
 public class Cliente extends Model{
 	@Id
 	public Long id;
-	
+
+	@Column(length=50)	
 	@Constraints.Required(message="Debe ingresar el nombre")
 	public String nombre;
 
+	@Column(length=18)
 	@Constraints.Required(message="Debe ingresar NIT de la empresa")
 	public String nit;	
-	
+
+	@Column(length=150)	
 	@Constraints.Required(message="Debe ingresar una descripcion")
 	public String descripcion;
 

@@ -16,16 +16,20 @@ public class Usuario extends Model{
 	@Id
 	public Long id;
 
+	@Column(length=50)
 	@Constraints.Required(message="Debe ingresar el nombre")
 	public String nombre;
 
 
+	@Column(length=50)
 	@Constraints.Required(message="Debe ingresar un nick o username")
 	public String username;
 
+	@Column(length=50)
 	@Constraints.Required(message="Debe ingresar la contraseña")
 	public String password;
 
+	@Column(length=50)
 	@Transient
 	public String password_confirmation;
 
