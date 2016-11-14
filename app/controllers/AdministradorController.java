@@ -78,5 +78,4 @@ public class AdministradorController extends Controller {
         }
         return redirect(routes.AdministradorController.usuarios());
     }
-
-}//cierre de clase
+}

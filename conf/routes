@@ -20,6 +20,9 @@ GET     /about                          controllers.HomeController.about
 
 # RUTAS DEL AdministradorController
 GET     /admin/usuarios                           controllers.AdministradorController.usuarios
+POST     /admin/usuarios/new                      controllers.AdministradorController.usuario_new
+POST     /admin/usuarios/edit/:id                 controllers.AdministradorController.usuario_edit(id: Long)
+POST     /admin/usuarios/remove/:id               controllers.AdministradorController.usuario_remove(id: Long)
 
 
 # RUTAS DEL GerenteController

@@ -21,9 +21,9 @@
 	<!-- fix modal close at edit -->
 	<script>
 		$('.modal').on('hidden.bs.modal', function () {
-			if(window.location.pathname!='@routes.GerenteController.usuarios'){
+			if(window.location.pathname!='@routes.AdministradorController.usuarios'){
 				
-				window.location='@routes.GerenteController.usuarios';
+				window.location='@routes.AdministradorController.usuarios';
 			}	
 		});
 	</script>
@@ -98,7 +98,7 @@
 
 		<!-- Modal content-->
 		<div class="modal-content">
-			@form(action=routes.GerenteController.usuario_new()){
+			@form(action=routes.AdministradorController.usuario_new()){
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal">&times;</button>
 					<h4 class="modal-title">Agregar nuevo usuario</h4>
@@ -189,7 +189,7 @@
 
 					<!-- Modal content-->
 					<div class="modal-content">
-						@form(action=routes.GerenteController.usuario_edit(usuario.id)){
+						@form(action=routes.AdministradorController.usuario_edit(usuario.id)){
 							<div class="modal-header">
 								<button type="button" class="close" data-dismiss="modal">&times;</button>
 								<h4 class="modal-title">Editar usuario: @usuario.nombre</h4>
@@ -259,7 +259,7 @@
 							<div class="modal-footer">
 								<form>
 								<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>							
-								<button type="submit" class="btn btn-danger" formmethod="POST" formaction="@routes.GerenteController.usuario_remove(usuario.id)"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Eliminar</button>
+								<button type="submit" class="btn btn-danger" formmethod="POST" formaction="@routes.AdministradorController.usuario_remove(usuario.id)"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Eliminar</button>
 								</form>
 							</div>
 						</div>
