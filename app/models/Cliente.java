@@ -11,7 +11,7 @@ import play.data.*;
 import com.avaje.ebean.*;
 
 @Entity
-@Table(name="cliente")
+@Table(name="cliente",uniqueConstraints= @UniqueConstraint(columnNames={"nit"}))
 public class Cliente extends Model{
 	@Id
 	public Long id;

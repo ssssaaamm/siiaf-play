@@ -35,6 +35,12 @@ public class AdministradorController extends Controller {
             return badRequest(usuarios.render(usuario_form,usuarios_list));
         }
 
+        if( Usuario.find.where().eq("username",values.get("username")[0]).findUnique()!=null){
+            flash("error","El usuario ya existe");
+            flash("modal","mod-new");
+            return redirect(routes.AdministradorController.usuarios());
+        }
+
         Usuario nuevo = usuario_form.get();
         nuevo.save();
 
@@ -57,7 +63,13 @@ public class AdministradorController extends Controller {
 
         if ( user != null) {
             user.nombre=usuario_form.get().nombre;
-            user.username=usuario_form.get().username;
+            if(!user.username.equals(usuario_form.get().username)){
+                if( Usuario.find.where().eq("username",user.username).findUnique()!=null){
+                    flash("error","El usuario ya existe");
+                    flash("modal","mod-edit-"+id.toString());
+                    return redirect(routes.AdministradorController.usuarios());
+                }
+            }
             user.password=usuario_form.get().password;
             user.tipo.id=usuario_form.get().tipo.id;
 

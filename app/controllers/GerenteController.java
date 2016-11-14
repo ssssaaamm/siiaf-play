@@ -33,6 +33,11 @@ public class GerenteController extends Controller {
             flash("modal","mod-new");
             return badRequest(clientes.render(cliente_form,clientes_list));
         }
+        if( Cliente.find.where().eq("nit",values.get("nit")[0]).findUnique()!=null){
+            flash("error","Este cliente yaesta registrado");
+            flash("modal","mod-new");
+            return redirect(routes.GerenteController.clientes());
+        }
 
         Cliente nuevo =cliente_form.get();
         nuevo.save();
@@ -57,7 +62,14 @@ public class GerenteController extends Controller {
         if ( clie != null) {
             clie.nombre=cliente_form.get().nombre;
             clie.descripcion=cliente_form.get().descripcion;
-            clie.nit=cliente_form.get().nit;
+            if(!clie.nit.equals(cliente_form.get().nit)){
+                    if( Cliente.find.where().eq("nit",clie.nit).findUnique()!=null){
+                        flash("error","Este cliente ya fue registrado");
+                        flash("modal","mod-edit-"+id.toString());
+                        return redirect(routes.GerenteController.clientes());
+                    }
+            }
+           
          
             clie.update();  
 
@@ -97,6 +109,26 @@ public class GerenteController extends Controller {
             flash("modal","mod-new");
             return badRequest(motoristas.render(motorista_form,motoristas_list));
         }
+         if( Motorista.find.where().eq("codigo",values.get("codigo")[0]).findUnique()!=null){
+            flash("error","Este motorista ya fue registrado");
+            flash("modal","mod-new");
+            return redirect(routes.GerenteController.motoristas());
+        }
+        if( Motorista.find.where().eq("dui",values.get("dui")[0]).findUnique()!=null){
+            flash("error","Este motorista ya fue registrado");
+            flash("modal","mod-new");
+            return redirect(routes.GerenteController.motoristas());
+        }
+        if( Motorista.find.where().eq("nit",values.get("nit")[0]).findUnique()!=null){
+            flash("error","Este motorista ya fue registrado");
+            flash("modal","mod-new");
+            return redirect(routes.GerenteController.motoristas());
+        }
+        if( Motorista.find.where().eq("licencia",values.get("licencia")[0]).findUnique()!=null){
+            flash("error","Este motorista ya fue registrado");
+            flash("modal","mod-new");
+            return redirect(routes.GerenteController.motoristas());
+        }
 
         Motorista nuevo =motorista_form.get();
         nuevo.save();
@@ -119,11 +151,39 @@ public class GerenteController extends Controller {
         Motorista mot = Motorista.find.byId(id);
 
         if (mot != null) {
-            mot.codigo=motorista_form.get().codigo;
+             if(!mot.codigo.equals(motorista_form.get().codigo)){
+                    if( Motorista.find.where().eq("codigo",mot.codigo).findUnique()!=null){
+                        flash("error","Este motorista ya fue registrado");
+                        flash("modal","mod-edit-"+id.toString());
+                        return redirect(routes.GerenteController.motoristas());
+                    }
+            }
+            //mot.codigo=motorista_form.get().codigo;
             mot.nombre=motorista_form.get().nombre;
-            mot.dui=motorista_form.get().dui;
-            mot.nit=motorista_form.get().nit;
-            mot.licencia=motorista_form.get().licencia;
+             if(!mot.dui.equals(motorista_form.get().dui)){
+                    if( Motorista.find.where().eq("dui",mot.dui).findUnique()!=null){
+                        flash("error","Este motorista ya fue registrado");
+                        flash("modal","mod-edit-"+id.toString());
+                        return redirect(routes.GerenteController.motoristas());
+                    }
+            }
+            //mot.dui=motorista_form.get().dui;
+             if(!mot.nit.equals(motorista_form.get().nit)){
+                    if( Motorista.find.where().eq("nit",mot.nit).findUnique()!=null){
+                        flash("error","Este motorista ya fue registrado");
+                        flash("modal","mod-edit-"+id.toString());
+                        return redirect(routes.GerenteController.motoristas());
+                    }
+            }
+            //mot.nit=motorista_form.get().nit;
+             if(!mot.licencia.equals(motorista_form.get().licencia)){
+                    if( Motorista.find.where().eq("licencia",mot.licencia).findUnique()!=null){
+                        flash("error","Este motorista ya fue registrado");
+                        flash("modal","mod-edit-"+id.toString());
+                        return redirect(routes.GerenteController.motoristas());
+                    }
+            }
+            //mot.licencia=motorista_form.get().licencia;
            
 
             mot.update();
@@ -164,6 +224,11 @@ public class GerenteController extends Controller {
             flash("modal","mod-new");
             return badRequest(cabezales.render(cabezal_form,cabezales_list));
         }
+        if( Cabezal.find.where().eq("placa",values.get("placa")[0]).findUnique()!=null){
+            flash("error","El Cabezal ya fue registrado");
+            flash("modal","mod-new");
+            return redirect(routes.GerenteController.cabezales());
+        }
 
         Cabezal nuevo = cabezal_form.get();
         nuevo.save();
@@ -187,7 +252,14 @@ public class GerenteController extends Controller {
         Cabezal cab = Cabezal.find.byId(id);
 
         if (cab != null) {
-            cab.placa=cabezal_form.get().placa;
+               if(!cab.placa.equals(cabezal_form.get().placa)){
+                    if( Cabezal.find.where().eq("placa",cab.placa).findUnique()!=null){
+                        flash("error","Este cabezal ya fue registrado");
+                        flash("modal","mod-edit-"+id.toString());
+                        return redirect(routes.GerenteController.cabezales());
+                    }
+                }
+            
             cab.descripcion=cabezal_form.get().descripcion;
            
 
@@ -368,6 +440,11 @@ public class GerenteController extends Controller {
             flash("modal","mod-new");
             return badRequest(usuarios.render(usuario_form,usuarios_list));
         }
+        if( Usuario.find.where().eq("username",values.get("username")[0]).findUnique()!=null){
+            flash("error","El usuario ya existe");
+            flash("modal","mod-new");
+            return redirect(routes.GerenteController.usuarios());
+        }
 
         Usuario nuevo = usuario_form.get();
         nuevo.save();
@@ -391,7 +468,14 @@ public class GerenteController extends Controller {
 
         if ( user != null) {
             user.nombre=usuario_form.get().nombre;
-            user.username=usuario_form.get().username;
+            if(!user.username.equals(usuario_form.get().username)){
+                if( Usuario.find.where().eq("username",user.username).findUnique()!=null){
+                    flash("error","El usuario ya existe");
+                    flash("modal","mod-edit-"+id.toString());
+                    return redirect(routes.GerenteController.usuarios());
+                }
+            }
+            
             user.password=usuario_form.get().password;
             user.tipo.id=usuario_form.get().tipo.id;
 

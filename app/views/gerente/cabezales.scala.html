@@ -90,6 +90,13 @@
 					<h4 class="modal-title">Agregar nuevo cabezal</h4>
 				</div>
 				@errores_formulario
+				@if(flash.containsKey("error")){
+					<div class="alert alert-danger fade in">
+						<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+						<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+						<strong>@flash.get("error")</strong>
+					</div>
+				}
 				<div class="modal-body">
 
 
@@ -162,6 +169,13 @@
 								<h4 class="modal-title">Editar cabezal: @cabezal.placa</h4>
 								</div>
 								@errores_formulario
+								@if(flash.containsKey("error")){
+									<div class="alert alert-danger fade in">
+										<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+										<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+										<strong>@flash.get("error")</strong>
+									</div>
+								}
 								<div class="modal-body">
 
 

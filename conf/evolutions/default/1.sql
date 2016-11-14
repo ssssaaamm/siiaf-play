@@ -13,6 +13,7 @@ create table boleta (
   cruce_frontera                tinyint(1) default 0,
   sentido                       integer,
   viaje_id                      bigint,
+  constraint uq_boleta_codigo unique (codigo),
   constraint pk_boleta primary key (id)
 );
 
@@ -21,6 +22,7 @@ create table cabezal (
   placa                         varchar(255),
   descripcion                   varchar(255),
   activo                        tinyint(1) default 0,
+  constraint uq_cabezal_placa unique (placa),
   constraint pk_cabezal primary key (id)
 );
 
@@ -30,6 +32,7 @@ create table cliente (
   nit                           varchar(255),
   descripcion                   varchar(255),
   activo                        tinyint(1) default 0,
+  constraint uq_cliente_nit unique (nit),
   constraint pk_cliente primary key (id)
 );
 
@@ -98,6 +101,7 @@ create table motorista (
   nit                           varchar(255),
   licencia                      varchar(255),
   activo                        tinyint(1) default 0,
+  constraint uq_motorista_codigo_dui_nit_licencia unique (codigo,dui,nit,licencia),
   constraint pk_motorista primary key (id)
 );
 
@@ -161,6 +165,7 @@ create table usuario (
   username                      varchar(255),
   password                      varchar(255),
   tipo_id                       bigint,
+  constraint uq_usuario_username unique (username),
   constraint pk_usuario primary key (id)
 );
 
