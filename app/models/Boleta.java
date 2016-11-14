@@ -10,7 +10,7 @@ import play.data.validation.*;
 import com.avaje.ebean.*;
 
 @Entity
-@Table(name="boleta",uniqueConstraints= @UniqueConstraint(columnNames={"codigo"}))
+@Table(name="boleta")
 public class Boleta extends Model{
 	@Id
 	public Long id;

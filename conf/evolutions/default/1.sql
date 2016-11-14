@@ -13,7 +13,6 @@ create table boleta (
   cruce_frontera                tinyint(1) default 0,
   sentido                       integer,
   viaje_id                      bigint,
-  constraint uq_boleta_codigo unique (codigo),
   constraint pk_boleta primary key (id)
 );
 
