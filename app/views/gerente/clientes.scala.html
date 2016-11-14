@@ -7,6 +7,8 @@
 
 @js={
 	<script src="@routes.Assets.versioned("javascripts/bootstrap-table.js")" type="text/javascript"></script>
+	<script src="@routes.Assets.versioned("javascripts/jquery.maskedinput.js")" type="text/javascript"></script>
+	<script src="@routes.Assets.versioned("javascripts/masked.js")" type="text/javascript"></script>
 
 	<!--fix modal open at edit-->
 	@if(flash.containsKey("modal")) {
@@ -26,6 +28,17 @@
 				window.location='@routes.GerenteController.clientes';
 			}	
 		});
+	</script>
+
+
+	<script>
+	$(document).ready(function(){
+  $('.dui').mask('00000000-0');
+  $('.nit').mask('0000-000000-000-0');
+  $('.telefono').mask('(000) 0000-0000');
+  $('.placa').mask('C ??0-000', {reverse: true});
+  $('.km').mask('00???.??', {reverse: true});
+  });
 	</script>
 }
 
@@ -115,8 +128,7 @@
 					</div>
 				}
 				<div class="modal-body">
-
-
+					
 					 <div class="form-group">
 						@inputText(cliente_form("id"), '_showConstraints -> false ,'readonly -> "readonly", '_showErrors -> false,'class -> "form-control", 'placeholder -> "Id del cliente",'_label -> "Id: ")
 					 </div>
@@ -126,11 +138,11 @@
 	        		 </div>
 
 	        		 <div class="form-group">
-	        		 	@inputText(cliente_form("nit"), '_showConstraints -> false , '_showErrors -> false,'class -> "form-control", 'placeholder -> "NIT de la empresa", '_label -> "NIT: ")
+	        		 	@inputText(cliente_form("nit"), '_showConstraints -> false , '_showErrors -> false,'_id->"nit" ,'class -> "form-control nit",'placeholder -> "0000-000000-000-0", '_label -> "NIT: ")
 	        		 </div>
 
 					 <div class="form-group">
-						@textarea(cliente_form("descripcion"), 'rows -> 5, '_showConstraints -> false, '_showErrors -> false ,'class -> "form-control", 'placeholder -> "De una brebe descripcion de la empresa",'_label -> "Descripcion: ")
+						@textarea(cliente_form("descripcion"), 'rows -> 5, '_showConstraints -> false, '_showErrors -> false ,'class -> "form-control", 'placeholder -> "De una breve descripcion de la empresa",'_label -> "Descripcion: ")
 					 </div>
 
 
@@ -215,11 +227,11 @@
 					        		 </div>
 
 					        		 <div class="form-group">
-					        		 	@inputText(cliente.getForm()("nit"), '_showConstraints -> false , '_showErrors -> false,'class -> "form-control", 'placeholder -> "NIT de la empresa", '_label -> "NIT: ")
+					        		 	@inputText(cliente.getForm()("nit"), '_showConstraints -> false , '_showErrors -> false,'class -> "form-control nit",'placeholder -> "0000-000000-000-0", '_label -> "NIT: ")
 					        		 </div>
 
 					        		 <div class="form-group">
-										@textarea(cliente.getForm()("descripcion"), 'rows -> 5, '_showConstraints -> false, '_showErrors -> false ,'class -> "form-control", 'placeholder -> "De una brebe descripcion de la empresa",'_label -> "Descripcion: ")
+										@textarea(cliente.getForm()("descripcion"), 'rows -> 5, '_showConstraints -> false, '_showErrors -> false ,'class -> "form-control", 'placeholder -> "De una breve descripcion de la empresa",'_label -> "Descripcion: ")
 									 </div>
 
 
