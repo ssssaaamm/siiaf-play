@@ -57,3 +57,8 @@ INSERT INTO politica_cobro (id, actual, duracion_periodo, tarifa_cobro_km_sen, t
 
 
 INSERT INTO politica_pago (id, actual, duracion_periodo, salario_minimo, porcentaje_isss, porcentaje_afp, tarifa_pago_km_loc, tarifa_pago_km_int, porcentaje_sobrepeso, tarifa_viatico_vv, tarifa_viatico_vc, tarifa_viatico_cc) VALUES (NULL, 1, 30, 200, 0.0625, 0.0775, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7);
+
+
+INSERT INTO periodo_planilla (id, fecha_inicio, fecha_fin, actual, politica_pago_id) VALUES (NULL, '2016-11-21 00:00:00.000000', '2016-11-30 00:00:00.000000', 0, 1);
+
+INSERT INTO periodo_facturacion (id, fecha_inicio, fecha_fin, actual, politica_cobro_id) VALUES (NULL, '2016-11-13 00:00:00.000000', '2016-11-20 00:00:00.000000', 0, 1);
