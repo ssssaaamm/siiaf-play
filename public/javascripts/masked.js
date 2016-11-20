@@ -5,5 +5,5 @@ $(document).ready(function(){
   $('.telefono').mask('(000) 0000-0000');
   $('.placa').mask('C 0-000');
   $('.periodo').mask('00');
-  $('.km').mask('000.00', {optional: true});
+  //$('.km').mask('000.00', {optional: true});
  });
