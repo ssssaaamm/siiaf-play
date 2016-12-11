@@ -1604,14 +1604,9 @@ public class GerenteController extends Controller {
 
         if ( user != null) {
             user.nombre=usuario_form.get().nombre;
-            if(!user.username.equals(usuario_form.get().username)){
-                if( Usuario.find.where().eq("username",user.username).findUnique()!=null){
-                    flash("error","El usuario ya existe");
-                    flash("modal","mod-edit-"+id.toString());
-                    return redirect(routes.GerenteController.usuarios());
-                }
-            }
             
+            
+            user.username=usuario_form.get().username;
             user.password=usuario_form.get().password;
             user.tipo.id=usuario_form.get().tipo.id;
 
