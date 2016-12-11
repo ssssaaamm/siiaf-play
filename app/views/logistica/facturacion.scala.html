@@ -169,14 +169,10 @@
 					<td>@BigDecimal(detalle.total_km_car_internacionales).setScale(2, BigDecimal.RoundingMode.HALF_UP).toDouble km</td> <!-- km  internecionas-->
 					<td>$@BigDecimal(detalle.total_mont_car_internacionales).setScale(2, BigDecimal.RoundingMode.HALF_UP).toDouble</td><!-- mont internacionales -->
 					
-					<td>@BigDecimal(detalle.total_cantidad_agregados).setScale(2, BigDecimal.RoundingMode.HALF_UP).toDouble km</td> <!-- km internacionales-->
-					<td>@BigDecimal(detalle.total_mont_agregados).setScale(2, BigDecimal.RoundingMode.HALF_UP).toDouble km</td> <!-- km internacionales-->
-					<td>@BigDecimal(detalle.total_cobro_periodo).setScale(2, BigDecimal.RoundingMode.HALF_UP).toDouble km</td> <!-- km internacionales-->
+					<td>@detalle.total_cantidad_agregados</td> <!-- km internacionales-->
+					<td>$@BigDecimal(detalle.total_mont_agregados).setScale(2, BigDecimal.RoundingMode.HALF_UP).toDouble</td> <!-- km internacionales-->
+					<td>$@BigDecimal(detalle.total_cobro_periodo).setScale(2, BigDecimal.RoundingMode.HALF_UP).toDouble</td> <!-- km internacionales-->
 
-
-
-
-					
 				</tr>
 			}
 				

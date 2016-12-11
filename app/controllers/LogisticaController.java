@@ -1122,6 +1122,8 @@ public class LogisticaController extends Controller {
 
         Double total_mont_agregados=0.0;
 
+        Double total_cobro_periodo=0.0;
+
         for(Viaje viaje : viajes){
             if(viaje.tipo==1){//si el viaje es local
                 total_viajes_locales++;
@@ -1204,6 +1206,7 @@ public class LogisticaController extends Controller {
         total_km_locales+=(total_km_sen_locales+total_km_car_locales+total_km_vac_locales);
         total_mont_locales+=(total_mont_vac_locales+total_mont_sen_locales+total_mont_car_locales);
 
+        total_cobro_periodo=total_mont_locales+total_mont_internacionales+total_mont_agregados;
 
         detalle.total_viajes_locales=total_viajes_locales;
 
@@ -1244,6 +1247,8 @@ public class LogisticaController extends Controller {
         detalle.total_cantidad_agregados=total_cantidad_agregados;
 
         detalle.total_mont_agregados=total_mont_agregados;
+
+        detalle.total_cobro_periodo=total_cobro_periodo;
 
         detalle.update();
 
