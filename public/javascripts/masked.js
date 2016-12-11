@@ -3,7 +3,7 @@ $(document).ready(function(){
   $('.nit').mask('0000-000000-000-0');
   $('.licencia').mask('0000-000000-000-0');
   $('.telefono').mask('(000) 0000-0000');
-  $('.placa').mask('C 0-000');
+  $('.placa').mask('C 000-000');
   $('.periodo').mask('00');
   //$('.km').mask('000.00', {optional: true});
  });
