@@ -6,7 +6,7 @@
 create table boleta (
   id                            bigint auto_increment not null,
   codigo                        varchar(10),
-  destino                       varchar(10),
+  destino                       varchar(100),
   km_asignados                  double,
   tipo_carga                    integer,
   sobrepeso                     tinyint(1) default 0,

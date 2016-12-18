@@ -15,6 +15,10 @@ import models.*;
  */
 public class GerenteController extends Controller {
 
+    public Result home(){
+        return redirect(routes.GerenteController.clientes());
+    }
+
     //CLIENTES
     //list
     public Result clientes() {

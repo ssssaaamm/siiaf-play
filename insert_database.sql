@@ -51,6 +51,6 @@ INSERT INTO periodo_planilla (id, fecha_inicio, fecha_fin, actual, politica_pago
 
 INSERT INTO periodo_facturacion (id, fecha_inicio, fecha_fin, actual, politica_cobro_id) VALUES (NULL, '2016-11-13 00:00:00.000000', '2016-11-20 00:00:00.000000', 0, 1);
 
-INSERT INTO viaje (id, tipo, fecha_registro, total_km, viaticos, tipo_viatico, periodo_facturacion_id, periodo_planilla_id, motorista_id, cabezal_id, cliente_id) VALUES (NULL, 1, '2016-11-13 00:00:00.000000', 100, 0, 1, 1, 3, 5, 6, 11);
+/*INSERT INTO viaje (id, tipo, fecha_registro, total_km, viaticos, tipo_viatico, periodo_facturacion_id, periodo_planilla_id, motorista_id, cabezal_id, cliente_id) VALUES (NULL, 1, '2016-11-13 00:00:00.000000', 100, 0, 1, 1, 3, 5, 6, 11);*/
 
 

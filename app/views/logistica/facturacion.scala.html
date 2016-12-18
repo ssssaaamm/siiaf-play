@@ -1,16 +1,23 @@
-@(detalles: List[DetalleCobro])
+@(detalles: List[DetalleCobro], periodos: List[PeriodoFacturacion])
 @import scala.math.BigDecimal
 @import helper._
 
 @css={
 	<link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/bootstrap-table.css")">
 	<link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/vertical-table.css")">
-<style>
-	.popover-content {
-  height: 200px;
-  overflow-y: auto;
- }
- </style>
+	<link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/zebra_metallic.css")">
+
+ 	<style>
+		.popover-content {
+		  height: 200px;
+		  overflow-y: auto;
+		 }
+
+		.col-centered{
+		float: none;
+		margin: 0 auto;
+		}
+	 </style>
 }
 
 @js={
@@ -21,6 +28,36 @@
 	<script src="@routes.Assets.versioned("javascripts/export/jspdf/libs/sprintf.js")" type="text/javascript"></script>
 	<script src="@routes.Assets.versioned("javascripts/export/jspdf/jspdf.js")" type="text/javascript"></script>
 	<script src="@routes.Assets.versioned("javascripts/export/jspdf/libs/base64.js")" type="text/javascript"></script>
+	<script src="@routes.Assets.versioned("javascripts/zebra_datepicker.js")" type="text/javascript"></script>
+
+
+
+	<script>
+		
+
+		var dates = [];
+		@for(periodo <- periodos){
+			dates.push('@periodo.fecha_inicio.format("dd MM yyyy")');
+		}
+		
+
+		$(document).ready(function() {
+
+		    // assuming the controls you want to attach the plugin to 
+		    // have the "datepicker" class set
+		    if(dates.length > 0){
+			    $('input.datepicker').Zebra_DatePicker({
+			    	format: 'd-m-Y',
+			    	disabled_dates: ['* * * *'], 
+			    	enabled_dates: dates,
+			    });
+			}
+
+		});
+
+	</script>
+
+
 
 	<script>
 		$(document).ready(function(){
@@ -38,18 +75,41 @@
 
 		    });
 		});
-</script>				
+	</script>				
 }
 
-@logistica.base("Logistic SIIAF","Facturacion de Clientes","Detalles de cobro","Facturacion",css,js){
+@logistica.base("Logistic SIIAF","Facturacion de Clientes","Detalles de cobro","facturacion",css,js){
 	
+	
+	<div class="row">
+		<div class="col-xs-12 col-md-4 col-lg-2">
+	  		<button type="button" class="btn btn-warning" onclick="$('#planilla-table').tableExport({type:'excel',escape:'false'});"><span class="glyphicon glyphicon-export"> Exportar excel</span></button>
+		</div>
+		<div class="col-xs-12  col-md-4 col-lg-8 colinput-append date" id="dp3" data-date="12-02-2012" data-date-format="dd-mm-yyyy">
+			<div class="col-xs-12 col-md-8 col-lg-4 col-centered">
+				<form method="post" action="@routes.LogisticaController.facturacion_post()" id="frmDate">
+					<input type="text" id="txtDate" name="fecha_inicio" class="datepicker form-control" data-provide="datepicker" placeholder="Seleccione" />
+				</form>
+			</div>
+		</div>
+		<div class="col-xs-12  col-md-4 col-lg-2 form-group pull-right">
+			<input type="text" class="search1 form-control" placeholder="Busqueda">
+			<span class="counter1 pull-right"></span>
+		</div>
+	</div>
+
+	<center>
+		<h3>Periodo</h3>
+		@if(detalles.size()!=0){
+			<h5>@detalles.get(0).periodo_facturacion.fecha_inicio.format("dd-MM-yyyy") / @detalles.get(0).periodo_facturacion.fecha_fin.format("dd-MM-yyyy")</h5>
+		}else{
+			<h5>Este periodo no tiene detalles, pueda que se trate de un periodo de testeo</h5>
+		}
+	</center>
+
 
 	<div class="table-responsive">
-		<button type="button" class="btn btn-warning" onclick="$('#planilla-table').tableExport({type:'excel',escape:'false'});"><span class="glyphicon glyphicon-export"> Exportar excel</span></button>
-	  <div class="form-group pull-right">
-			<input type="text" class="search1 form-control" placeholder="Busqueda">
-	  </div>
-	  <span class="counter1 pull-right"></span>
+		
 	  <table class="table table-hover table-bordered results1" id="planilla-table">
 		  <thead>
 			<tr>

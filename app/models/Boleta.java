@@ -19,7 +19,7 @@ public class Boleta extends Model{
 	@Constraints.Required(message="Debe ingresar el codigo de boleta")
 	public String codigo;
 	
-	@Column(length=10)	
+	@Column(length=100)	
 	@Constraints.Required(message="Debe ingresar un destino")
 	public String destino;
 

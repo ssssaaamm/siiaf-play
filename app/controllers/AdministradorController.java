@@ -15,6 +15,10 @@ import models.*;
 
 public class AdministradorController extends Controller {
 
+    public Result home(){
+        return redirect(routes.AdministradorController.usuarios());
+    }
+
 
 	//USUARIOS
     //list

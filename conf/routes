@@ -19,6 +19,7 @@ GET     /about                          controllers.HomeController.about
 
 
 # RUTAS DEL AdministradorController
+GET     /admin                                    controllers.AdministradorController.home
 GET     /admin/usuarios                           controllers.AdministradorController.usuarios
 POST     /admin/usuarios/new                      controllers.AdministradorController.usuario_new
 POST     /admin/usuarios/edit/:id                 controllers.AdministradorController.usuario_edit(id: Long)
@@ -26,6 +27,7 @@ POST     /admin/usuarios/remove/:id               controllers.AdministradorContr
 
 
 # RUTAS DEL GerenteController
+GET     /manager                                    controllers.GerenteController.home
 GET     /manager/clientes                           controllers.GerenteController.clientes
 POST     /manager/clientes/new                      controllers.GerenteController.cliente_new
 POST     /manager/clientes/edit/:id                 controllers.GerenteController.cliente_edit(id: Long)
@@ -57,13 +59,21 @@ POST     /manager/usuarios/remove/:id               controllers.GerenteControlle
 
 
 # RUTAS DEL LogisticaController
-GET      /logistic/viajes                          controllers.LogisticaController.viajes
+GET      /logistic                                  controllers.LogisticaController.home
+GET      /logistic/viajes                           controllers.LogisticaController.viajes
 POST     /logistic/viajes/new                       controllers.LogisticaController.viaje_new
 GET      /logistic/viajes/edit/:id                  controllers.LogisticaController.viaje_edit(id: Long)
 POST     /logistic/viajes/edit/:id                  controllers.LogisticaController.viaje_edit_post(id: Long)
 POST     /logistic/viajes/remove/:id                controllers.LogisticaController.viaje_remove(id:Long)
 
-GET     /logistic/planilla                           controllers.LogisticaController.planilla
-GET     /logistic/facturacion                           controllers.LogisticaController.facturacion
-GET     /logistic/politica/cobro                           controllers.LogisticaController.politica_cobro
-GET     /logistic/politica/pago                           controllers.LogisticaController.politica_pago
+GET     /logistic/planilla                          controllers.LogisticaController.planilla()
+GET     /logistic/planilla/:id                      controllers.LogisticaController.planilla_show(id: Long)
+POST     /logistic/planilla                       controllers.LogisticaController.planilla_post()
+
+GET     /logistic/facturacion                        controllers.LogisticaController.facturacion()
+GET     /logistic/facturacion/:id                        controllers.LogisticaController.facturacion_show(id: Long)
+POST     /logistic/facturacion                        controllers.LogisticaController.facturacion_post()
+
+GET     /logistic/politica/cobro                     controllers.LogisticaController.politica_cobro
+GET     /logistic/politica/pago                      controllers.LogisticaController.politica_pago
+

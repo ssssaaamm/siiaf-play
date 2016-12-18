@@ -9,6 +9,7 @@ import java.io.File;
 import org.joda.time.DateTimeComparator;
 import java.lang.Thread;
 import java.lang.Runnable;
+import java.text.SimpleDateFormat;
 
 import views.html.logistica.*;
 import models.*;
@@ -18,7 +19,10 @@ import models.*;
  */
 public class LogisticaController extends Controller {
 
-  
+    
+    public Result home(){
+        return redirect(routes.LogisticaController.viajes());
+    }
 
      //list
     public Result viajes() {
@@ -551,15 +555,133 @@ public class LogisticaController extends Controller {
         return redirect(routes.LogisticaController.viajes());
     }
 
-    public Result planilla() {
-        List<DetallePago> detalles = DetallePago.find.where().eq("periodo_planilla",PeriodoPlanilla.find.where().eq("actual",true).findUnique()).findList();
-        return ok(planilla.render(detalles));
+
+    public Result planilla(){//cuando el usuario no indique periodo se mostrara siempre el periodo actual
+        PeriodoPlanilla periodo_a_mostrar = PeriodoPlanilla.find.where().eq("actual",true).findUnique();
+        
+        if(periodo_a_mostrar==null){
+            flash("error","Actualmente NO hay periodo de planilla, esto puede ser porque aun no se ha registrado ningun viaje en el sistema");
+            return badRequest(errores.render());
+        }
+
+        return redirect(routes.LogisticaController.planilla_show(periodo_a_mostrar.id));
     }
 
-    public Result facturacion() {
-        List<DetalleCobro> detalles = DetalleCobro.find.where().eq("periodo_facturacion",PeriodoFacturacion.find.where().eq("actual",true).findUnique()).findList();
-        return ok(facturacion.render(detalles));
+    public Result planilla_show(Long id) {//recibe el id del periodo de planilla que quiere observar
+
+        PeriodoPlanilla periodo = PeriodoPlanilla.find.byId(id);
+
+        if(periodo==null){
+           flash("error","El periodo de planilla buscado no se encuentra, esto puede ser porque aun no se ha registrado ningun viaje en el sistema o el periodo no ha ocurrido (no existe en la base de datos)");
+            return badRequest(errores.render());
+           //return redirect(routes.LogisticaController.errores());
+        }
+
+        List<DetallePago> detalles = DetallePago.find.where().eq("periodo_planilla",periodo).findList();
+        
+        List<PeriodoPlanilla> periodos= PeriodoPlanilla.find.findList();
+        return ok(planilla.render(detalles,periodos));
     }
+
+
+
+    public Result planilla_post() {
+
+        Map<String, String[]> values = request().body().asFormUrlEncoded();
+
+        if(!values.get("fecha_inicio")[0].isEmpty()){
+            //return ok("entro aqui");
+
+            try{
+                SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
+                Date fecha_inicio = sdf.parse(values.get("fecha_inicio")[0]);
+                PeriodoPlanilla periodo = PeriodoPlanilla.find.where().eq("fecha_inicio",fecha_inicio).findUnique();
+
+                if(periodo == null){
+                    flash("error","La fecha que ha ingresado no coincide con la fecha de inicio de ningun periodo de planilla, por favor intente nuevamente utilizando el selector de fechas");
+                    return badRequest(errores.render());
+                }
+
+                Long id_periodo = periodo.id;
+                return redirect(routes.LogisticaController.planilla_show(id_periodo));
+        
+            }catch(Exception e){
+                flash("error","La fecha que ha ingresado no tiene el formato adecuado, por favor utilice el selector de fechas, en lugar de ingresar fechas manualmente");
+                return badRequest(errores.render());
+                
+                
+            }
+            
+        }
+        //usuario redirigido a planilla actual porque no ingreso nada en el input date
+        return redirect(routes.LogisticaController.planilla());       
+    }
+
+
+    
+
+        public Result facturacion(){//cuando el usuario no indique periodo se mostrara siempre el periodo actual
+        PeriodoFacturacion periodo_a_mostrar = PeriodoFacturacion.find.where().eq("actual",true).findUnique();
+        
+        if(periodo_a_mostrar==null){
+            flash("error","Actualmente NO hay periodo de facturacion, esto puede ser porque aun no se ha registrado ningun viaje en el sistema");
+            return badRequest(errores.render());
+        }
+
+        return redirect(routes.LogisticaController.facturacion_show(periodo_a_mostrar.id));
+    }
+
+    public Result facturacion_show(Long id) {//recibe el id del periodo de planilla que quiere observar
+
+        PeriodoFacturacion periodo = PeriodoFacturacion.find.byId(id);
+
+        if(periodo==null){
+           flash("error","El periodo de facturacion buscado no se encuentra, esto puede ser porque aun no se ha registrado ningun viaje en el sistema o el periodo no ha ocurrido (no existe en la base de datos)");
+            return badRequest(errores.render());
+           //return redirect(routes.LogisticaController.errores());
+        }
+
+        List<DetalleCobro> detalles = DetalleCobro.find.where().eq("periodo_facturacion",periodo).findList();
+        
+        List<PeriodoFacturacion> periodos= PeriodoFacturacion.find.findList();
+        return ok(facturacion.render(detalles,periodos));
+    }
+
+
+
+    public Result facturacion_post() {
+
+        Map<String, String[]> values = request().body().asFormUrlEncoded();
+
+        if(!values.get("fecha_inicio")[0].isEmpty()){
+            //return ok("entro aqui");
+
+            try{
+                SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
+                Date fecha_inicio = sdf.parse(values.get("fecha_inicio")[0]);
+                PeriodoFacturacion periodo = PeriodoFacturacion.find.where().eq("fecha_inicio",fecha_inicio).findUnique();
+
+                if(periodo == null){
+                    flash("error","La fecha que ha ingresado no coincide con la fecha de inicio de ningun periodo de facturacion, por favor intente nuevamente utilizando el selector de fechas");
+                    return badRequest(errores.render());
+                }
+
+                Long id_periodo = periodo.id;
+                return redirect(routes.LogisticaController.facturacion_show(id_periodo));
+        
+            }catch(Exception e){
+                flash("error","La fecha que ha ingresado no tiene el formato adecuado, por favor utilice el selector de fechas, en lugar de ingresar fechas manualmente");
+                return badRequest(errores.render());
+                
+                
+            }
+            
+        }
+        //usuario redirigido a planilla actual porque no ingreso nada en el input date
+        return redirect(routes.LogisticaController.facturacion());       
+    }
+
+
 
     public Result politica_cobro() {
         return ok(politica_cobro.render(PoliticaCobro.find.where().eq("actual",true).findUnique().getForm()));
