@@ -79,9 +79,46 @@
 		});
 	</script>
 
+
+
+	<!-- fix checkbox default checked -->
+	<script>
+		var checkbox = document.getElementById('check-bono');
+		checkbox.checked = false;
+		document.getElementById('input-bono').disabled = true;
+	</script>
+
+
+	<!-- fix checkbox enable disable select for new -->
+	<script>
+		document.getElementById('check-bono').onclick = function() {
+
+			document.getElementById('input-bono').disabled = !this.checked;
+		    
+		    var inputs = document.getElementsByClassName('individual-bono')
+
+		    for(var i=0; i< inputs.length; i++){
+		    	inputs[i].disabled = this.checked;
+		    }
+
+		    
+		};
+	</script>
+
+
+	<!--fix modal open at edit-->
+	@if(flash.containsKey("modal")) {
+		<script>
+	    	$(window).load(function(){
+	        	$('#@flash.get("modal")').modal('show');
+	    	});
+	    </script>
+	}
+
+
 }
 
-@gerente.base("Manager SIIAF","Planilla de Pago","Planilla de pago a motoristas","planilla",css,js){
+@gerente.base("Logistic SIIAF","Planilla de Pago","Planilla de pago a motoristas","planilla",css,js){
 	
 	
 	<div class="row">
@@ -114,6 +151,27 @@
 		}
 		
 	</center>
+
+
+	@if(flash.containsKey("exito")){
+		<div class="row">
+		<div class="alert alert-success fade in col-lg-12">
+			<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+			<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+			<strong>@flash.get("exito")</strong>
+		</div>
+		</div>
+	}
+
+	@if(flash.containsKey("global_error")){
+		<div class="row">
+		<div class="alert alert-danger fade in col-lg-12">
+			<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+			<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+			<strong>@flash.get("global_error")</strong>
+		</div>
+		</div>
+	}
 
 	
 
@@ -154,7 +212,7 @@
 				<th><center>Cantidad</center></th>
 				<th><center>Monto</center></th>
 				<th rowspan="1"><center>Ganado</center></th>
-				<th rowspan="1"><center>Bono</center></th>
+				<th rowspan="1"><center><a href="#" data-toggle="modal" data-target="#mod-bono-global">Bono</a></center></th>
 				<th rowspan="1"><center>Total pago</center></th>
 				<th rowspan="1"><center>ISSS</center></th>
 				<th rowspan="1"><center>AFP</center></th>
@@ -167,23 +225,126 @@
 				<tr>
 					<td>@detalle.motorista.nombre</td><!-- nombre -->
 					<!-- <td>@detalle.total_viajes_locales</td> viajes locales --> 
-					<td><a title="<center><strong>@detalle.total_viajes_locales viajes</strong></center>" class="popover-content" data-toggle="popover"  data-html="true" data-content='<strong>Fecha viaje</strong> &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp <strong>Kms</strong><br/>@for(viaje <- Ebean.find(classOf[Viaje]).where().conjunction().eq("periodo_planilla",detalle.periodo_planilla).eq("motorista",detalle.motorista).eq("tipo",1).findList()){@viaje.fecha_registro.format("dd/MM/yyyy") &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp @viaje.total_km <br/>}'>@BigDecimal(detalle.total_km_locales).setScale(2, BigDecimal.RoundingMode.HALF_UP).toDouble km</a></td> <!-- km locales-->
-					<td><a title="<center><strong>@detalle.total_viajes_locales viajes</strong></center>" class="popover-content" data-toggle="popover"  data-html="true" data-content='<strong>Kms</strong> &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp <strong>$$$</strong><br/>@for(viaje <- Ebean.find(classOf[Viaje]).where().conjunction().eq("periodo_planilla",detalle.periodo_planilla).eq("motorista",detalle.motorista).eq("tipo",1).findList()){@viaje.total_km &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp @BigDecimal(viaje.total_km*viaje.periodo_planilla.politica_pago.tarifa_pago_km_loc).setScale(2, BigDecimal.RoundingMode.HALF_UP).toDouble <br/>}'>$@BigDecimal(detalle.total_monto_locales).setScale(2, BigDecimal.RoundingMode.HALF_UP).toDouble</a></td><!-- monto locales -->
+					<td><a title="<center><strong>@detalle.total_viajes_locales viajes</strong></center>" class="popover-content" data-trigger="hover" data-toggle="popover"  data-html="true" data-content='<strong>Fecha viaje</strong> &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp <strong>Kms</strong><br/>@for(viaje <- Ebean.find(classOf[Viaje]).where().conjunction().eq("periodo_planilla",detalle.periodo_planilla).eq("motorista",detalle.motorista).eq("tipo",1).findList()){@viaje.fecha_registro.format("dd/MM/yyyy") &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp @viaje.total_km <br/>}'>@BigDecimal(detalle.total_km_locales).setScale(2, BigDecimal.RoundingMode.HALF_UP).toDouble km</a></td> <!-- km locales-->
+					<td><a title="<center><strong>@detalle.total_viajes_locales viajes</strong></center>" class="popover-content" data-trigger="hover" data-toggle="popover"  data-html="true" data-content='<strong>Kms</strong> &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp <strong>$$$</strong><br/>@for(viaje <- Ebean.find(classOf[Viaje]).where().conjunction().eq("periodo_planilla",detalle.periodo_planilla).eq("motorista",detalle.motorista).eq("tipo",1).findList()){@viaje.total_km &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp @BigDecimal(viaje.total_km*viaje.periodo_planilla.politica_pago.tarifa_pago_km_loc).setScale(2, BigDecimal.RoundingMode.HALF_UP).toDouble <br/>}'>$@BigDecimal(detalle.total_monto_locales).setScale(2, BigDecimal.RoundingMode.HALF_UP).toDouble</a></td><!-- monto locales -->
 					<!-- <td>@detalle.total_viajes_internacionales</td>  viajes internacionales -->
-					<td><a href="#" title="<center><strong>@detalle.total_viajes_locales viajes</strong></center>" class="popover-content" data-toggle="popover"  data-html="true" data-content='<strong>Fecha viaje</strong> &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp <strong>Kms</strong><br/>@for(viaje <- Ebean.find(classOf[Viaje]).where().conjunction().eq("periodo_planilla",detalle.periodo_planilla).eq("motorista",detalle.motorista).eq("tipo",2).findList()){@viaje.fecha_registro.format("dd/MM/yyyy") &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp @viaje.total_km <br/>}'>@BigDecimal(detalle.total_km_internacionales).setScale(2, BigDecimal.RoundingMode.HALF_UP).toDouble km</a></td><!-- km internacionales -->
-					<td><a href="#" title="<center><strong>@detalle.total_viajes_locales viajes</strong></center>" class="popover-content" data-toggle="popover"  data-html="true" data-content='<strong>Kms</strong> &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp <strong>$$$</strong><br/>@for(viaje <- Ebean.find(classOf[Viaje]).where().conjunction().eq("periodo_planilla",detalle.periodo_planilla).eq("motorista",detalle.motorista).eq("tipo",2).findList()){@viaje.total_km &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp  @BigDecimal(viaje.total_km*viaje.periodo_planilla.politica_pago.tarifa_pago_km_int).setScale(2, BigDecimal.RoundingMode.HALF_UP).toDouble <br/>}'>$@detalle.total_monto_internacionales</a></td><!-- monto internacionales -->
-					<td><center><a href="#" title="<center><strong>@detalle.total_cantidad_agregados boletas</strong></center>" class="popover-content" data-toggle="popover"  data-html="true" data-content='<strong>Viaje</strong> &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp <strong>Boleta</strong> &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp <strong>Fecha</strong><br/>@for(boleta <- Ebean.find(classOf[Boleta]).where().conjunction().eq("viaje.periodo_planilla",detalle.periodo_planilla).eq("viaje.motorista",detalle.motorista).eq("sobrepeso",1).findList()){@boleta.viaje.id &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp @boleta.codigo &nbsp &nbsp &nbsp &nbsp  @boleta.viaje.fecha_registro.format("dd/MM/yyyy") <br/>}'>@detalle.total_cantidad_agregados</a></center></td><!-- cantidad valores agregados -->
-					<td><a href="#" title="<center><strong>@detalle.total_cantidad_agregados boletas</strong></center>" class="popover-content" data-toggle="popover"  data-html="true" data-content='<strong>Viaje</strong> &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp <strong>Boleta</strong> &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp <strong>$$$</strong><br/>@for(boleta <- Ebean.find(classOf[Boleta]).where().conjunction().eq("viaje.periodo_planilla",detalle.periodo_planilla).eq("viaje.motorista",detalle.motorista).eq("sobrepeso",1).findList()){@boleta.viaje.id &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp @boleta.codigo &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp @(boleta.viaje.periodo_planilla.politica_pago.porcentaje_sobrepeso*boleta.viaje.periodo_facturacion.politica_cobro.tarifa_sobrepeso) <br/>}'>$@BigDecimal(detalle.total_monto_agregados).setScale(2, BigDecimal.RoundingMode.HALF_UP).toDouble</a></td><!-- monto valores agregados -->
-					<td><center><a href="#" title="<center><strong>@detalle.total_cantidad_viaticos viaticos</strong></center>" class="popover-content" data-toggle="popover"  data-html="true" data-content='<strong>Vacio/Vacio</strong><br/>@detalle.total_cantidad_viaticos_vv &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp $@detalle.total_monto_viaticos_vv <br/><strong>Vacio/Cargado</strong><br/> @detalle.total_cantidad_viaticos_vc &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp $@detalle.total_monto_viaticos_vc <br/> <strong>Cargado/Cargado</strong><br/> @detalle.total_cantidad_viaticos_cc &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp $@detalle.total_monto_viaticos_cc'>@detalle.total_cantidad_viaticos</a></center></td><!-- cantidad viaticos -->
-					<td><a href="#" title="<center><strong>@detalle.total_cantidad_viaticos boletas</strong></center>" class="popover-content" data-toggle="popover"  data-html="true" data-content='<strong>Vacio/Vacio</strong><br/>@detalle.total_cantidad_viaticos_vv &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp $@detalle.total_monto_viaticos_vv <br/><strong>Vacio/Cargado</strong><br/> @detalle.total_cantidad_viaticos_vc &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp $@detalle.total_monto_viaticos_vc <br/> <strong>Cargado/Cargado</strong><br/> @detalle.total_cantidad_viaticos_cc &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp $@detalle.total_monto_viaticos_cc'>$@BigDecimal(detalle.total_monto_viaticos).setScale(2, BigDecimal.RoundingMode.HALF_UP).toDouble</a></td><!-- monto viaticos -->
+					<td><a title="<center><strong>@detalle.total_viajes_internacionales viajes</strong></center>" class="popover-content" data-trigger="hover" data-toggle="popover"  data-html="true" data-content='<strong>Fecha viaje</strong> &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp <strong>Kms</strong><br/>@for(viaje <- Ebean.find(classOf[Viaje]).where().conjunction().eq("periodo_planilla",detalle.periodo_planilla).eq("motorista",detalle.motorista).eq("tipo",2).findList()){@viaje.fecha_registro.format("dd/MM/yyyy") &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp @viaje.total_km <br/>}'>@BigDecimal(detalle.total_km_internacionales).setScale(2, BigDecimal.RoundingMode.HALF_UP).toDouble km</a></td><!-- km internacionales -->
+					<td><a title="<center><strong>@detalle.total_viajes_internacionales viajes</strong></center>" class="popover-content" data-trigger="hover" data-toggle="popover"  data-html="true" data-content='<strong>Kms</strong> &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp <strong>$$$</strong><br/>@for(viaje <- Ebean.find(classOf[Viaje]).where().conjunction().eq("periodo_planilla",detalle.periodo_planilla).eq("motorista",detalle.motorista).eq("tipo",2).findList()){@viaje.total_km &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp  @BigDecimal(viaje.total_km*viaje.periodo_planilla.politica_pago.tarifa_pago_km_int).setScale(2, BigDecimal.RoundingMode.HALF_UP).toDouble <br/>}'>$@BigDecimal(detalle.total_monto_internacionales).setScale(2, BigDecimal.RoundingMode.HALF_UP).toDouble</a></td><!-- monto internacionales -->
+					<td><center><a  title="<center><strong>@detalle.total_cantidad_agregados boletas</strong></center>" class="popover-content" data-trigger="hover" data-toggle="popover"  data-html="true" data-content='<strong>Viaje</strong> &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp <strong>Boleta</strong> &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp <strong>Fecha</strong><br/>@for(boleta <- Ebean.find(classOf[Boleta]).where().conjunction().eq("viaje.periodo_planilla",detalle.periodo_planilla).eq("viaje.motorista",detalle.motorista).eq("sobrepeso",1).findList()){@boleta.viaje.id &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp @boleta.codigo &nbsp &nbsp &nbsp &nbsp  @boleta.viaje.fecha_registro.format("dd/MM/yyyy") <br/>}'>@detalle.total_cantidad_agregados</a></center></td><!-- cantidad valores agregados -->
+					<td><a title="<center><strong>@detalle.total_cantidad_agregados boletas</strong></center>" class="popover-content" data-trigger="hover" data-toggle="popover"  data-html="true" data-content='<strong>Viaje</strong> &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp <strong>Boleta</strong> &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp <strong>$$$</strong><br/>@for(boleta <- Ebean.find(classOf[Boleta]).where().conjunction().eq("viaje.periodo_planilla",detalle.periodo_planilla).eq("viaje.motorista",detalle.motorista).eq("sobrepeso",1).findList()){@boleta.viaje.id &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp @boleta.codigo &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp @(boleta.viaje.periodo_planilla.politica_pago.porcentaje_sobrepeso*boleta.viaje.periodo_facturacion.politica_cobro.tarifa_sobrepeso) <br/>}'>$@BigDecimal(detalle.total_monto_agregados).setScale(2, BigDecimal.RoundingMode.HALF_UP).toDouble</a></td><!-- monto valores agregados -->
+					<td><center><a title="<center><strong>@detalle.total_cantidad_viaticos viaticos</strong></center>" class="popover-content" data-trigger="hover" data-toggle="popover"  data-html="true" data-content='<strong>Vacio/Vacio</strong><br/>@detalle.total_cantidad_viaticos_vv &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp $@detalle.total_monto_viaticos_vv <br/><strong>Vacio/Cargado</strong><br/> @detalle.total_cantidad_viaticos_vc &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp $@detalle.total_monto_viaticos_vc <br/> <strong>Cargado/Cargado</strong><br/> @detalle.total_cantidad_viaticos_cc &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp $@detalle.total_monto_viaticos_cc'>@detalle.total_cantidad_viaticos</a></center></td><!-- cantidad viaticos -->
+					<td><a title="<center><strong>@detalle.total_cantidad_viaticos boletas</strong></center>" class="popover-content" data-trigger="hover" data-toggle="popover"  data-html="true" data-content='<strong>Vacio/Vacio</strong><br/>@detalle.total_cantidad_viaticos_vv &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp $@detalle.total_monto_viaticos_vv <br/><strong>Vacio/Cargado</strong><br/> @detalle.total_cantidad_viaticos_vc &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp $@detalle.total_monto_viaticos_vc <br/> <strong>Cargado/Cargado</strong><br/> @detalle.total_cantidad_viaticos_cc &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp $@detalle.total_monto_viaticos_cc'>$@BigDecimal(detalle.total_monto_viaticos).setScale(2, BigDecimal.RoundingMode.HALF_UP).toDouble</a></td><!-- monto viaticos -->
 					<td>$@BigDecimal(detalle.salario_ganado).setScale(2, BigDecimal.RoundingMode.HALF_UP).toDouble</td><!-- salario ganado -->
-					<td>$@BigDecimal(detalle.bono).setScale(2, BigDecimal.RoundingMode.HALF_UP).toDouble</td><!-- bono -->
+					<td><a href="#" data-toggle="modal" data-target="#mod-bono-@detalle.id">$@BigDecimal(detalle.bono).setScale(2, BigDecimal.RoundingMode.HALF_UP).toDouble</a></td><!-- bono -->
 					<td>$@BigDecimal(detalle.total_pago_periodo).setScale(2, BigDecimal.RoundingMode.HALF_UP).toDouble</td><!-- pago total -->
 					<td>$@BigDecimal(detalle.isss).setScale(2, BigDecimal.RoundingMode.HALF_UP).toDouble</td><!-- isss -->
 					<td>$@BigDecimal(detalle.afp).setScale(2, BigDecimal.RoundingMode.HALF_UP).toDouble</td><!-- afp -->
 				</tr>
+
+
+
+
+					<!-- Modal bono-->
+					<div class="modal fade" id="mod-bono-@detalle.id" role="dialog">
+						<div class="modal-dialog">
+
+						<!-- Modal content-->
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal">&times;</button>
+								<h4 class="modal-title">Asignacion de bono: @detalle.motorista.nombre (cod: @detalle.motorista.codigo)</h4>
+								</div>
+								<form method="post" action="@routes.GerenteController.asignar_bono(detalle.id)">
+									<div class="modal-body">
+
+
+										@if(flash.containsKey("error")){
+											<div class="row">
+											<div class="alert alert-danger fade in col-lg-12">
+												<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+												<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+												<strong>@flash.get("error")</strong>
+											</div>
+											</div>
+										}
+
+
+										<div class="form-group">
+											<label class="control-label">Bono</label>
+											<input type="text" name="bono[@detalle.id]" class="form-control"  value="@detalle.bono"/>
+											<!-- <input type="hidden" name="detalle_id" value="@detalle.id"/>  -->
+										</div>
+									</div>
+									<div class="modal-footer">
+										
+										<button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>							
+										<button type="submit" class="btn btn-warning"><span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span> Guardar</button>
+										
+									</div>
+								</form>
+							</div>
+
+						</div>
+					</div>
+					<!-- Fin Modal bono-->
+					
 			}
-		
+
+
+			<!-- Modal bono-->
+			<div class="modal fade" id="mod-bono-global" role="dialog">
+				<div class="modal-dialog">
+
+				<!-- Modal content-->
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+						<h4 class="modal-title">Asignacion de bono a motoristas:</h4>
+						</div>
+						<form method="post" action="@routes.GerenteController.asignar_bonos()">
+							<div class="modal-body">
+
+								@if(flash.containsKey("error")){
+									<div class="row">
+									<div class="alert alert-danger fade in col-lg-12">
+										<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+										<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+										<strong>@flash.get("error")</strong>
+									</div>
+									</div>
+								}
+
+								<div class="form-group">
+
+
+									<div class="form-group">
+										<div class="checkbox">
+											<label><input type="checkbox" name="todos" id="check-bono" checked="false">Asignacion global</label>
+										</div>
+										<input type="text" name="bono[global]" id="input-bono" class="form-control" value="0.0"/>
+									</div>
+
+									<hr>
+
+									@for(detalle <- detalles){
+										<label class="control-label">@detalle.motorista.nombre (cod: @detalle.motorista.codigo)</label>
+										<input type="text" name="bono[@detalle.id]" class="form-control individual-bono" value="@detalle.bono"/>
+									}
+								</div>
+							</div>
+							<div class="modal-footer">
+								
+								<button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>							
+								<button type="submit" class="btn btn-warning"><span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span> Guardar</button>
+								
+							</div>
+						</form>
+					</div>
+
+				</div>
+			</div>
+			<!-- Fin Modal bono-->
+
 		</tbody>
 	</table>
 

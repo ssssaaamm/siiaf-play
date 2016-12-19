@@ -933,7 +933,7 @@ public class GerenteController extends Controller {
 
     public Result facturacion_show(Long id) {//recibe el id del periodo de planilla que quiere observar
 
-
+        //metodo post para ver una planilla con id especifico
 
         /*validacion de usuario logeado*/
         String connected = session("username");
@@ -1044,6 +1044,163 @@ public class GerenteController extends Controller {
         //usuario redirigido a planilla actual porque no ingreso nada en el input date
         return redirect(routes.GerenteController.facturacion());       
     }
+
+
+
+    public Result asignar_bono(Long id){
+
+        /*validacion de usuario logeado*/
+        String connected = session("username");
+        
+        if(connected == null){
+           return redirect(routes.HomeController.login());
+        }else{
+            Usuario u = Usuario.find.where().eq("username",connected).findUnique();
+            if(u==null){
+                return redirect(routes.HomeController.login());         
+            }else{
+                if( !u.tipo.codigo.equals( 2 )){
+
+                    flash("error","Permisos denegados para el usuario");
+
+                    if(u.tipo.codigo.intValue()==1){
+                        return badRequest(views.html.administrador.errores.render());
+                    }else{
+                        if(u.tipo.codigo.intValue()==2){
+                            return badRequest(views.html.gerente.errores.render());
+                        }else{
+                            return badRequest(views.html.logistica.errores.render());
+                        }
+                    }                    
+                }
+            }
+        } 
+        /*validacion de usuario logeado*/
+
+
+        DetallePago dp = DetallePago.find.byId(id);
+        if(dp==null){
+            flash("error","El bono no se puede asignar debido a que el detalle de cobro no existe");
+            return badRequest(errores.render());
+        }
+
+        if(dp.periodo_planilla.actual==false){
+            flash("global_error","No puede cambiar los bonos de trabajadores en periodos ya caducados");
+            return redirect(routes.GerenteController.planilla_show(dp.periodo_planilla.id));
+        }
+
+        Map<String, String[]> values = request().body().asFormUrlEncoded();
+        String valor=values.get("bono["+dp.id+"]")[0];
+        
+        if(valor==null){
+            flash("modal","mod-bono-"+dp.id);
+            flash("error","Debe ingresar un valor para el bono");
+            return redirect(routes.GerenteController.planilla_show(dp.periodo_planilla.id));
+        }
+
+        if(valor.isEmpty()){
+            flash("modal","mod-bono-"+dp.id);
+            flash("error","Debe ingresar un valor para el bono");
+            return redirect(routes.GerenteController.planilla_show(dp.periodo_planilla.id));
+        }
+
+        dp.bono=Double.valueOf(valor);
+        dp.update();
+        flash("exito","Operacion exitosa!");
+
+        //y tambien tenemos que recalcular detalle de pago :(
+        final Motorista motorista = dp.motorista;
+        Thread m = new Thread(new Runnable() {
+            public void run() {
+                LogisticaController.recalcularDetallePago(motorista);
+            }
+        });
+        m.start();
+
+        return redirect(routes.GerenteController.planilla_show(dp.periodo_planilla.id));
+    }
+
+
+
+    public Result asignar_bonos(){
+
+        /*validacion de usuario logeado*/
+        String connected = session("username");
+        
+        if(connected == null){
+           return redirect(routes.HomeController.login());
+        }else{
+            Usuario u = Usuario.find.where().eq("username",connected).findUnique();
+            if(u==null){
+                return redirect(routes.HomeController.login());         
+            }else{
+                if( !u.tipo.codigo.equals( 2 )){
+
+                    flash("error","Permisos denegados para el usuario");
+
+                    if(u.tipo.codigo.intValue()==1){
+                        return badRequest(views.html.administrador.errores.render());
+                    }else{
+                        if(u.tipo.codigo.intValue()==2){
+                            return badRequest(views.html.gerente.errores.render());
+                        }else{
+                            return badRequest(views.html.logistica.errores.render());
+                        }
+                    }                    
+                }
+            }
+        } 
+        /*validacion de usuario logeado*/
+
+        PeriodoPlanilla actual=PeriodoPlanilla.find.where().eq("actual",true).findUnique();
+
+        if(actual==null){
+            flash("error","No se contro ningun periodo actual al intentar actualizar bonos");
+            return badRequest(errores.render());
+        }
+
+        List<DetallePago> dps = DetallePago.find.where().eq("periodo_planilla",actual).findList();
+        Map<String, String[]> values = request().body().asFormUrlEncoded();
+        for(DetallePago dp : dps){
+            
+            String valor="";
+            if(values.containsKey("todos")){
+                valor=values.get("bono[global]")[0];
+            }else{
+                valor = values.get("bono["+dp.id+"]")[0];
+            }
+            
+
+            if(valor==null){
+                flash("modal","mod-bono-global");
+                flash("error","Debe ingresar un valor para bono, asegurese de no dejar campos vacios");
+                return redirect(routes.GerenteController.planilla_show(actual.id));
+            }else{
+                if(valor.isEmpty()){
+                    flash("modal","mod-bono-global");
+                    flash("error","Debe ingresar un valor para bono, asegurese de no dejar campos vacios");
+                    return redirect(routes.GerenteController.planilla_show(actual.id));
+                }
+            }
+            
+
+            dp.bono=Double.valueOf(valor);
+            dp.update();
+            
+
+            //y tambien tenemos que recalcular detalle de pago :(
+            final Motorista motorista = dp.motorista;
+            Thread m = new Thread(new Runnable() {
+                public void run() {
+                    LogisticaController.recalcularDetallePago(motorista);
+                }
+            });
+            m.start();
+        } 
+        flash("exito","Operacion exitosa!");
+        return redirect(routes.GerenteController.planilla_show(actual.id));
+    }
+
 
 
     public Result politica_cobro() {

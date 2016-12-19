@@ -51,6 +51,9 @@ GET     /manager/facturacion                        controllers.GerenteControlle
 GET     /manager/facturacion/:id                     controllers.GerenteController.facturacion_show(id: Long)
 POST     /manager/facturacion                        controllers.GerenteController.facturacion_post()
 
+POST  	/manager/bono/:id 							controllers.GerenteController.asignar_bono(id: Long)
+POST  	/manager/bonos 							controllers.GerenteController.asignar_bonos()
+
 GET     /manager/politica/cobro                     controllers.GerenteController.politica_cobro
 POST    /manager/politica/cobro                     controllers.GerenteController.politica_cobro_post()
 

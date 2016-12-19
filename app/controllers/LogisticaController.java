@@ -1075,7 +1075,7 @@ public class LogisticaController extends Controller {
         return ok(politica_pago.render(PoliticaPago.find.where().eq("actual",true).findUnique().getForm()));
     }
 
-    private void actualizarDetalleCobro(Cliente cliente){
+    private static void actualizarDetalleCobro(Cliente cliente){
         PeriodoFacturacion periodo = PeriodoFacturacion.find.where().eq("actual",true).findUnique();
         PoliticaCobro politica = periodo.politica_cobro;
         DetalleCobro detalle = DetalleCobro.find.where().conjunction().eq("cliente",cliente).eq("periodo_facturacion",periodo).findUnique();
@@ -1251,7 +1251,7 @@ public class LogisticaController extends Controller {
 
 
 
-    private void actualizarDetallePago(Motorista motorista){
+    private static void actualizarDetallePago(Motorista motorista){
         PeriodoPlanilla periodo = PeriodoPlanilla.find.where().eq("actual",true).findUnique();
         PoliticaPago politica = periodo.politica_pago;
         DetallePago detalle = DetallePago.find.where().conjunction().eq("motorista",motorista).eq("periodo_planilla",periodo).findUnique();
@@ -1459,4 +1459,12 @@ public class LogisticaController extends Controller {
 
     }//fin metodo
 
+
+    public static void recalcularDetallePago(Motorista m){
+        actualizarDetallePago(m);
+    }
+
+    public static void recalcularDetalleCobro(Cliente c){
+        actualizarDetalleCobro(c);
+    }
 }
