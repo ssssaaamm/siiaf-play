@@ -101,7 +101,7 @@
 	<center>
 		<h3>Periodo</h3>
 		@if(detalles.size()!=0){
-			<h5>@detalles.get(0).periodo_facturacion.fecha_inicio.format("dd-MM-yyyy") / @detalles.get(0).periodo_facturacion.fecha_fin.format("dd-MM-yyyy")</h5>
+			<h5>del @detalles.get(0).periodo_facturacion.fecha_inicio.format("dd-MM-yyyy") al @detalles.get(0).periodo_facturacion.fecha_fin.format("dd-MM-yyyy")</h5>
 		}else{
 			<h5>Este periodo no tiene detalles, pueda que se trate de un periodo de testeo</h5>
 		}

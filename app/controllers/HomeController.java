@@ -21,44 +21,117 @@ public class HomeController extends Controller {
      * <code>GET</code> request with a path of <code>/</code>.
      */
     public Result index() {
+
+        /*validacion de usuario logeado*/
+        String username = session("username");
+        
+        if(username != null){
+            Usuario u = Usuario.find.where().eq("username",username).findUnique();
+            if(u!=null){
+
+                if(u.tipo.codigo == 1){//admin
+                    return redirect(routes.AdministradorController.home());
+                }
+
+                if(u.tipo.codigo == 2){//gerente
+                    return redirect(routes.GerenteController.home());
+                }
+
+                if(u.tipo.codigo == 3){//logistica
+                    return redirect(routes.LogisticaController.home());
+                }
+            }
+        }
+        /*validacion de usuario logeado*/
+
         return ok(index.render());
     }
 
 
     public Result login() {
+
+        /*validacion de usuario logeado*/
+        String username = session("username");
+        
+        if(username != null){
+            Usuario u = Usuario.find.where().eq("username",username).findUnique();
+            if(u!=null){
+
+                if(u.tipo.codigo == 1){//admin
+                    return redirect(routes.AdministradorController.home());
+                }
+
+                if(u.tipo.codigo == 2){//gerente
+                    return redirect(routes.GerenteController.home());
+                }
+
+                if(u.tipo.codigo == 3){//logistica
+                    return redirect(routes.LogisticaController.home());
+                }
+            }
+        }
+        /*validacion de usuario logeado*/
         return ok(login.render());
     }
 
 
     public Result login_post() {
+        /*validacion de usuario logeado*/
+        String username = session("username");
+        
+        if(username != null){
+            Usuario u = Usuario.find.where().eq("username",username).findUnique();
+            if(u!=null){
+
+                if(u.tipo.codigo == 1){//admin
+                    return redirect(routes.AdministradorController.home());
+                }
+
+                if(u.tipo.codigo == 2){//gerente
+                    return redirect(routes.GerenteController.home());
+                }
+
+                if(u.tipo.codigo == 3){//logistica
+                    return redirect(routes.LogisticaController.home());
+                }
+            }
+        }
+        /*validacion de usuario logeado*/
+
         Map<String, String[]> values = request().body().asFormUrlEncoded();
 
-        String username=values.get("username")[0];
+        username=values.get("username")[0];
         String password=values.get("password")[0];
 
 
         Usuario u = Usuario.find.where().eq("username",username).findUnique();
 
+
         if(u ==null ){
             flash("no_registered","Usuario '"+username+"' no registrado");
             return redirect(routes.HomeController.login());
         }else{
+
+            if(u.username.compareTo(username) != 0){
+                flash("no_registered","Usuario '"+username+"' no registrado");
+                return redirect(routes.HomeController.login());
+            }
             
-            if( u.password.equals(password) ){
+            if( u.password.compareTo(password)==0 ){
                 //return ok("empleado registrado y password concuerda");
                 if(u.tipo.codigo == 1){//admin
                     session("username",username);
-                    return redirect(routes.AdministradorController.usuarios());
+                    return redirect(routes.AdministradorController.home());
                 }
 
                 if(u.tipo.codigo == 2){//gerente
                     session("username",username);
-                    return redirect(routes.GerenteController.clientes());
+                    return redirect(routes.GerenteController.home());
                 }
 
                 if(u.tipo.codigo == 3){//gerente
                     session("username",username);
-                    return redirect(routes.LogisticaController.viajes());
+                    return redirect(routes.LogisticaController.home());
                 }
 
             }else{
@@ -77,12 +150,31 @@ public class HomeController extends Controller {
     }
 
     public Result logout() {
+
+
+        /*validacion de usuario logeado*/
+        String username = session("username");
+        
+        if(username == null){
+            return redirect(routes.HomeController.login());
+        }
+        /*validacion de usuario logeado*/
+
+
         session().clear();
-        return redirect(routes.HomeController.index());
+        return redirect(routes.HomeController.login());
     }
 
 
     public Result set_password() {
+
+        /*validacion de usuario logeado*/
+        String username = session("username");
+        
+        if(username == null){
+            return redirect(routes.HomeController.login());
+        }
+        /*validacion de usuario logeado*/
 
         Map<String, String[]> values = request().body().asFormUrlEncoded();
 
@@ -172,7 +264,7 @@ public class HomeController extends Controller {
         } 
 
         session().clear();
-        return redirect(routes.HomeController.index());
+        return redirect(routes.HomeController.login());
 
     }
 

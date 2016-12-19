@@ -5,6 +5,7 @@ import play.mvc.*;
 import play.data.*;
 import java.util.*;
 import java.io.File;
+import java.text.SimpleDateFormat;
 
 import views.html.gerente.*;
 import models.*;
@@ -16,18 +17,113 @@ import models.*;
 public class GerenteController extends Controller {
 
     public Result home(){
+
+        /*validacion de usuario logeado*/
+        String connected = session("username");
+        
+        if(connected == null){
+           return redirect(routes.HomeController.login());
+        }else{
+            Usuario u = Usuario.find.where().eq("username",connected).findUnique();
+            if(u==null){
+                return redirect(routes.HomeController.login());         
+            }else{
+                if( !u.tipo.codigo.equals( 2 )){
+
+                    flash("error","Permisos denegados para el usuario");
+
+                    if(u.tipo.codigo.intValue()==1){
+                        return badRequest(views.html.administrador.errores.render());
+                    }else{
+                        if(u.tipo.codigo.intValue()==2){
+                            return badRequest(views.html.gerente.errores.render());
+                        }else{
+                            return badRequest(views.html.logistica.errores.render());
+                        }
+                    }                    
+                }
+            }
+        } 
+        /*validacion de usuario logeado*/
+
         return redirect(routes.GerenteController.clientes());
     }
 
     //CLIENTES
     //list
     public Result clientes() {
+
+
+        /*validacion de usuario logeado*/
+        String connected = session("username");
+        
+        if(connected == null){
+           return redirect(routes.HomeController.login());
+        }else{
+            Usuario u = Usuario.find.where().eq("username",connected).findUnique();
+            if(u==null){
+                return redirect(routes.HomeController.login());         
+            }else{
+                if( !u.tipo.codigo.equals( 2 )){
+
+                    flash("error","Permisos denegados para el usuario");
+
+                    if(u.tipo.codigo.intValue()==1){
+                        return badRequest(views.html.administrador.errores.render());
+                    }else{
+                        if(u.tipo.codigo.intValue()==2){
+                            return badRequest(views.html.gerente.errores.render());
+                        }else{
+                            return badRequest(views.html.logistica.errores.render());
+                        }
+                    }                    
+                }
+            }
+        } 
+        /*validacion de usuario logeado*/
+
+
         Form<Cliente> cliente_form = Form.form(Cliente.class);
         List<Cliente> clientes_list = Cliente.find.where().eq("activo",true).findList();
         return ok(clientes.render(cliente_form,clientes_list));
     }
+
+
     //new  
     public Result cliente_new() {
+
+
+
+        /*validacion de usuario logeado*/
+        String connected = session("username");
+        
+        if(connected == null){
+           return redirect(routes.HomeController.login());
+        }else{
+            Usuario u = Usuario.find.where().eq("username",connected).findUnique();
+            if(u==null){
+                return redirect(routes.HomeController.login());         
+            }else{
+                if( !u.tipo.codigo.equals( 2 )){
+
+                    flash("error","Permisos denegados para el usuario");
+
+                    if(u.tipo.codigo.intValue()==1){
+                        return badRequest(views.html.administrador.errores.render());
+                    }else{
+                        if(u.tipo.codigo.intValue()==2){
+                            return badRequest(views.html.gerente.errores.render());
+                        }else{
+                            return badRequest(views.html.logistica.errores.render());
+                        }
+                    }                    
+                }
+            }
+        } 
+        /*validacion de usuario logeado*/
+
+
+
        Form<Cliente>cliente_form = Form.form(Cliente.class).bindFromRequest();
         Map<String, String[]> values = request().body().asFormUrlEncoded();
         List<Cliente> clientes_list = Cliente.find.findList();
@@ -50,8 +146,42 @@ public class GerenteController extends Controller {
 
         return redirect(routes.GerenteController.clientes());
     }
+
     //edit
     public Result cliente_edit(Long id) {
+
+
+
+        /*validacion de usuario logeado*/
+        String connected = session("username");
+        
+        if(connected == null){
+           return redirect(routes.HomeController.login());
+        }else{
+            Usuario u = Usuario.find.where().eq("username",connected).findUnique();
+            if(u==null){
+                return redirect(routes.HomeController.login());         
+            }else{
+                if( !u.tipo.codigo.equals( 2 )){
+
+                    flash("error","Permisos denegados para el usuario");
+
+                    if(u.tipo.codigo.intValue()==1){
+                        return badRequest(views.html.administrador.errores.render());
+                    }else{
+                        if(u.tipo.codigo.intValue()==2){
+                            return badRequest(views.html.gerente.errores.render());
+                        }else{
+                            return badRequest(views.html.logistica.errores.render());
+                        }
+                    }                    
+                }
+            }
+        } 
+        /*validacion de usuario logeado*/
+
+
+
       Form<Cliente> cliente_form = Form.form(Cliente.class).bindFromRequest();
         List<Cliente> clientes_list = Cliente.find.findList();
 
@@ -83,8 +213,43 @@ public class GerenteController extends Controller {
 
         return redirect(routes.GerenteController.clientes());
     }
+
+
     //remove
     public Result cliente_remove(Long id) {
+
+
+
+        /*validacion de usuario logeado*/
+        String connected = session("username");
+        
+        if(connected == null){
+           return redirect(routes.HomeController.login());
+        }else{
+            Usuario u = Usuario.find.where().eq("username",connected).findUnique();
+            if(u==null){
+                return redirect(routes.HomeController.login());         
+            }else{
+                if( !u.tipo.codigo.equals( 2 )){
+
+                    flash("error","Permisos denegados para el usuario");
+
+                    if(u.tipo.codigo.intValue()==1){
+                        return badRequest(views.html.administrador.errores.render());
+                    }else{
+                        if(u.tipo.codigo.intValue()==2){
+                            return badRequest(views.html.gerente.errores.render());
+                        }else{
+                            return badRequest(views.html.logistica.errores.render());
+                        }
+                    }                    
+                }
+            }
+        } 
+        /*validacion de usuario logeado*/
+
+
+
         Cliente cli = Cliente.find.byId(id);
         if(cli != null){
             cli.activo=false;
@@ -98,12 +263,78 @@ public class GerenteController extends Controller {
     //MOTORISTAS
     //list
     public Result motoristas() {
+
+
+
+        /*validacion de usuario logeado*/
+        String connected = session("username");
+        
+        if(connected == null){
+           return redirect(routes.HomeController.login());
+        }else{
+            Usuario u = Usuario.find.where().eq("username",connected).findUnique();
+            if(u==null){
+                return redirect(routes.HomeController.login());         
+            }else{
+                if( !u.tipo.codigo.equals( 2 )){
+
+                    flash("error","Permisos denegados para el usuario");
+
+                    if(u.tipo.codigo.intValue()==1){
+                        return badRequest(views.html.administrador.errores.render());
+                    }else{
+                        if(u.tipo.codigo.intValue()==2){
+                            return badRequest(views.html.gerente.errores.render());
+                        }else{
+                            return badRequest(views.html.logistica.errores.render());
+                        }
+                    }                    
+                }
+            }
+        } 
+        /*validacion de usuario logeado*/
+
+
+
         Form<Motorista> motorista_form = Form.form(Motorista.class);
         List<Motorista> motoristas_list = Motorista.find.where().eq("activo",true).findList();
         return ok(motoristas.render(motorista_form,motoristas_list));
     }
     //new
     public Result motorista_new() {
+
+
+
+        /*validacion de usuario logeado*/
+        String connected = session("username");
+        
+        if(connected == null){
+           return redirect(routes.HomeController.login());
+        }else{
+            Usuario u = Usuario.find.where().eq("username",connected).findUnique();
+            if(u==null){
+                return redirect(routes.HomeController.login());         
+            }else{
+                if( !u.tipo.codigo.equals( 2 )){
+
+                    flash("error","Permisos denegados para el usuario");
+
+                    if(u.tipo.codigo.intValue()==1){
+                        return badRequest(views.html.administrador.errores.render());
+                    }else{
+                        if(u.tipo.codigo.intValue()==2){
+                            return badRequest(views.html.gerente.errores.render());
+                        }else{
+                            return badRequest(views.html.logistica.errores.render());
+                        }
+                    }                    
+                }
+            }
+        } 
+        /*validacion de usuario logeado*/
+
+
+
         Form<Motorista> motorista_form = Form.form(Motorista.class).bindFromRequest();
         Map<String, String[]> values = request().body().asFormUrlEncoded();
         List<Motorista> motoristas_list = Motorista.find.findList();
@@ -141,8 +372,43 @@ public class GerenteController extends Controller {
 
         return redirect(routes.GerenteController.motoristas());
     }
+
+
     //edit
     public Result motorista_edit(Long id) {
+
+
+
+        /*validacion de usuario logeado*/
+        String connected = session("username");
+        
+        if(connected == null){
+           return redirect(routes.HomeController.login());
+        }else{
+            Usuario u = Usuario.find.where().eq("username",connected).findUnique();
+            if(u==null){
+                return redirect(routes.HomeController.login());         
+            }else{
+                if( !u.tipo.codigo.equals( 2 )){
+
+                    flash("error","Permisos denegados para el usuario");
+
+                    if(u.tipo.codigo.intValue()==1){
+                        return badRequest(views.html.administrador.errores.render());
+                    }else{
+                        if(u.tipo.codigo.intValue()==2){
+                            return badRequest(views.html.gerente.errores.render());
+                        }else{
+                            return badRequest(views.html.logistica.errores.render());
+                        }
+                    }                    
+                }
+            }
+        } 
+        /*validacion de usuario logeado*/
+
+
+
         Form<Motorista> motorista_form = Form.form(Motorista.class).bindFromRequest();
         List<Motorista> motoristas_list = Motorista.find.findList();
 
@@ -199,6 +465,38 @@ public class GerenteController extends Controller {
     }
     //remove
     public Result motorista_remove(Long id) {
+
+
+
+        /*validacion de usuario logeado*/
+        String connected = session("username");
+        
+        if(connected == null){
+           return redirect(routes.HomeController.login());
+        }else{
+            Usuario u = Usuario.find.where().eq("username",connected).findUnique();
+            if(u==null){
+                return redirect(routes.HomeController.login());         
+            }else{
+                if( !u.tipo.codigo.equals( 2 )){
+
+                    flash("error","Permisos denegados para el usuario");
+
+                    if(u.tipo.codigo.intValue()==1){
+                        return badRequest(views.html.administrador.errores.render());
+                    }else{
+                        if(u.tipo.codigo.intValue()==2){
+                            return badRequest(views.html.gerente.errores.render());
+                        }else{
+                            return badRequest(views.html.logistica.errores.render());
+                        }
+                    }                    
+                }
+            }
+        } 
+        /*validacion de usuario logeado*/
+
+
         Motorista mot = Motorista.find.byId(id);
         if(mot != null){
             mot.activo=false;
@@ -212,6 +510,39 @@ public class GerenteController extends Controller {
     //CABEZALES
     //list
     public Result cabezales() {
+
+
+
+        /*validacion de usuario logeado*/
+        String connected = session("username");
+        
+        if(connected == null){
+           return redirect(routes.HomeController.login());
+        }else{
+            Usuario u = Usuario.find.where().eq("username",connected).findUnique();
+            if(u==null){
+                return redirect(routes.HomeController.login());         
+            }else{
+                if( !u.tipo.codigo.equals( 2 )){
+
+                    flash("error","Permisos denegados para el usuario");
+
+                    if(u.tipo.codigo.intValue()==1){
+                        return badRequest(views.html.administrador.errores.render());
+                    }else{
+                        if(u.tipo.codigo.intValue()==2){
+                            return badRequest(views.html.gerente.errores.render());
+                        }else{
+                            return badRequest(views.html.logistica.errores.render());
+                        }
+                    }                    
+                }
+            }
+        } 
+        /*validacion de usuario logeado*/
+
+
+
         Form<Cabezal> cabezal_form = Form.form(Cabezal.class);
         List<Cabezal> cabezales_list = Cabezal.find.where().eq("activo",true).findList();
         return ok(cabezales.render(cabezal_form,cabezales_list));
@@ -219,6 +550,39 @@ public class GerenteController extends Controller {
 
     //new
     public Result cabezal_new() {
+
+
+
+        /*validacion de usuario logeado*/
+        String connected = session("username");
+        
+        if(connected == null){
+           return redirect(routes.HomeController.login());
+        }else{
+            Usuario u = Usuario.find.where().eq("username",connected).findUnique();
+            if(u==null){
+                return redirect(routes.HomeController.login());         
+            }else{
+                if( !u.tipo.codigo.equals( 2 )){
+
+                    flash("error","Permisos denegados para el usuario");
+
+                    if(u.tipo.codigo.intValue()==1){
+                        return badRequest(views.html.administrador.errores.render());
+                    }else{
+                        if(u.tipo.codigo.intValue()==2){
+                            return badRequest(views.html.gerente.errores.render());
+                        }else{
+                            return badRequest(views.html.logistica.errores.render());
+                        }
+                    }                    
+                }
+            }
+        } 
+        /*validacion de usuario logeado*/
+
+
+
         Form<Cabezal> cabezal_form = Form.form(Cabezal.class).bindFromRequest();
         Map<String, String[]> values = request().body().asFormUrlEncoded();
         List<Cabezal> cabezales_list = Cabezal.find.findList();
@@ -244,6 +608,39 @@ public class GerenteController extends Controller {
     }
     //edit
     public Result cabezal_edit(Long id) {
+
+
+
+        /*validacion de usuario logeado*/
+        String connected = session("username");
+        
+        if(connected == null){
+           return redirect(routes.HomeController.login());
+        }else{
+            Usuario u = Usuario.find.where().eq("username",connected).findUnique();
+            if(u==null){
+                return redirect(routes.HomeController.login());         
+            }else{
+                if( !u.tipo.codigo.equals( 2 )){
+
+                    flash("error","Permisos denegados para el usuario");
+
+                    if(u.tipo.codigo.intValue()==1){
+                        return badRequest(views.html.administrador.errores.render());
+                    }else{
+                        if(u.tipo.codigo.intValue()==2){
+                            return badRequest(views.html.gerente.errores.render());
+                        }else{
+                            return badRequest(views.html.logistica.errores.render());
+                        }
+                    }                    
+                }
+            }
+        } 
+        /*validacion de usuario logeado*/
+
+
+
         Form<Cabezal> cabezal_form = Form.form(Cabezal.class).bindFromRequest();
         List<Cabezal> cabezales_list = Cabezal.find.findList();
 
@@ -276,6 +673,40 @@ public class GerenteController extends Controller {
     }
     //remove
     public Result cabezal_remove(Long id) {
+
+
+
+
+        /*validacion de usuario logeado*/
+        String connected = session("username");
+        
+        if(connected == null){
+           return redirect(routes.HomeController.login());
+        }else{
+            Usuario u = Usuario.find.where().eq("username",connected).findUnique();
+            if(u==null){
+                return redirect(routes.HomeController.login());         
+            }else{
+                if( !u.tipo.codigo.equals( 2 )){
+
+                    flash("error","Permisos denegados para el usuario");
+
+                    if(u.tipo.codigo.intValue()==1){
+                        return badRequest(views.html.administrador.errores.render());
+                    }else{
+                        if(u.tipo.codigo.intValue()==2){
+                            return badRequest(views.html.gerente.errores.render());
+                        }else{
+                            return badRequest(views.html.logistica.errores.render());
+                        }
+                    }                    
+                }
+            }
+        } 
+        /*validacion de usuario logeado*/
+
+
+
         Cabezal cab = Cabezal.find.byId(id);
         if(cab != null){
             cab.activo=false;
@@ -289,18 +720,365 @@ public class GerenteController extends Controller {
 
 
 
-    public Result planilla() {
-        List<DetallePago> detalles = DetallePago.find.where().eq("periodo_planilla",PeriodoPlanilla.find.where().eq("actual",true).findUnique()).findList();
-        return ok(planilla.render(detalles));
+    public Result planilla(){//cuando el usuario no indique periodo se mostrara siempre el periodo actual
+
+
+
+
+
+        /*validacion de usuario logeado*/
+        String connected = session("username");
+        
+        if(connected == null){
+           return redirect(routes.HomeController.login());
+        }else{
+            Usuario u = Usuario.find.where().eq("username",connected).findUnique();
+            if(u==null){
+                return redirect(routes.HomeController.login());         
+            }else{
+                if( !u.tipo.codigo.equals( 2 )){
+
+                    flash("error","Permisos denegados para el usuario");
+
+                    if(u.tipo.codigo.intValue()==1){
+                        return badRequest(views.html.administrador.errores.render());
+                    }else{
+                        if(u.tipo.codigo.intValue()==2){
+                            return badRequest(views.html.gerente.errores.render());
+                        }else{
+                            return badRequest(views.html.logistica.errores.render());
+                        }
+                    }                    
+                }
+            }
+        } 
+        /*validacion de usuario logeado*/
+
+
+
+
+        PeriodoPlanilla periodo_a_mostrar = PeriodoPlanilla.find.where().eq("actual",true).findUnique();
+        
+        if(periodo_a_mostrar==null){
+            flash("error","Actualmente NO hay periodo de planilla, esto puede ser porque aun no se ha registrado ningun viaje en el sistema");
+            return badRequest(errores.render());
+        }
+
+        return redirect(routes.GerenteController.planilla_show(periodo_a_mostrar.id));
     }
 
-    public Result facturacion() {
-        List<DetalleCobro> detalles = DetalleCobro.find.where().eq("periodo_facturacion",PeriodoFacturacion.find.where().eq("actual",true).findUnique()).findList();
-        return ok(facturacion.render(detalles));
+    public Result planilla_show(Long id) {//recibe el id del periodo de planilla que quiere observar
+
+
+
+
+        /*validacion de usuario logeado*/
+        String connected = session("username");
+        
+        if(connected == null){
+           return redirect(routes.HomeController.login());
+        }else{
+            Usuario u = Usuario.find.where().eq("username",connected).findUnique();
+            if(u==null){
+                return redirect(routes.HomeController.login());         
+            }else{
+                if( !u.tipo.codigo.equals( 2 )){
+
+                    flash("error","Permisos denegados para el usuario");
+
+                    if(u.tipo.codigo.intValue()==1){
+                        return badRequest(views.html.administrador.errores.render());
+                    }else{
+                        if(u.tipo.codigo.intValue()==2){
+                            return badRequest(views.html.gerente.errores.render());
+                        }else{
+                            return badRequest(views.html.logistica.errores.render());
+                        }
+                    }                    
+                }
+            }
+        } 
+        /*validacion de usuario logeado*/
+
+
+
+
+        PeriodoPlanilla periodo = PeriodoPlanilla.find.byId(id);
+
+        if(periodo==null){
+           flash("error","El periodo de planilla buscado no se encuentra, esto puede ser porque aun no se ha registrado ningun viaje en el sistema o el periodo no ha ocurrido (no existe en la base de datos)");
+            return badRequest(errores.render());
+           //return redirect(routes.LogisticaController.errores());
+        }
+
+        List<DetallePago> detalles = DetallePago.find.where().eq("periodo_planilla",periodo).findList();
+        
+        List<PeriodoPlanilla> periodos= PeriodoPlanilla.find.findList();
+        return ok(planilla.render(detalles,periodos));
+    }
+
+
+
+    public Result planilla_post() {
+
+
+
+
+        /*validacion de usuario logeado*/
+        String connected = session("username");
+        
+        if(connected == null){
+           return redirect(routes.HomeController.login());
+        }else{
+            Usuario u = Usuario.find.where().eq("username",connected).findUnique();
+            if(u==null){
+                return redirect(routes.HomeController.login());         
+            }else{
+                if( !u.tipo.codigo.equals( 2 )){
+
+                    flash("error","Permisos denegados para el usuario");
+
+                    if(u.tipo.codigo.intValue()==1){
+                        return badRequest(views.html.administrador.errores.render());
+                    }else{
+                        if(u.tipo.codigo.intValue()==2){
+                            return badRequest(views.html.gerente.errores.render());
+                        }else{
+                            return badRequest(views.html.logistica.errores.render());
+                        }
+                    }                    
+                }
+            }
+        } 
+        /*validacion de usuario logeado*/
+
+
+
+        Map<String, String[]> values = request().body().asFormUrlEncoded();
+
+        if(!values.get("fecha_inicio")[0].isEmpty()){
+            //return ok("entro aqui");
+
+            try{
+                SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
+                Date fecha_inicio = sdf.parse(values.get("fecha_inicio")[0]);
+                PeriodoPlanilla periodo = PeriodoPlanilla.find.where().eq("fecha_inicio",fecha_inicio).findUnique();
+
+                if(periodo == null){
+                    flash("error","La fecha que ha ingresado no coincide con la fecha de inicio de ningun periodo de planilla, por favor intente nuevamente utilizando el selector de fechas");
+                    return badRequest(errores.render());
+                }
+
+                Long id_periodo = periodo.id;
+                return redirect(routes.GerenteController.planilla_show(id_periodo));
+        
+            }catch(Exception e){
+                flash("error","La fecha que ha ingresado no tiene el formato adecuado, por favor utilice el selector de fechas, en lugar de ingresar fechas manualmente");
+                return badRequest(errores.render());
+                
+                
+            }
+            
+        }
+        //usuario redirigido a planilla actual porque no ingreso nada en el input date
+        return redirect(routes.GerenteController.planilla());       
+    }
+
+
+    
+
+    public Result facturacion(){//cuando el usuario no indique periodo se mostrara siempre el periodo actual
+
+
+
+        /*validacion de usuario logeado*/
+        String connected = session("username");
+        
+        if(connected == null){
+           return redirect(routes.HomeController.login());
+        }else{
+            Usuario u = Usuario.find.where().eq("username",connected).findUnique();
+            if(u==null){
+                return redirect(routes.HomeController.login());         
+            }else{
+                if( !u.tipo.codigo.equals( 2 )){
+
+                    flash("error","Permisos denegados para el usuario");
+
+                    if(u.tipo.codigo.intValue()==1){
+                        return badRequest(views.html.administrador.errores.render());
+                    }else{
+                        if(u.tipo.codigo.intValue()==2){
+                            return badRequest(views.html.gerente.errores.render());
+                        }else{
+                            return badRequest(views.html.logistica.errores.render());
+                        }
+                    }                    
+                }
+            }
+        } 
+        /*validacion de usuario logeado*/
+
+
+
+        PeriodoFacturacion periodo_a_mostrar = PeriodoFacturacion.find.where().eq("actual",true).findUnique();
+        
+        if(periodo_a_mostrar==null){
+            flash("error","Actualmente NO hay periodo de facturacion, esto puede ser porque aun no se ha registrado ningun viaje en el sistema");
+            return badRequest(errores.render());
+        }
+
+        return redirect(routes.GerenteController.facturacion_show(periodo_a_mostrar.id));
+    }
+
+    public Result facturacion_show(Long id) {//recibe el id del periodo de planilla que quiere observar
+
+
+
+        /*validacion de usuario logeado*/
+        String connected = session("username");
+        
+        if(connected == null){
+           return redirect(routes.HomeController.login());
+        }else{
+            Usuario u = Usuario.find.where().eq("username",connected).findUnique();
+            if(u==null){
+                return redirect(routes.HomeController.login());         
+            }else{
+                if( !u.tipo.codigo.equals( 2 )){
+
+                    flash("error","Permisos denegados para el usuario");
+
+                    if(u.tipo.codigo.intValue()==1){
+                        return badRequest(views.html.administrador.errores.render());
+                    }else{
+                        if(u.tipo.codigo.intValue()==2){
+                            return badRequest(views.html.gerente.errores.render());
+                        }else{
+                            return badRequest(views.html.logistica.errores.render());
+                        }
+                    }                    
+                }
+            }
+        } 
+        /*validacion de usuario logeado*/
+
+
+
+        PeriodoFacturacion periodo = PeriodoFacturacion.find.byId(id);
+
+        if(periodo==null){
+           flash("error","El periodo de facturacion buscado no se encuentra, esto puede ser porque aun no se ha registrado ningun viaje en el sistema o el periodo no ha ocurrido (no existe en la base de datos)");
+            return badRequest(errores.render());
+           //return redirect(routes.LogisticaController.errores());
+        }
+
+        List<DetalleCobro> detalles = DetalleCobro.find.where().eq("periodo_facturacion",periodo).findList();
+        
+        List<PeriodoFacturacion> periodos= PeriodoFacturacion.find.findList();
+        return ok(facturacion.render(detalles,periodos));
+    }
+
+
+
+    public Result facturacion_post() {
+
+
+
+        /*validacion de usuario logeado*/
+        String connected = session("username");
+        
+        if(connected == null){
+           return redirect(routes.HomeController.login());
+        }else{
+            Usuario u = Usuario.find.where().eq("username",connected).findUnique();
+            if(u==null){
+                return redirect(routes.HomeController.login());         
+            }else{
+                if( !u.tipo.codigo.equals( 2 )){
+
+                    flash("error","Permisos denegados para el usuario");
+
+                    if(u.tipo.codigo.intValue()==1){
+                        return badRequest(views.html.administrador.errores.render());
+                    }else{
+                        if(u.tipo.codigo.intValue()==2){
+                            return badRequest(views.html.gerente.errores.render());
+                        }else{
+                            return badRequest(views.html.logistica.errores.render());
+                        }
+                    }                    
+                }
+            }
+        } 
+        /*validacion de usuario logeado*/
+
+
+
+        Map<String, String[]> values = request().body().asFormUrlEncoded();
+
+        if(!values.get("fecha_inicio")[0].isEmpty()){
+            //return ok("entro aqui");
+
+            try{
+                SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
+                Date fecha_inicio = sdf.parse(values.get("fecha_inicio")[0]);
+                PeriodoFacturacion periodo = PeriodoFacturacion.find.where().eq("fecha_inicio",fecha_inicio).findUnique();
+
+                if(periodo == null){
+                    flash("error","La fecha que ha ingresado no coincide con la fecha de inicio de ningun periodo de facturacion, por favor intente nuevamente utilizando el selector de fechas");
+                    return badRequest(errores.render());
+                }
+
+                Long id_periodo = periodo.id;
+                return redirect(routes.GerenteController.facturacion_show(id_periodo));
+        
+            }catch(Exception e){
+                flash("error","La fecha que ha ingresado no tiene el formato adecuado, por favor utilice el selector de fechas, en lugar de ingresar fechas manualmente");
+                return badRequest(errores.render());
+                
+                
+            }
+            
+        }
+        //usuario redirigido a planilla actual porque no ingreso nada en el input date
+        return redirect(routes.GerenteController.facturacion());       
     }
 
 
     public Result politica_cobro() {
+
+
+
+        /*validacion de usuario logeado*/
+        String connected = session("username");
+        
+        if(connected == null){
+           return redirect(routes.HomeController.login());
+        }else{
+            Usuario u = Usuario.find.where().eq("username",connected).findUnique();
+            if(u==null){
+                return redirect(routes.HomeController.login());         
+            }else{
+                if( !u.tipo.codigo.equals( 2 )){
+
+                    flash("error","Permisos denegados para el usuario");
+
+                    if(u.tipo.codigo.intValue()==1){
+                        return badRequest(views.html.administrador.errores.render());
+                    }else{
+                        if(u.tipo.codigo.intValue()==2){
+                            return badRequest(views.html.gerente.errores.render());
+                        }else{
+                            return badRequest(views.html.logistica.errores.render());
+                        }
+                    }                    
+                }
+            }
+        } 
+        /*validacion de usuario logeado*/
+
+
         PoliticaCobro politica = PoliticaCobro.find.where().eq("actual",1).findUnique();
         
         Form<PoliticaCobro> politica_form = null;
@@ -316,6 +1094,38 @@ public class GerenteController extends Controller {
 
 
     public Result politica_cobro_post(){
+
+
+
+        /*validacion de usuario logeado*/
+        String connected = session("username");
+        
+        if(connected == null){
+           return redirect(routes.HomeController.login());
+        }else{
+            Usuario u = Usuario.find.where().eq("username",connected).findUnique();
+            if(u==null){
+                return redirect(routes.HomeController.login());         
+            }else{
+                if( !u.tipo.codigo.equals( 2 )){
+
+                    flash("error","Permisos denegados para el usuario");
+
+                    if(u.tipo.codigo.intValue()==1){
+                        return badRequest(views.html.administrador.errores.render());
+                    }else{
+                        if(u.tipo.codigo.intValue()==2){
+                            return badRequest(views.html.gerente.errores.render());
+                        }else{
+                            return badRequest(views.html.logistica.errores.render());
+                        }
+                    }                    
+                }
+            }
+        } 
+        /*validacion de usuario logeado*/
+
+
 
         //verificar si existe una politica de cobro con el campo 'actual' en true;
         PoliticaCobro actual = PoliticaCobro.find.where().eq("actual",1).findUnique();
@@ -367,6 +1177,38 @@ public class GerenteController extends Controller {
 
     public Result politica_pago() {
         
+
+
+        /*validacion de usuario logeado*/
+        String connected = session("username");
+        
+        if(connected == null){
+           return redirect(routes.HomeController.login());
+        }else{
+            Usuario u = Usuario.find.where().eq("username",connected).findUnique();
+            if(u==null){
+                return redirect(routes.HomeController.login());         
+            }else{
+                if( !u.tipo.codigo.equals( 2 )){
+
+                    flash("error","Permisos denegados para el usuario");
+
+                    if(u.tipo.codigo.intValue()==1){
+                        return badRequest(views.html.administrador.errores.render());
+                    }else{
+                        if(u.tipo.codigo.intValue()==2){
+                            return badRequest(views.html.gerente.errores.render());
+                        }else{
+                            return badRequest(views.html.logistica.errores.render());
+                        }
+                    }                    
+                }
+            }
+        } 
+        /*validacion de usuario logeado*/
+
+
+
         PoliticaPago politica = PoliticaPago.find.where().eq("actual",1).findUnique();
         
         Form<PoliticaPago> politica_form = null;
@@ -381,6 +1223,38 @@ public class GerenteController extends Controller {
     }
 
     public Result politica_pago_post(){
+
+
+
+        /*validacion de usuario logeado*/
+        String connected = session("username");
+        
+        if(connected == null){
+           return redirect(routes.HomeController.login());
+        }else{
+            Usuario u = Usuario.find.where().eq("username",connected).findUnique();
+            if(u==null){
+                return redirect(routes.HomeController.login());         
+            }else{
+                if( !u.tipo.codigo.equals( 2 )){
+
+                    flash("error","Permisos denegados para el usuario");
+
+                    if(u.tipo.codigo.intValue()==1){
+                        return badRequest(views.html.administrador.errores.render());
+                    }else{
+                        if(u.tipo.codigo.intValue()==2){
+                            return badRequest(views.html.gerente.errores.render());
+                        }else{
+                            return badRequest(views.html.logistica.errores.render());
+                        }
+                    }                    
+                }
+            }
+        } 
+        /*validacion de usuario logeado*/
+
+
 
         //verificar si existe una politica de cobro con el campo 'actual' en true;
         PoliticaPago actual = PoliticaPago.find.where().eq("actual",1).findUnique();
@@ -429,12 +1303,79 @@ public class GerenteController extends Controller {
     //USUARIOS
     //list
     public Result usuarios() {
+
+
+
+        /*validacion de usuario logeado*/
+        String connected = session("username");
+        
+        if(connected == null){
+           return redirect(routes.HomeController.login());
+        }else{
+            Usuario u = Usuario.find.where().eq("username",connected).findUnique();
+            if(u==null){
+                return redirect(routes.HomeController.login());         
+            }else{
+                if( !u.tipo.codigo.equals( 2 )){
+
+                    flash("error","Permisos denegados para el usuario");
+
+                    if(u.tipo.codigo.intValue()==1){
+                        return badRequest(views.html.administrador.errores.render());
+                    }else{
+                        if(u.tipo.codigo.intValue()==2){
+                            return badRequest(views.html.gerente.errores.render());
+                        }else{
+                            return badRequest(views.html.logistica.errores.render());
+                        }
+                    }                    
+                }
+            }
+        } 
+        /*validacion de usuario logeado*/
+
+
+
         Form<Usuario> usuario_form = Form.form(Usuario.class);
         List<Usuario> usuarios_list = Usuario.find.findList();
         return ok(usuarios.render(usuario_form,usuarios_list));
     }
+
     //add
     public Result usuario_new() {
+
+
+
+        /*validacion de usuario logeado*/
+        String connected = session("username");
+        
+        if(connected == null){
+           return redirect(routes.HomeController.login());
+        }else{
+            Usuario u = Usuario.find.where().eq("username",connected).findUnique();
+            if(u==null){
+                return redirect(routes.HomeController.login());         
+            }else{
+                if( !u.tipo.codigo.equals( 2 )){
+
+                    flash("error","Permisos denegados para el usuario");
+
+                    if(u.tipo.codigo.intValue()==1){
+                        return badRequest(views.html.administrador.errores.render());
+                    }else{
+                        if(u.tipo.codigo.intValue()==2){
+                            return badRequest(views.html.gerente.errores.render());
+                        }else{
+                            return badRequest(views.html.logistica.errores.render());
+                        }
+                    }                    
+                }
+            }
+        } 
+        /*validacion de usuario logeado*/
+
+
+
         Form<Usuario> usuario_form = Form.form(Usuario.class).bindFromRequest();
         Map<String, String[]> values = request().body().asFormUrlEncoded();
         List<Usuario> usuarios_list = Usuario.find.findList();
@@ -457,8 +1398,42 @@ public class GerenteController extends Controller {
 
         return redirect(routes.GerenteController.usuarios());
     }
+
     //edit
     public Result usuario_edit(Long id) {
+
+
+
+        /*validacion de usuario logeado*/
+        String connected = session("username");
+        
+        if(connected == null){
+           return redirect(routes.HomeController.login());
+        }else{
+            Usuario u = Usuario.find.where().eq("username",connected).findUnique();
+            if(u==null){
+                return redirect(routes.HomeController.login());         
+            }else{
+                if( !u.tipo.codigo.equals( 2 )){
+
+                    flash("error","Permisos denegados para el usuario");
+
+                    if(u.tipo.codigo.intValue()==1){
+                        return badRequest(views.html.administrador.errores.render());
+                    }else{
+                        if(u.tipo.codigo.intValue()==2){
+                            return badRequest(views.html.gerente.errores.render());
+                        }else{
+                            return badRequest(views.html.logistica.errores.render());
+                        }
+                    }                    
+                }
+            }
+        } 
+        /*validacion de usuario logeado*/
+
+
+
         Form<Usuario> usuario_form = Form.form(Usuario.class).bindFromRequest();
         List<Usuario> usuarios_list = Usuario.find.findList();
 
@@ -492,6 +1467,39 @@ public class GerenteController extends Controller {
     }
     //remove
     public Result usuario_remove(Long id){
+
+
+
+        /*validacion de usuario logeado*/
+        String connected = session("username");
+        
+        if(connected == null){
+           return redirect(routes.HomeController.login());
+        }else{
+            Usuario u = Usuario.find.where().eq("username",connected).findUnique();
+            if(u==null){
+                return redirect(routes.HomeController.login());         
+            }else{
+                if( !u.tipo.codigo.equals( 2 )){
+
+                    flash("error","Permisos denegados para el usuario");
+
+                    if(u.tipo.codigo.intValue()==1){
+                        return badRequest(views.html.administrador.errores.render());
+                    }else{
+                        if(u.tipo.codigo.intValue()==2){
+                            return badRequest(views.html.gerente.errores.render());
+                        }else{
+                            return badRequest(views.html.logistica.errores.render());
+                        }
+                    }                    
+                }
+            }
+        } 
+        /*validacion de usuario logeado*/
+        
+
+        
         Usuario user = Usuario.find.byId(id);
         if(user != null){
             user.delete();

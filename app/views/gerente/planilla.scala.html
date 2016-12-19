@@ -1,4 +1,4 @@
-@(detalles: List[DetallePago])
+@(detalles: List[DetallePago], periodos: List[PeriodoPlanilla])
 @import scala.math.BigDecimal
 @import com.avaje.ebean.Ebean
 @import helper._
@@ -6,12 +6,20 @@
 @css={
 	<link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/bootstrap-table.css")">
 	<link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/vertical-table.css")">
-<style>
-	.popover-content {
-  height: 200px;
-  overflow-y: auto;
- }
- </style>
+	<link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/zebra_metallic.css")">
+	<!-- <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/datepicker.css")"> -->
+	<!-- <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/bootstrap-datepicker.css")"> -->
+	<style>
+		.popover-content {
+		  height: 200px;
+		  overflow-y: auto;
+		 }
+
+		.col-centered{
+		float: none;
+		margin: 0 auto;
+		}
+	 </style>
 }
 
 @js={
@@ -22,6 +30,36 @@
 	<script src="@routes.Assets.versioned("javascripts/export/jspdf/libs/sprintf.js")" type="text/javascript"></script>
 	<script src="@routes.Assets.versioned("javascripts/export/jspdf/jspdf.js")" type="text/javascript"></script>
 	<script src="@routes.Assets.versioned("javascripts/export/jspdf/libs/base64.js")" type="text/javascript"></script>
+	<!-- <script src="@routes.Assets.versioned("javascripts/datepicker.js")" type="text/javascript"></script> -->
+	<script src="@routes.Assets.versioned("javascripts/zebra_datepicker.js")" type="text/javascript"></script>
+	<!-- <script src="@routes.Assets.versioned("javascripts/bootstrap-datepicker.js")" type="text/javascript"></script> -->
+	
+	<script>
+		
+
+		var dates = [];
+		@if(periodos!=null){
+			@for(periodo <- periodos){
+				dates.push('@periodo.fecha_inicio.format("dd MM yyyy")');
+			}
+		}
+				
+
+		$(document).ready(function() {
+
+		    // assuming the controls you want to attach the plugin to 
+		    // have the "datepicker" class set
+		    if(dates.length > 0){
+			    $('input.datepicker').Zebra_DatePicker({
+			    	format: 'd-m-Y',
+			    	disabled_dates: ['* * * *'], 
+			    	enabled_dates: dates,
+			    });
+			}
+
+		});
+
+	</script>
 
 	<script>
 		$(document).ready(function(){
@@ -39,18 +77,48 @@
 
 		    });
 		});
-</script>				
+	</script>
+
 }
 
 @gerente.base("Manager SIIAF","Planilla de Pago","Planilla de pago a motoristas","planilla",css,js){
 	
+	
+	<div class="row">
+		<div class="col-xs-12 col-md-4 col-lg-2">
+	  		<button type="button" class="btn btn-warning" onclick="$('#planilla-table').tableExport({type:'excel',escape:'false'});"><span class="glyphicon glyphicon-export"> Exportar excel</span></button>
+		</div>
+		<div class="col-xs-12  col-md-4 col-lg-8 colinput-append date" id="dp3" data-date="12-02-2012" data-date-format="dd-mm-yyyy">
+			<div class="col-xs-12 col-md-8 col-lg-4 col-centered">
+				<form method="post" action="@routes.LogisticaController.planilla_post()" id="frmDate">
+					<input type="text" id="txtDate" name="fecha_inicio" class="datepicker form-control" data-provide="datepicker" placeholder="Seleccione" />
+				</form>
+			</div>
+		</div>
+		<div class="col-xs-12  col-md-4 col-lg-2 form-group pull-right">
+			<input type="text" class="search1 form-control" placeholder="Busqueda">
+			<span class="counter1 pull-right"></span>
+		</div>
+	</div>
+
+	<center>
+		<h3>Periodo</h3>
+		<!--El siguiente if es para no quebrar al sistema en casos de que no hayan detalles registrados
+		para el periodo, esto unicamente pasa en fase de testeo, porque el sistema maneja automaticamente
+		los detalles de cada periodo registrado. Es decir, en produccion SIEMPRE habran detalles para 
+		TODO periodo-->
+		@if(detalles.size()!=0){
+			<h5>del @detalles.get(0).periodo_planilla.fecha_inicio.format("dd-MM-yyyy") al @detalles.get(0).periodo_planilla.fecha_fin.format("dd-MM-yyyy")</h5>
+		}else{
+			<h5>Este periodo no tiene detalles, pueda que se trate de un periodo de testeo</h5>
+		}
+		
+	</center>
+
+	
 
 	<div class="table-responsive">
-		<button type="button" class="btn btn-warning" onclick="$('#planilla-table').tableExport({type:'excel',escape:'false'});"><span class="glyphicon glyphicon-export"> Exportar excel</span></button>
-	  <div class="form-group pull-right">
-			<input type="text" class="search1 form-control" placeholder="Busqueda">
-	  </div>
-	  <span class="counter1 pull-right"></span>
+
 	  <table class="table table-hover table-bordered results1" id="planilla-table">
 		  <thead>
 			<tr>
@@ -94,14 +162,15 @@
 			</tr>
 		</thead>
 		<tbody>
+		
 			@for(detalle <- detalles){
 				<tr>
 					<td>@detalle.motorista.nombre</td><!-- nombre -->
 					<!-- <td>@detalle.total_viajes_locales</td> viajes locales --> 
-					<td><a title="<center><strong>@detalle.total_viajes_locales viajes</strong></center>" class="popover-content" data-toggle="popover"  data-html="true" data-content='<strong>Fecha viaje</strong> &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp <strong>Kms</strong><br/>@for(viaje <- Ebean.find(classOf[Viaje]).where().conjunction().eq("periodo_planilla",detalle.periodo_planilla).eq("motorista",detalle.motorista).eq("tipo",1).findList()){@viaje.fecha_registro.format("dd-MM-yyyy") &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp @viaje.total_km <br/>}'>@BigDecimal(detalle.total_km_locales).setScale(2, BigDecimal.RoundingMode.HALF_UP).toDouble km</a></td> <!-- km locales-->
+					<td><a title="<center><strong>@detalle.total_viajes_locales viajes</strong></center>" class="popover-content" data-toggle="popover"  data-html="true" data-content='<strong>Fecha viaje</strong> &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp <strong>Kms</strong><br/>@for(viaje <- Ebean.find(classOf[Viaje]).where().conjunction().eq("periodo_planilla",detalle.periodo_planilla).eq("motorista",detalle.motorista).eq("tipo",1).findList()){@viaje.fecha_registro.format("dd/MM/yyyy") &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp @viaje.total_km <br/>}'>@BigDecimal(detalle.total_km_locales).setScale(2, BigDecimal.RoundingMode.HALF_UP).toDouble km</a></td> <!-- km locales-->
 					<td><a title="<center><strong>@detalle.total_viajes_locales viajes</strong></center>" class="popover-content" data-toggle="popover"  data-html="true" data-content='<strong>Kms</strong> &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp <strong>$$$</strong><br/>@for(viaje <- Ebean.find(classOf[Viaje]).where().conjunction().eq("periodo_planilla",detalle.periodo_planilla).eq("motorista",detalle.motorista).eq("tipo",1).findList()){@viaje.total_km &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp @BigDecimal(viaje.total_km*viaje.periodo_planilla.politica_pago.tarifa_pago_km_loc).setScale(2, BigDecimal.RoundingMode.HALF_UP).toDouble <br/>}'>$@BigDecimal(detalle.total_monto_locales).setScale(2, BigDecimal.RoundingMode.HALF_UP).toDouble</a></td><!-- monto locales -->
 					<!-- <td>@detalle.total_viajes_internacionales</td>  viajes internacionales -->
-					<td><a href="#" title="<center><strong>@detalle.total_viajes_locales viajes</strong></center>" class="popover-content" data-toggle="popover"  data-html="true" data-content='<strong>Fecha viaje</strong> &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp <strong>Kms</strong><br/>@for(viaje <- Ebean.find(classOf[Viaje]).where().conjunction().eq("periodo_planilla",detalle.periodo_planilla).eq("motorista",detalle.motorista).eq("tipo",2).findList()){@viaje.fecha_registro.format("dd-MM-yyyy") &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp @viaje.total_km <br/>}'>@BigDecimal(detalle.total_km_internacionales).setScale(2, BigDecimal.RoundingMode.HALF_UP).toDouble km</a></td><!-- km internacionales -->
+					<td><a href="#" title="<center><strong>@detalle.total_viajes_locales viajes</strong></center>" class="popover-content" data-toggle="popover"  data-html="true" data-content='<strong>Fecha viaje</strong> &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp <strong>Kms</strong><br/>@for(viaje <- Ebean.find(classOf[Viaje]).where().conjunction().eq("periodo_planilla",detalle.periodo_planilla).eq("motorista",detalle.motorista).eq("tipo",2).findList()){@viaje.fecha_registro.format("dd/MM/yyyy") &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp @viaje.total_km <br/>}'>@BigDecimal(detalle.total_km_internacionales).setScale(2, BigDecimal.RoundingMode.HALF_UP).toDouble km</a></td><!-- km internacionales -->
 					<td><a href="#" title="<center><strong>@detalle.total_viajes_locales viajes</strong></center>" class="popover-content" data-toggle="popover"  data-html="true" data-content='<strong>Kms</strong> &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp <strong>$$$</strong><br/>@for(viaje <- Ebean.find(classOf[Viaje]).where().conjunction().eq("periodo_planilla",detalle.periodo_planilla).eq("motorista",detalle.motorista).eq("tipo",2).findList()){@viaje.total_km &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp  @BigDecimal(viaje.total_km*viaje.periodo_planilla.politica_pago.tarifa_pago_km_int).setScale(2, BigDecimal.RoundingMode.HALF_UP).toDouble <br/>}'>$@detalle.total_monto_internacionales</a></td><!-- monto internacionales -->
 					<td><center><a href="#" title="<center><strong>@detalle.total_cantidad_agregados boletas</strong></center>" class="popover-content" data-toggle="popover"  data-html="true" data-content='<strong>Viaje</strong> &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp <strong>Boleta</strong> &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp <strong>Fecha</strong><br/>@for(boleta <- Ebean.find(classOf[Boleta]).where().conjunction().eq("viaje.periodo_planilla",detalle.periodo_planilla).eq("viaje.motorista",detalle.motorista).eq("sobrepeso",1).findList()){@boleta.viaje.id &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp @boleta.codigo &nbsp &nbsp &nbsp &nbsp  @boleta.viaje.fecha_registro.format("dd/MM/yyyy") <br/>}'>@detalle.total_cantidad_agregados</a></center></td><!-- cantidad valores agregados -->
 					<td><a href="#" title="<center><strong>@detalle.total_cantidad_agregados boletas</strong></center>" class="popover-content" data-toggle="popover"  data-html="true" data-content='<strong>Viaje</strong> &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp <strong>Boleta</strong> &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp <strong>$$$</strong><br/>@for(boleta <- Ebean.find(classOf[Boleta]).where().conjunction().eq("viaje.periodo_planilla",detalle.periodo_planilla).eq("viaje.motorista",detalle.motorista).eq("sobrepeso",1).findList()){@boleta.viaje.id &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp @boleta.codigo &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp @(boleta.viaje.periodo_planilla.politica_pago.porcentaje_sobrepeso*boleta.viaje.periodo_facturacion.politica_cobro.tarifa_sobrepeso) <br/>}'>$@BigDecimal(detalle.total_monto_agregados).setScale(2, BigDecimal.RoundingMode.HALF_UP).toDouble</a></td><!-- monto valores agregados -->
@@ -114,7 +183,7 @@
 					<td>$@BigDecimal(detalle.afp).setScale(2, BigDecimal.RoundingMode.HALF_UP).toDouble</td><!-- afp -->
 				</tr>
 			}
-				
+		
 		</tbody>
 	</table>
 

@@ -43,8 +43,13 @@ POST     /manager/cabezales/new                     controllers.GerenteControlle
 POST     /manager/cabezales/edit/:id                controllers.GerenteController.cabezal_edit(id: Long)
 POST     /manager/cabezales/remove/:id              controllers.GerenteController.cabezal_remove(id:Long)
 
-GET     /manager/planilla                           controllers.GerenteController.planilla
-GET     /manager/facturacion                        controllers.GerenteController.facturacion
+GET     /manager/planilla                           controllers.GerenteController.planilla()
+GET     /manager/planilla/:id                      controllers.GerenteController.planilla_show(id: Long)
+POST     /manager/planilla                       	controllers.GerenteController.planilla_post()
+
+GET     /manager/facturacion                        controllers.GerenteController.facturacion()
+GET     /manager/facturacion/:id                     controllers.GerenteController.facturacion_show(id: Long)
+POST     /manager/facturacion                        controllers.GerenteController.facturacion_post()
 
 GET     /manager/politica/cobro                     controllers.GerenteController.politica_cobro
 POST    /manager/politica/cobro                     controllers.GerenteController.politica_cobro_post()

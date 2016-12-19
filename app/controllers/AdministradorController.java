@@ -16,6 +16,37 @@ import models.*;
 public class AdministradorController extends Controller {
 
     public Result home(){
+
+
+        /*validacion de usuario logeado*/
+        String connected = session("username");
+        
+        if(connected == null){
+           return redirect(routes.HomeController.login());
+        }else{
+            Usuario u = Usuario.find.where().eq("username",connected).findUnique();
+            if(u==null){
+                return redirect(routes.HomeController.login());         
+            }else{
+                if( !u.tipo.codigo.equals( 1 )){
+
+                    flash("error","Permisos denegados para el usuario");
+
+                    if(u.tipo.codigo.intValue()==1){
+                        return badRequest(views.html.administrador.errores.render());
+                    }else{
+                        if(u.tipo.codigo.intValue()==2){
+                            return badRequest(views.html.gerente.errores.render());
+                        }else{
+                            return badRequest(views.html.logistica.errores.render());
+                        }
+                    }                    
+                }
+            }
+        } 
+        /*validacion de usuario logeado*/
+
+
         return redirect(routes.AdministradorController.usuarios());
     }
 
@@ -23,12 +54,78 @@ public class AdministradorController extends Controller {
 	//USUARIOS
     //list
     public Result usuarios() {
+
+
+
+         /*validacion de usuario logeado*/
+        String connected = session("username");
+        
+        if(connected == null){
+           return redirect(routes.HomeController.login());
+        }else{
+            Usuario u = Usuario.find.where().eq("username",connected).findUnique();
+            if(u==null){
+                return redirect(routes.HomeController.login());         
+            }else{
+                if( !u.tipo.codigo.equals( 1 )){
+
+                    flash("error","Permisos denegados para el usuario");
+
+                    if(u.tipo.codigo.intValue()==1){
+                        return badRequest(views.html.administrador.errores.render());
+                    }else{
+                        if(u.tipo.codigo.intValue()==2){
+                            return badRequest(views.html.gerente.errores.render());
+                        }else{
+                            return badRequest(views.html.logistica.errores.render());
+                        }
+                    }                    
+                }
+            }
+        } 
+        /*validacion de usuario logeado*/
+
+
+
         Form<Usuario> usuario_form = Form.form(Usuario.class);
         List<Usuario> usuarios_list = Usuario.find.findList();
         return ok(usuarios.render(usuario_form,usuarios_list));
     }
     //add
     public Result usuario_new() {
+
+
+
+         /*validacion de usuario logeado*/
+        String connected = session("username");
+        
+        if(connected == null){
+           return redirect(routes.HomeController.login());
+        }else{
+            Usuario u = Usuario.find.where().eq("username",connected).findUnique();
+            if(u==null){
+                return redirect(routes.HomeController.login());         
+            }else{
+                if( !u.tipo.codigo.equals( 1 )){
+
+                    flash("error","Permisos denegados para el usuario");
+
+                    if(u.tipo.codigo.intValue()==1){
+                        return badRequest(views.html.administrador.errores.render());
+                    }else{
+                        if(u.tipo.codigo.intValue()==2){
+                            return badRequest(views.html.gerente.errores.render());
+                        }else{
+                            return badRequest(views.html.logistica.errores.render());
+                        }
+                    }                    
+                }
+            }
+        } 
+        /*validacion de usuario logeado*/
+
+
+
         Form<Usuario> usuario_form = Form.form(Usuario.class).bindFromRequest();
         Map<String, String[]> values = request().body().asFormUrlEncoded();
         List<Usuario> usuarios_list = Usuario.find.findList();
@@ -52,8 +149,42 @@ public class AdministradorController extends Controller {
 
         return redirect(routes.AdministradorController.usuarios());
     }
+
     //edit
     public Result usuario_edit(Long id) {
+
+
+
+         /*validacion de usuario logeado*/
+        String connected = session("username");
+        
+        if(connected == null){
+           return redirect(routes.HomeController.login());
+        }else{
+            Usuario u = Usuario.find.where().eq("username",connected).findUnique();
+            if(u==null){
+                return redirect(routes.HomeController.login());         
+            }else{
+                if( !u.tipo.codigo.equals( 1 )){
+
+                    flash("error","Permisos denegados para el usuario");
+
+                    if(u.tipo.codigo.intValue()==1){
+                        return badRequest(views.html.administrador.errores.render());
+                    }else{
+                        if(u.tipo.codigo.intValue()==2){
+                            return badRequest(views.html.gerente.errores.render());
+                        }else{
+                            return badRequest(views.html.logistica.errores.render());
+                        }
+                    }                    
+                }
+            }
+        } 
+        /*validacion de usuario logeado*/
+
+
+
         Form<Usuario> usuario_form = Form.form(Usuario.class).bindFromRequest();
         List<Usuario> usuarios_list = Usuario.find.findList();
 
@@ -84,8 +215,42 @@ public class AdministradorController extends Controller {
 
         return redirect(routes.AdministradorController.usuarios());
     }
+
     //remove
     public Result usuario_remove(Long id){
+
+
+
+         /*validacion de usuario logeado*/
+        String connected = session("username");
+        
+        if(connected == null){
+           return redirect(routes.HomeController.login());
+        }else{
+            Usuario u = Usuario.find.where().eq("username",connected).findUnique();
+            if(u==null){
+                return redirect(routes.HomeController.login());         
+            }else{
+                if( !u.tipo.codigo.equals( 1 )){
+
+                    flash("error","Permisos denegados para el usuario");
+
+                    if(u.tipo.codigo.intValue()==1){
+                        return badRequest(views.html.administrador.errores.render());
+                    }else{
+                        if(u.tipo.codigo.intValue()==2){
+                            return badRequest(views.html.gerente.errores.render());
+                        }else{
+                            return badRequest(views.html.logistica.errores.render());
+                        }
+                    }                    
+                }
+            }
+        } 
+        /*validacion de usuario logeado*/
+        
+
+
         Usuario user = Usuario.find.byId(id);
         if(user != null){
             user.delete();
