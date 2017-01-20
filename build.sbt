@@ -24,6 +24,9 @@ libraryDependencies ++= Seq(
 
 libraryDependencies += javaJdbc
 libraryDependencies += "mysql" % "mysql-connector-java" % "5.1.36"
+libraryDependencies += "it.innove" % "play2-pdf" % "1.5.1"
+
 lazy val myProject = (project in file(".")).enablePlugins(PlayJava, PlayEbean)
+
 offline := true
 

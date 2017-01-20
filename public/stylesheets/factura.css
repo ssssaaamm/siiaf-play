@@ -1,0 +1,17 @@
+.encabezado{
+	text-align: center;
+	margin-bottom: 5px;
+	border-radius: 4px;
+	background-color: #A9BCF5 !important;
+}
+
+.total{
+	border-radius: 4px;
+	background-color: #A9BCF5 !important;
+}
+
+.contenedor{
+	border: 2px solid #086A87;
+	margin-bottom: 5px;
+}
+

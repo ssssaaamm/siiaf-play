@@ -20,32 +20,7 @@ public class HomeController extends Controller {
      * this method will be called when the application receives a
      * <code>GET</code> request with a path of <code>/</code>.
      */
-    public Result index() {
 
-        /*validacion de usuario logeado*/
-        String username = session("username");
-        
-        if(username != null){
-            Usuario u = Usuario.find.where().eq("username",username).findUnique();
-            if(u!=null){
-
-                if(u.tipo.codigo == 1){//admin
-                    return redirect(routes.AdministradorController.home());
-                }
-
-                if(u.tipo.codigo == 2){//gerente
-                    return redirect(routes.GerenteController.home());
-                }
-
-                if(u.tipo.codigo == 3){//logistica
-                    return redirect(routes.LogisticaController.home());
-                }
-            }
-        }
-        /*validacion de usuario logeado*/
-
-        return ok(index.render());
-    }
 
 
     public Result login() {
@@ -145,9 +120,6 @@ public class HomeController extends Controller {
 
     }
 
-    public Result about() {
-        return ok(about.render());
-    }
 
     public Result logout() {
 

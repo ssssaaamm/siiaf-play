@@ -3,8 +3,8 @@ insert into tipo_usuario (codigo,nombre,descripcion) values (2,'Gerente','crea u
 insert into tipo_usuario (codigo,nombre,descripcion) values (3,'Auxiliar Logistica','crea usuarios');
 
 insert into usuario (nombre,username,password,tipo_id) values ('Miguel Alejandro','administrador','administrador',1);
-insert into usuario (nombre,username,password,tipo_id) values ('Cristian Eliseo','gerente','gerente',2);
-insert into usuario (nombre,username,password,tipo_id) values ('Manuel Garcia','logistica','logistica',3);
+insert into usuario (nombre,username,password,tipo_id) values ('Ruben Descamps','gerente','gerente',2);
+insert into usuario (nombre,username,password,tipo_id) values ('Roberto Lopez','logistica','logistica',3);
 insert into usuario (nombre,username,password,tipo_id) values ('Carlos Evaristo','Evaristo','administrador',1);
 insert into usuario (nombre,username,password,tipo_id) values ('Samuel Alvarez','gerente','Samuel',2);
 insert into usuario (nombre,username,password,tipo_id) values ('Jonatan Garcia','Jonatan','logistica',3);

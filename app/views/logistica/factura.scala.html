@@ -1,0 +1,83 @@
+@import scala.math.BigDecimal
+@import helper._
+
+
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>Factura Imprimir</title>
+        <meta charset="UTF-8">
+        <link rel="stylesheet" type="text/css" media="print" href="public/stylesheets/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" media="print" href="public/stylesheets/factura.css">
+    </head>
+    <body>
+	    <div class="row">
+	    		<div class="col-md-8">
+				    <div class="container-fluid">
+				    	<div class="row">
+				    		<div class="encabezado">
+				    			DETALLE DE FACTURACIÓN
+				    		</div>
+				    		<div class="panel panel-default contenedor">
+								<div class="panel-heading">
+									<span class="col-xs-6">
+			    						<img src="public/images/grupo-vape.png">
+			    					</span>
+		    						<p class="text-right">Semana: 6 (24/11/16 - 01/12/16)</p>
+		    						<p class="text-right">Cliente: Seabor Marine</p>
+								</div>
+								
+								<table class="table table-condensed" >
+									<thead>
+										<th>CONCEPTOS GRAVADOS</th>
+										<th><center>KMS | UNIDADES</center></th>
+										<th><center>PRECIO UNITARIO</center></th>
+										<th><center>SUBTOTAL</center></th>
+									</thead>
+									<tbody>
+										<tr>
+											<td>Kms Vacios</td>
+											<td><center>Kms Vacios</center></td>
+											<td><center>Kms Vacios</center></td>
+											<td><center>Kms Vacios</center></td>
+										</tr>
+										<tr>
+											<td>Kms Cargados</td>
+											<td><center>Kms Cargados</center></td>
+											<td><center>Kms Cargados</center></td>
+											<td><center>Kms Cargados</center></td>
+										</tr>
+										<tr>
+											<td>Kms Sencillos</td>
+											<td><center>Kms Sencillos</center></td>
+											<td><center>Kms Sencillos</center></td>
+											<td><center>Kms Sencillos</center></td>
+										</tr>
+										<tr>
+											<td>Sobrepesos</td>
+											<td><center>Sobrepesos</center></td>
+											<td><center>Sobrepesos</center></td>
+											<td><center>Sobrepesos</center></td>
+										</tr>
+										<tr>
+											<td>Cruces de Frontera</td>
+											<td><center>Cruces de Frontera</center></td>
+											<td><center>Cruces de Frontera</center></td>
+											<td><center>Cruces de Frontera</center></td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+							<div class="total">
+								<p>MONTO TOTAL <span class="pull-right">$1268.28</span></p>
+							</div>
+				    	</div>
+				    </div>
+	    		</div>
+		</div>
+    </body>
+</html>
+
+
+

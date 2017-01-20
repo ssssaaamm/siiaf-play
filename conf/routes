@@ -9,12 +9,11 @@ GET     /assets/*file               controllers.Assets.versioned(path="/public",
 
 
 # RUTAS DEL HomeController
-GET     /                           controllers.HomeController.index
+GET     /                           controllers.HomeController.login
 GET     /login                          controllers.HomeController.login
 POST     /login                          controllers.HomeController.login_post
 GET     /logout                          controllers.HomeController.logout
 POST     /set/password                controllers.HomeController.set_password
-GET     /about                          controllers.HomeController.about
 
 
 
@@ -79,8 +78,9 @@ GET     /logistic/planilla/:id                      controllers.LogisticaControl
 POST     /logistic/planilla                       controllers.LogisticaController.planilla_post()
 
 GET     /logistic/facturacion                        controllers.LogisticaController.facturacion()
-GET     /logistic/facturacion/:id                        controllers.LogisticaController.facturacion_show(id: Long)
+GET     /logistic/facturacion/:id                     controllers.LogisticaController.facturacion_show(id: Long)
 POST     /logistic/facturacion                        controllers.LogisticaController.facturacion_post()
+GET     /logistic/factura                        controllers.LogisticaController.factura()
 
 GET     /logistic/politica/cobro                     controllers.LogisticaController.politica_cobro
 GET     /logistic/politica/pago                      controllers.LogisticaController.politica_pago

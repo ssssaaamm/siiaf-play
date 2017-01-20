@@ -4,11 +4,13 @@
 @css={
 	<link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/bootstrap-table.css")">
 	<link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/datepicker.css")">
+	<link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/chosen.css")">
 }
 
 @js={
 	<script src="@routes.Assets.versioned("javascripts/bootstrap-table.js")" type="text/javascript"></script>
 	<script src="@routes.Assets.versioned("javascripts/bootstrap-datepicker.js")" type="text/javascript"></script>
+	<script src="@routes.Assets.versioned("javascripts/chosen.jquery.js")" type="text/javascript"></script>
 	<script src="@routes.Assets.versioned("javascripts/jquery-cloneya.js")" type="text/javascript"></script>
 	<script src="@routes.Assets.versioned("javascripts/jquery.maskedinput.js")" type="text/javascript"></script>
 	<script src="@routes.Assets.versioned("javascripts/masked.js")" type="text/javascript"></script>
@@ -75,6 +77,16 @@
 		};
 	</script>
 
+
+	<script>
+		$('#mod-new').on('shown.bs.modal', function () {
+	        $(".chosen-select",this).chosen(
+				{
+			    	no_results_text: "Oops, no se encontraron datos!"
+			    }
+			);
+	    });
+	</script>
 
 
 }
@@ -338,8 +350,8 @@
 						<div class="form-group">
 							<label class="control-label col-sm-2"  >Cabezal:</label>
 							<div class="col-sm-8">
-								<select class="form-control" name="cabezal" >
-									<option value="" selected disabled>Seleccione...</option>
+								<select data-placeholder="Seleccione..." class="form-control chosen-select" name="cabezal">
+									<option value=""></option>
 									@for(cabezal <- cabezales ){
 										<option value="@cabezal.id">@cabezal.placa</option>
 									}
@@ -350,8 +362,8 @@
 						<div class="form-group">
 							<label class="control-label col-sm-2"  >Motorista:</label>
 							<div class="col-sm-8">
-								<select class="form-control" name="motorista" >
-									<option value="" selected disabled>Seleccione...</option>
+								<select data-placeholder="Seleccione..." class="form-control chosen-select" name="motorista" >
+									<option value=""></option>
 									@for(motorista <- motoristas ){
 										<option value="@motorista.id">@motorista.nombre</option>
 									}
@@ -362,8 +374,8 @@
 						<div class="form-group">
 							<label class="control-label col-sm-2"  >Cliente:</label>
 							<div class="col-sm-8">
-								<select class="form-control" name="cliente" >
-									<option value="" selected disabled>Seleccione...</option>
+								<select data-placeholder="Seleccione..." class="form-control chosen-select" name="cliente" >
+									<option value=""></option>
 									@for(cliente <- clientes ){
 										<option value="@cliente.id">@cliente.nombre</option>
 									}

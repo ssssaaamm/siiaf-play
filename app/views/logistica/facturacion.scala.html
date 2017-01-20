@@ -6,6 +6,8 @@
 	<link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/bootstrap-table.css")">
 	<link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/vertical-table.css")">
 	<link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/zebra_metallic.css")">
+	<link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/custom-color-table.css")">
+
 
  	<style>
 		.popover-content {
@@ -80,7 +82,7 @@
 
 @logistica.base("Logistic SIIAF","Facturacion de Clientes","Detalles de cobro","facturacion",css,js){
 	
-	
+	<!-- <a href="@routes.LogisticaController.factura">Pdf</a> -->
 	<div class="row">
 		<div class="col-xs-12 col-md-4 col-lg-2">
 	  		<button type="button" class="btn btn-warning" onclick="$('#planilla-table').tableExport({type:'excel',escape:'false'});"><span class="glyphicon glyphicon-export"> Exportar excel</span></button>
@@ -111,13 +113,20 @@
 	<div class="table-responsive">
 		
 	  <table class="table table-hover table-bordered results1" id="planilla-table">
+	  	  <colgroup>
+	  	  	<col class="gris"></col>
+	  	  	<col span="6" class="azul"></col>
+	  	  	<col span="6" class="gris"></col>
+	  	  	<col span="2" class="azul"></col>
+	  	  	<col class="gris"></col>
+	  	  </colgroup>
 		  <thead>
 			<tr>
 				
 				<th></th>
 				<th colspan="6"><center>Locales</center></th>
 				<th colspan="6"><center>Internacionales</center></th>
-				<th colspan="2"><center>V. Agregados</center></th>
+				<th colspan="2"><center>Sobrepesos</center></th>
 				<th></th><!-- total_cobro_periodo -->
 				
 

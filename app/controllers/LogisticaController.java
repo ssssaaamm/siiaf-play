@@ -11,6 +11,11 @@ import java.lang.Thread;
 import java.lang.Runnable;
 import java.text.SimpleDateFormat;
 
+/*para pdf*/
+import it.innove.play.pdf.PdfGenerator;
+import javax.inject.Inject;
+/*para pdf*/
+
 import views.html.logistica.*;
 import models.*;
 /**
@@ -19,6 +24,10 @@ import models.*;
  */
 public class LogisticaController extends Controller {
 
+    /*used for method factura()*/
+    @Inject
+    public PdfGenerator pdfGenerator;
+    /*used for method factura()*/
     
     public Result home(){
 
@@ -1001,6 +1010,11 @@ public class LogisticaController extends Controller {
     }
 
 
+    public Result factura(){
+        // return ok(factura.render());
+        return pdfGenerator.ok(factura.render(),Configuration.root().getString("application.host"));
+    }
+
 
     public Result politica_cobro() {
 
@@ -1322,7 +1336,7 @@ public class LogisticaController extends Controller {
 
                     if(b.sobrepeso==true){
                         total_cantidad_agregados+=1;
-                        total_monto_agregados+=(politica.porcentaje_sobrepeso*viaje.periodo_facturacion.politica_cobro.tarifa_sobrepeso);
+                        total_monto_agregados+=(politica.porcentaje_sobrepeso/100*viaje.periodo_facturacion.politica_cobro.tarifa_sobrepeso);
                     }
 
                 }//fin for
@@ -1357,7 +1371,7 @@ public class LogisticaController extends Controller {
 
                     if(b.sobrepeso==true){
                         total_cantidad_agregados+=1;
-                        total_monto_agregados+=(politica.porcentaje_sobrepeso*viaje.periodo_facturacion.politica_cobro.tarifa_sobrepeso);
+                        total_monto_agregados+=(politica.porcentaje_sobrepeso/100*viaje.periodo_facturacion.politica_cobro.tarifa_sobrepeso);
                     }
 
                 }//fin for
@@ -1411,9 +1425,9 @@ public class LogisticaController extends Controller {
             total_pago_periodo=salario_ganado+detalle.bono;
         }
 
-        isss = total_pago_periodo*politica.porcentaje_isss;
+        isss = total_pago_periodo*politica.porcentaje_isss/100;
 
-        afp = total_pago_periodo*politica.porcentaje_afp;
+        afp = total_pago_periodo*politica.porcentaje_afp/100;
 
 
         detalle.total_viajes_locales=total_viajes_locales;
