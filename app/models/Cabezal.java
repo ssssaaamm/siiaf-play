@@ -18,15 +18,42 @@ public class Cabezal extends Model{
 	public Long id;
 	
 	@Column(length=10)	
-
 	@Constraints.Required(message="Debe ingresar una placa para el cabezal")
 	public String placa;
 	
+	@Column(length=20)	
+	@Constraints.Required(message="Debe ingresar un número de chasis para el cabezal")
+	public String chasis;
+
+	@Column(length=20)	
+	@Constraints.Required(message="Debe ingresar un número de motor para el cabezal")
+	public String motor;
+
+	@Column(length=4)	
+	@Constraints.Required(message="Debe ingresar una año para el cabezal")
+	public String año;
+
+	@Column(length=10)	
+	@Constraints.Required(message="Debe ingresar un color")
+	public String color;
+
 	@Column(length=150)		
-	@Constraints.Required(message="Debe ingresar una descripcion")
+	@Constraints.Required(message="Debe ingresar una descripción")
 	public String descripcion;
 
 	public boolean activo=true;
+
+	@Lob
+	public byte[] imgCabezal;
+
+	//@Column(length=3)
+	public String contentTypeImgCabezal;
+
+	@Lob
+	public byte[] imgTarjeta;
+
+	//@Column(length=3)
+	public String contentTypeImgTarjeta;
 
 	public static Finder<Long, Cabezal> find = new Finder<Long,Cabezal>(Cabezal.class);
 

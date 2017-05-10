@@ -800,6 +800,36 @@ public class LogisticaController extends Controller {
 
     public Result planilla_show(Long id) {//recibe el id del periodo de planilla que quiere observar
 
+
+        /*validacion de usuario logeado*/
+        String connected = session("username");
+        
+        if(connected == null){
+           return redirect(routes.HomeController.login());
+        }else{
+            Usuario u = Usuario.find.where().eq("username",connected).findUnique();
+            if(u==null){
+                return redirect(routes.HomeController.login());         
+            }else{
+                if( !u.tipo.codigo.equals( 3 )){
+
+                    flash("error","Permisos denegados para el usuario");
+
+                    if(u.tipo.codigo.intValue()==1){
+                        return badRequest(views.html.administrador.errores.render());
+                    }else{
+                        if(u.tipo.codigo.intValue()==2){
+                            return badRequest(views.html.gerente.errores.render());
+                        }else{
+                            return badRequest(views.html.logistica.errores.render());
+                        }
+                    }                    
+                }
+            }
+        } 
+        /*validacion de usuario logeado*/
+
+
         PeriodoPlanilla periodo = PeriodoPlanilla.find.byId(id);
 
         if(periodo==null){
@@ -928,6 +958,36 @@ public class LogisticaController extends Controller {
 
     public Result facturacion_show(Long id) {//recibe el id del periodo de planilla que quiere observar
 
+
+        /*validacion de usuario logeado*/
+        String connected = session("username");
+        
+        if(connected == null){
+           return redirect(routes.HomeController.login());
+        }else{
+            Usuario u = Usuario.find.where().eq("username",connected).findUnique();
+            if(u==null){
+                return redirect(routes.HomeController.login());         
+            }else{
+                if( !u.tipo.codigo.equals( 3 )){
+
+                    flash("error","Permisos denegados para el usuario");
+
+                    if(u.tipo.codigo.intValue()==1){
+                        return badRequest(views.html.administrador.errores.render());
+                    }else{
+                        if(u.tipo.codigo.intValue()==2){
+                            return badRequest(views.html.gerente.errores.render());
+                        }else{
+                            return badRequest(views.html.logistica.errores.render());
+                        }
+                    }                    
+                }
+            }
+        } 
+        /*validacion de usuario logeado*/
+
+
         PeriodoFacturacion periodo = PeriodoFacturacion.find.byId(id);
 
         if(periodo==null){
@@ -1011,6 +1071,37 @@ public class LogisticaController extends Controller {
 
 
     public Result factura(){
+
+
+        /*validacion de usuario logeado*/
+        String connected = session("username");
+        
+        if(connected == null){
+           return redirect(routes.HomeController.login());
+        }else{
+            Usuario u = Usuario.find.where().eq("username",connected).findUnique();
+            if(u==null){
+                return redirect(routes.HomeController.login());         
+            }else{
+                if( !u.tipo.codigo.equals( 3 )){
+
+                    flash("error","Permisos denegados para el usuario");
+
+                    if(u.tipo.codigo.intValue()==1){
+                        return badRequest(views.html.administrador.errores.render());
+                    }else{
+                        if(u.tipo.codigo.intValue()==2){
+                            return badRequest(views.html.gerente.errores.render());
+                        }else{
+                            return badRequest(views.html.logistica.errores.render());
+                        }
+                    }                    
+                }
+            }
+        } 
+        /*validacion de usuario logeado*/
+        
+
         // return ok(factura.render());
         return pdfGenerator.ok(factura.render(),Configuration.root().getString("application.host"));
     }
@@ -1336,7 +1427,7 @@ public class LogisticaController extends Controller {
 
                     if(b.sobrepeso==true){
                         total_cantidad_agregados+=1;
-                        total_monto_agregados+=(politica.porcentaje_sobrepeso/100*viaje.periodo_facturacion.politica_cobro.tarifa_sobrepeso);
+                        total_monto_agregados+=(politica.tarifa_sobrepeso);
                     }
 
                 }//fin for
@@ -1371,7 +1462,7 @@ public class LogisticaController extends Controller {
 
                     if(b.sobrepeso==true){
                         total_cantidad_agregados+=1;
-                        total_monto_agregados+=(politica.porcentaje_sobrepeso/100*viaje.periodo_facturacion.politica_cobro.tarifa_sobrepeso);
+                        total_monto_agregados+=(politica.tarifa_sobrepeso);
                     }
 
                 }//fin for
@@ -1420,7 +1511,7 @@ public class LogisticaController extends Controller {
         delta_salario_minimo=(salario_ganado-politica.salario_minimo);
 
         if(delta_salario_minimo<0){
-            total_pago_periodo=politica.salario_minimo+detalle.bono;
+            total_pago_periodo=politica.salario_minimo+detalle.bono+total_monto_agregados+total_monto_viaticos;//corregido el 22/02/2017
         }else{
             total_pago_periodo=salario_ganado+detalle.bono;
         }
@@ -1473,6 +1564,8 @@ public class LogisticaController extends Controller {
         detalle.isss=isss;
 
         detalle.afp=afp;
+
+        detalle.erogacion_total = detalle.total_pago_periodo + detalle.isss + detalle.afp;
 
         detalle.update();
 

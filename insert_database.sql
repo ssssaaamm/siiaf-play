@@ -2,7 +2,7 @@ insert into tipo_usuario (codigo,nombre,descripcion) values (1,'Administrador','
 insert into tipo_usuario (codigo,nombre,descripcion) values (2,'Gerente','crea usuarios');
 insert into tipo_usuario (codigo,nombre,descripcion) values (3,'Auxiliar Logistica','crea usuarios');
 
-insert into usuario (nombre,username,password,tipo_id) values ('Miguel Alejandro','administrador','administrador',1);
+insert into usuario (nombre,username,password,tipo_id) values ('Admin Admin','administrador','administrador',1);
 insert into usuario (nombre,username,password,tipo_id) values ('Ruben Descamps','gerente','gerente',2);
 insert into usuario (nombre,username,password,tipo_id) values ('Roberto Lopez','logistica','logistica',3);
 insert into usuario (nombre,username,password,tipo_id) values ('Carlos Evaristo','Evaristo','administrador',1);
@@ -18,14 +18,14 @@ insert into motorista (codigo,nombre,dui,nit,licencia,activo) values ('126','Ped
 insert into motorista (codigo,nombre,dui,nit,licencia,activo) values ('137','Carlos Soul','85347297-9','0765-081073-000-9','0765-081073-000-9',1);
 insert into motorista (codigo,nombre,dui,nit,licencia,activo) values ('148','Moises Torres','98532476-9','0989-090379-079-8','0989-090379-079-8',1);
 
-insert into cabezal (placa,descripcion,activo) values ('C 324-098','Es un cabezal',1);
-insert into cabezal (placa,descripcion,activo) values ('C 984-953','Es un cabezal',1);
-insert into cabezal (placa,descripcion,activo) values ('C 094-23','Es un cabezal',1);
-insert into cabezal (placa,descripcion,activo) values ('C 657-456','Es un cabezal',1);
-insert into cabezal (placa,descripcion,activo) values ('C 985-342','Es un cabezal',1);
-insert into cabezal (placa,descripcion,activo) values ('C 034-233','Es un cabezal',1);
-insert into cabezal (placa,descripcion,activo) values ('C 007-446','Es un cabezal',1);
-insert into cabezal (placa,descripcion,activo) values ('C 905-362','Es un cabezal',1);
+insert into cabezal (placa,descripcion,activo,chasis,año,color,motor) values ('C 324-098','Es un cabezal',1, 'asdfff','2004','rojo','5479');
+insert into cabezal (placa,descripcion,activo,chasis,año,color,motor) values ('C 984-953','Es un cabezal',1, 'asdfff','2004','rojo','5479');
+insert into cabezal (placa,descripcion,activo,chasis,año,color,motor) values ('C 094-23','Es un cabezal',1, 'asdfff','2004','rojo','5479');
+insert into cabezal (placa,descripcion,activo,chasis,año,color,motor) values ('C 657-456','Es un cabezal',1, 'asdfff','2004','rojo','5479');
+insert into cabezal (placa,descripcion,activo,chasis,año,color,motor) values ('C 985-342','Es un cabezal',1, 'asdfff','2004','rojo','5479');
+insert into cabezal (placa,descripcion,activo,chasis,año,color,motor) values ('C 034-233','Es un cabezal',1, 'asdfff','2004','rojo','5479');
+insert into cabezal (placa,descripcion,activo,chasis,año,color,motor) values ('C 007-446','Es un cabezal',1, 'asdfff','2004','rojo','5479');
+insert into cabezal (placa,descripcion,activo,chasis,año,color,motor) values ('C 905-362','Es un cabezal',1, 'asdfff','2004','rojo','5479');
 
 
 insert into cliente (nombre,nit,descripcion,activo) values ('Pollo Indio','9812-121291-080-9','transporte de pollos',1);

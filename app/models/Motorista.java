@@ -36,6 +36,12 @@ public class Motorista extends Model{
 	@Constraints.Required(message="Debe ingresar un número de licencia")
 	public String licencia;
 
+	@Lob
+	public byte[] imagen;
+
+	//@Column(length=3)
+	public String contentTypeImagen;
+
 	public boolean activo=true;
 	
 	@OneToMany

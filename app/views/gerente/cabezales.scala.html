@@ -6,6 +6,7 @@
 }
 
 @js={
+	<script src="@routes.Assets.versioned("javascripts/bootstrap-filestyle.min.js")" type="text/javascript"></script>
 	<script src="@routes.Assets.versioned("javascripts/bootstrap-table.js")" type="text/javascript"></script>
 	<script src="@routes.Assets.versioned("javascripts/jquery.maskedinput.js")" type="text/javascript"></script>
 	<script src="@routes.Assets.versioned("javascripts/masked.js")" type="text/javascript"></script>
@@ -53,6 +54,32 @@
 		</div>
 	}
 
+	@for(error <- cabezal_form("chasis").errors) {
+    	<div class="alert alert-danger">
+			<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+			<strong>@Messages(error.messages, error.arguments.toArray: _*)</strong>
+		</div>
+	}
+	@for(error <- cabezal_form("motor").errors) {
+    	<div class="alert alert-danger">
+			<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+			<strong>@Messages(error.messages, error.arguments.toArray: _*)</strong>
+		</div>
+	}
+
+	@for(error <- cabezal_form("año").errors) {
+    	<div class="alert alert-danger">
+			<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+			<strong>@Messages(error.messages, error.arguments.toArray: _*)</strong>
+		</div>
+	}
+
+	@for(error <- cabezal_form("color").errors) {
+    	<div class="alert alert-danger">
+			<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+			<strong>@Messages(error.messages, error.arguments.toArray: _*)</strong>
+		</div>
+	}
 
 	@for(error <- cabezal_form("descripcion").errors) {
     	<div class="alert alert-danger">
@@ -61,6 +88,19 @@
 		</div>
 	}
 
+	@for(error <- cabezal_form("imgCabezal").errors) {
+    	<div class="alert alert-danger">
+			<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+			<strong>@Messages(error.messages, error.arguments.toArray: _*)</strong>
+		</div>
+	}
+
+	@for(error <- cabezal_form("imgTarjeta").errors) {
+    	<div class="alert alert-danger">
+			<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+			<strong>@Messages(error.messages, error.arguments.toArray: _*)</strong>
+		</div>
+	}
 }
 
 
@@ -85,7 +125,7 @@
 
 		<!-- Modal content-->
 		<div class="modal-content">
-			@form(action=routes.GerenteController.cabezal_new()){
+			@form(action=routes.GerenteController.cabezal_new() , 'enctype -> "multipart/form-data"){
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal">&times;</button>
 					<h4 class="modal-title">Agregar nuevo cabezal</h4>
@@ -103,13 +143,45 @@
 
 
 
-	        		 <div class="form-group">
-	        		 	@inputText(cabezal_form("placa"), '_showConstraints -> false , '_showErrors -> false,'class -> "form-control placa", 'placeholder -> "C212-093", '_label -> "Placa: ")
-	        		 </div>
+						<div class="form-group">
+							@inputText(cabezal_form("placa"), '_showConstraints -> false , '_showErrors -> false,'class -> "form-control placa", 'placeholder -> "C212-093", '_label -> "Placa: ")
+						</div>
 
-	        		  <div class="form-group">
-	        		 	@textarea(cabezal_form("descripcion"),'rows -> 5, '_showConstraints -> false , '_showErrors -> false,'class -> "form-control", '_label -> "Descripción: ")
-	        		 </div>
+						<div class="form-group">
+							@inputText(cabezal_form("chasis"), '_showConstraints -> false , '_showErrors -> false,'class -> "form-control", 'placeholder -> "", '_label -> "Chasis: ")
+						</div>
+						<div class="form-group">
+							@inputText(cabezal_form("motor"), '_showConstraints -> false , '_showErrors -> false,'class -> "form-control", 'placeholder -> "", '_label -> "No Motor: ")
+						</div>
+						<div class="form-group">
+							@inputText(cabezal_form("año"), '_showConstraints -> false , '_showErrors -> false,'class -> "form-control", 'placeholder -> "", '_label -> "Año: ")
+						</div>
+						<div class="form-group">
+							@inputText(cabezal_form("color"), '_showConstraints -> false , '_showErrors -> false,'class -> "form-control", 'placeholder -> "", '_label -> "Color: ")
+						</div>
+						<div class="form-group">
+							@textarea(cabezal_form("descripcion"),'rows -> 5, '_showConstraints -> false , '_showErrors -> false,'class -> "form-control", '_label -> "Descripcion (Comentario): ")
+						</div>
+						<label for="imagen">Imagen cabezal:</label>
+						<input type="file" name="imgCabezal" id="imgCabezal" class="filestyle" data-buttonText="Seleccione Imagen" data-buttomName="btn-primary" data-iconName="glyphicon glyphicon-picture" onchange="if (this.files && this.files[0]) {var reader = new FileReader();reader.onload = function (e) {$('#previewC').attr('src', e.target.result);};reader.readAsDataURL(this.files[0]);}">
+
+						<br/>
+						<center>
+						 <img id="previewC" class="img-responsive" src="#" alt="Preview"/>
+						</center>
+
+						<br/>
+						<br/>
+						<br/>
+						<label for="imagen">Imagen Tarjeta de Circulación:</label>
+						<input type="file" name="imgTarjeta" id="imgTarjeta" class="filestyle" data-buttonText="Seleccione Imagen" data-buttomName="btn-primary" data-iconName="glyphicon glyphicon-picture" onchange="if (this.files && this.files[0]) {var reader = new FileReader();reader.onload = function (e) {$('#previewT').attr('src', e.target.result);};reader.readAsDataURL(this.files[0]);}">
+
+						<br/>
+						<center>
+						 <img id="previewT" class="img-responsive" src="#" alt="Preview"/>
+						</center>
+
+
 
 	        		 </div>
 				<div class="modal-footer">
@@ -135,11 +207,13 @@
 	<table class="table table-hover table-bordered results">
 		<thead>
 			<tr>
-				<th class="col-md-2 col-xs-5">Id</th>
-				<th class="col-md-4 col-xs-4">Placa</th>
-				<th class="col-md-6 col-xs-3">Descripcion</th>
-				<th class="col-md-3 col-xs-3 center-column">Editar</th>
-				<th class="col-md-3 col-xs-3 center-column">Eliminar</th>
+				<th class="col-md-1 col-xs-5">Id</th>
+				<th class="col-md-1 col-xs-4">Placa</th>
+				<th class="col-md-3 col-xs-3">imagen Cabezal</th>
+				<th class="col-md-3 col-xs-3">Imagen Tarjeta</th>
+				<th class="col-md-2 col-xs-3">Descripcion</th>
+				<th class="col-md-1 col-xs-3 center-column">Editar</th>
+				<th class="col-md-1 col-xs-3 center-column">Eliminar</th>
 			</tr>
 			<tr class="warning no-result">
 				<td colspan="4"><i class="fa fa-warning"></i> No hay resultados</td>
@@ -150,6 +224,8 @@
 				<tr>
 					<td>@cabezal.id</td>
 					<td>@cabezal.placa</td>
+					<td height="90"><a href="@routes.GerenteController.getCabezalImage(cabezal.id)" target="_blank"><img src="@routes.GerenteController.getCabezalImage(cabezal.id)" class="img-thubnail"  width="100"/></a></td>
+					<td height="90"><a href="@routes.GerenteController.getTarjetaImage(cabezal.id)" target="_blank"><img src="@routes.GerenteController.getTarjetaImage(cabezal.id)" class="img-thubnail"  width="100"/></a></td>
 					<td>@cabezal.descripcion</td>
 					<td><button class="btn btn-success btn-xs" data-toggle="modal" data-target="#mod-edit-@cabezal.id"><span class="glyphicon glyphicon-edit"></span> Editar</button></td>
 					<td><button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#mod-remove-@cabezal.id"><span class="glyphicon glyphicon-trash"></span> Eliminar</button></td>
@@ -164,7 +240,7 @@
 
 					<!-- Modal content-->
 					<div class="modal-content">
-						@form(action=routes.GerenteController.cabezal_edit(cabezal.id)){
+						@form(action=routes.GerenteController.cabezal_edit(cabezal.id) , 'enctype -> "multipart/form-data"){
 							<div class="modal-header">
 								<button type="button" class="close" data-dismiss="modal">&times;</button>
 								<h4 class="modal-title">Editar cabezal: @cabezal.placa</h4>
@@ -189,8 +265,44 @@
 					        		 </div>
 
 					        		 <div class="form-group">
+					        		 	@inputText(cabezal.getForm()("chasis"), '_showConstraints -> false , '_showErrors -> false,'class -> "form-control chasis", 'placeholder -> "", '_label -> "Chasis: ")
+					        		 </div>
+
+					        		 <div class="form-group">
+					        		 	@inputText(cabezal.getForm()("motor"), '_showConstraints -> false , '_showErrors -> false,'class -> "form-control motor", 'placeholder -> "", '_label -> "Motor: ")
+					        		 </div>
+
+					        		 <div class="form-group">
+					        		 	@inputText(cabezal.getForm()("año"), '_showConstraints -> false , '_showErrors -> false,'class -> "form-control año", 'placeholder -> "2017", '_label -> "Año: ")
+					        		 </div>
+					        		 <div class="form-group">
+					        		 	@inputText(cabezal.getForm()("color"), '_showConstraints -> false , '_showErrors -> false,'class -> "form-control color", 'placeholder -> "", '_label -> "Color: ")
+					        		 </div>
+
+					        		 <div class="form-group">
 					        		 	@textarea(cabezal.getForm()("descripcion"),'rows -> 5, '_showConstraints -> false , '_showErrors -> false,'class -> "form-control", '_label -> "Descripción: ")
 					        		 </div>
+								    
+								    <label for="imagen">Imagen cabezal:</label>
+									<input type="file" name="imgCabezal" id="imgCabezal@cabezal.id" class="filestyle" data-buttonText="Seleccione Imagen" data-buttomName="btn-primary" data-iconName="glyphicon glyphicon-picture" onchange="if (this.files && this.files[0]) {var reader = new FileReader();reader.onload = function (e) {$('#previewC-@cabezal.id').attr('src', e.target.result);};reader.readAsDataURL(this.files[0]);}">
+
+									<br/>
+									<center>
+									 <img id="previewC-@cabezal.id"  class="img-responsive" src="@routes.GerenteController.getCabezalImage(cabezal.id)" alt="Preview"/>
+									</center>
+
+									<br/>
+									<br/>
+									<br/>
+									<label for="imagen">Imagen Tarjeta de Circulación:</label>
+									<input type="file" name="imgTarjeta" id="imgTarjeta@cabezal.id" class="filestyle" data-buttonText="Seleccione Imagen" data-buttomName="btn-primary" data-iconName="glyphicon glyphicon-picture" onchange="if (this.files && this.files[0]) {var reader = new FileReader();reader.onload = function (e) {$('#previewT-@cabezal.id').attr('src', e.target.result);};reader.readAsDataURL(this.files[0]);}">
+
+									<br/>
+									<center>
+									 <img id="previewT-@cabezal.id"  class="img-responsive" src="@routes.GerenteController.getTarjetaImage(cabezal.id)" alt="Preview"/>
+									 
+									</center>
+
 					        		 
 
 								</div>

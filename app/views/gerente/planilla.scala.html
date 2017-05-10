@@ -190,6 +190,7 @@
 	  	  	<col class="azul"></col>
 	  	  	<col class="gris"></col>
 	  	  	<col class="azul"></col>
+	  	  	<col class="gris"></col>
 	  	  </colgroup>
 		  <thead>
 			<tr>
@@ -204,6 +205,7 @@
 				<th></th><!-- total pago -->
 				<th></th><!-- isss -->
 				<th></th><!-- afp -->
+				<th></th><!-- erogacion -->
 				
 
 			</tr>
@@ -229,6 +231,7 @@
 				<th rowspan="1"><center>Total pago</center></th>
 				<th rowspan="1"><center>ISSS</center></th>
 				<th rowspan="1"><center>AFP</center></th>
+				<th rowspan="1"><center>Erogación</center></th>
 				
 			</tr>
 		</thead>
@@ -244,7 +247,7 @@
 					<td><a title="<center><strong>@detalle.total_viajes_internacionales viajes</strong></center>" class="popover-content" data-trigger="hover" data-toggle="popover"  data-html="true" data-content='<strong>Fecha viaje</strong> &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp <strong>Kms</strong><br/>@for(viaje <- Ebean.find(classOf[Viaje]).where().conjunction().eq("periodo_planilla",detalle.periodo_planilla).eq("motorista",detalle.motorista).eq("tipo",2).findList()){@viaje.fecha_registro.format("dd/MM/yyyy") &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp @viaje.total_km <br/>}'>@BigDecimal(detalle.total_km_internacionales).setScale(2, BigDecimal.RoundingMode.HALF_UP).toDouble km</a></td><!-- km internacionales -->
 					<td><a title="<center><strong>@detalle.total_viajes_internacionales viajes</strong></center>" class="popover-content" data-trigger="hover" data-toggle="popover"  data-html="true" data-content='<strong>Kms</strong> &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp <strong>$$$</strong><br/>@for(viaje <- Ebean.find(classOf[Viaje]).where().conjunction().eq("periodo_planilla",detalle.periodo_planilla).eq("motorista",detalle.motorista).eq("tipo",2).findList()){@viaje.total_km &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp  @BigDecimal(viaje.total_km*viaje.periodo_planilla.politica_pago.tarifa_pago_km_int).setScale(2, BigDecimal.RoundingMode.HALF_UP).toDouble <br/>}'>$@BigDecimal(detalle.total_monto_internacionales).setScale(2, BigDecimal.RoundingMode.HALF_UP).toDouble</a></td><!-- monto internacionales -->
 					<td><center><a  title="<center><strong>@detalle.total_cantidad_agregados boletas</strong></center>" class="popover-content" data-trigger="hover" data-toggle="popover"  data-html="true" data-content='<strong>Viaje</strong> &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp <strong>Boleta</strong> &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp <strong>Fecha</strong><br/>@for(boleta <- Ebean.find(classOf[Boleta]).where().conjunction().eq("viaje.periodo_planilla",detalle.periodo_planilla).eq("viaje.motorista",detalle.motorista).eq("sobrepeso",1).findList()){@boleta.viaje.id &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp @boleta.codigo &nbsp &nbsp &nbsp &nbsp  @boleta.viaje.fecha_registro.format("dd/MM/yyyy") <br/>}'>@detalle.total_cantidad_agregados</a></center></td><!-- cantidad valores agregados -->
-					<td><a title="<center><strong>@detalle.total_cantidad_agregados boletas</strong></center>" class="popover-content" data-trigger="hover" data-toggle="popover"  data-html="true" data-content='<strong>Viaje</strong> &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp <strong>Boleta</strong> &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp <strong>$$$</strong><br/>@for(boleta <- Ebean.find(classOf[Boleta]).where().conjunction().eq("viaje.periodo_planilla",detalle.periodo_planilla).eq("viaje.motorista",detalle.motorista).eq("sobrepeso",1).findList()){@boleta.viaje.id &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp @boleta.codigo &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp @(boleta.viaje.periodo_planilla.politica_pago.porcentaje_sobrepeso*boleta.viaje.periodo_facturacion.politica_cobro.tarifa_sobrepeso) <br/>}'>$@BigDecimal(detalle.total_monto_agregados).setScale(2, BigDecimal.RoundingMode.HALF_UP).toDouble</a></td><!-- monto valores agregados -->
+					<td><a title="<center><strong>@detalle.total_cantidad_agregados boletas</strong></center>" class="popover-content" data-trigger="hover" data-toggle="popover"  data-html="true" data-content='<strong>Viaje</strong> &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp <strong>Boleta</strong> &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp <strong>$$$</strong><br/>@for(boleta <- Ebean.find(classOf[Boleta]).where().conjunction().eq("viaje.periodo_planilla",detalle.periodo_planilla).eq("viaje.motorista",detalle.motorista).eq("sobrepeso",1).findList()){@boleta.viaje.id &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp @boleta.codigo &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp @(boleta.viaje.periodo_planilla.politica_pago.tarifa_sobrepeso*boleta.viaje.periodo_facturacion.politica_cobro.tarifa_sobrepeso) <br/>}'>$@BigDecimal(detalle.total_monto_agregados).setScale(2, BigDecimal.RoundingMode.HALF_UP).toDouble</a></td><!-- monto valores agregados -->
 					<td><center><a title="<center><strong>@detalle.total_cantidad_viaticos viaticos</strong></center>" class="popover-content" data-trigger="hover" data-toggle="popover"  data-html="true" data-content='<strong>Vacio/Vacio</strong><br/>@detalle.total_cantidad_viaticos_vv &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp $@detalle.total_monto_viaticos_vv <br/><strong>Vacio/Cargado</strong><br/> @detalle.total_cantidad_viaticos_vc &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp $@detalle.total_monto_viaticos_vc <br/> <strong>Cargado/Cargado</strong><br/> @detalle.total_cantidad_viaticos_cc &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp $@detalle.total_monto_viaticos_cc'>@detalle.total_cantidad_viaticos</a></center></td><!-- cantidad viaticos -->
 					<td><a title="<center><strong>@detalle.total_cantidad_viaticos boletas</strong></center>" class="popover-content" data-trigger="hover" data-toggle="popover"  data-html="true" data-content='<strong>Vacio/Vacio</strong><br/>@detalle.total_cantidad_viaticos_vv &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp $@detalle.total_monto_viaticos_vv <br/><strong>Vacio/Cargado</strong><br/> @detalle.total_cantidad_viaticos_vc &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp $@detalle.total_monto_viaticos_vc <br/> <strong>Cargado/Cargado</strong><br/> @detalle.total_cantidad_viaticos_cc &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp $@detalle.total_monto_viaticos_cc'>$@BigDecimal(detalle.total_monto_viaticos).setScale(2, BigDecimal.RoundingMode.HALF_UP).toDouble</a></td><!-- monto viaticos -->
 					<td>$@BigDecimal(detalle.salario_ganado).setScale(2, BigDecimal.RoundingMode.HALF_UP).toDouble</td><!-- salario ganado -->
@@ -252,6 +255,7 @@
 					<td>$@BigDecimal(detalle.total_pago_periodo).setScale(2, BigDecimal.RoundingMode.HALF_UP).toDouble</td><!-- pago total -->
 					<td>$@BigDecimal(detalle.isss).setScale(2, BigDecimal.RoundingMode.HALF_UP).toDouble</td><!-- isss -->
 					<td>$@BigDecimal(detalle.afp).setScale(2, BigDecimal.RoundingMode.HALF_UP).toDouble</td><!-- afp -->
+					<td>$@BigDecimal(detalle.erogacion_total).setScale(2, BigDecimal.RoundingMode.HALF_UP).toDouble</td><!-- erogacion -->
 				</tr>
 
 

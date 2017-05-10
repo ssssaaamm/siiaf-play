@@ -4,9 +4,10 @@ import play.*;
 import play.mvc.*;
 import play.data.*;
 import java.util.*;
-import java.io.File;
+import java.io.*;
 import java.text.SimpleDateFormat;
-
+import play.mvc.Http.MultipartFormData;
+import play.mvc.Http.MultipartFormData.FilePart;
 import views.html.gerente.*;
 import models.*;
 
@@ -336,7 +337,8 @@ public class GerenteController extends Controller {
 
 
         Form<Motorista> motorista_form = Form.form(Motorista.class).bindFromRequest();
-        Map<String, String[]> values = request().body().asFormUrlEncoded();
+        MultipartFormData body = request().body().asMultipartFormData();
+        Map<String, String[]> values = body.asFormUrlEncoded();
         List<Motorista> motoristas_list = Motorista.find.findList();
 
         //Si hay errores siempre los retornara
@@ -366,6 +368,28 @@ public class GerenteController extends Controller {
         }
 
         Motorista nuevo =motorista_form.get();
+
+
+        try{
+            
+
+            
+            FilePart picture = body.getFile("imagen");
+              if (picture != null) {
+                if(((File)picture.getFile()).length()!=0){
+                    String contentType = picture.getContentType(); 
+                    File file = (File)picture.getFile();
+                    RandomAccessFile raf = new RandomAccessFile(file, "r");
+                    nuevo.imagen=new byte[(int)raf.length()];
+                    raf.readFully(nuevo.imagen);
+                    nuevo.contentTypeImagen=contentType;
+                }
+            }
+        }catch(Exception ex){
+            ex.printStackTrace();
+        }
+
+
         nuevo.save();
 
         flash("exito","Operacion exitosa!");
@@ -456,6 +480,26 @@ public class GerenteController extends Controller {
             //mot.licencia=motorista_form.get().licencia;
            
 
+            try{
+                
+
+                MultipartFormData body = request().body().asMultipartFormData();
+                FilePart picture = body.getFile("imagen");
+                  if (picture != null) {
+                    if(((File)picture.getFile()).length()!=0){
+                        String contentType = picture.getContentType(); 
+                        File file = (File)picture.getFile();
+                        RandomAccessFile raf = new RandomAccessFile(file, "r");
+                        mot.imagen=new byte[(int)raf.length()];
+                        raf.readFully(mot.imagen);
+                        mot.contentTypeImagen=contentType;
+                    }
+                }
+            }catch(Exception ex){
+                ex.printStackTrace();
+            }
+
+
             mot.update();
         }        
 
@@ -505,6 +549,24 @@ public class GerenteController extends Controller {
             return redirect(routes.GerenteController.motoristas());
         }
         return redirect(routes.GerenteController.motoristas());
+    }
+
+     public Result getMotoristaImage(Long id){
+
+        try {
+            Motorista prod = Motorista.find.byId(id);
+            InputStream input = new ByteArrayInputStream(prod.imagen);
+            java.awt.image.BufferedImage image =  javax.imageio.ImageIO.read(input);
+
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            javax.imageio.ImageIO.write(image,prod.contentTypeImagen.split("/")[1],baos);
+
+            return ok(baos.toByteArray()).as(prod.contentTypeImagen);
+        }catch(Exception ex){
+            ex.printStackTrace();
+        }
+
+        return ok();
     }
 
     //CABEZALES
@@ -584,7 +646,9 @@ public class GerenteController extends Controller {
 
 
         Form<Cabezal> cabezal_form = Form.form(Cabezal.class).bindFromRequest();
-        Map<String, String[]> values = request().body().asFormUrlEncoded();
+        MultipartFormData body = request().body().asMultipartFormData();
+
+        Map<String, String[]> values = body.asFormUrlEncoded();
         List<Cabezal> cabezales_list = Cabezal.find.findList();
 
         //Si hay errores siempre los retornara
@@ -592,6 +656,7 @@ public class GerenteController extends Controller {
             flash("modal","mod-new");
             return badRequest(cabezales.render(cabezal_form,cabezales_list));
         }
+
         if( Cabezal.find.where().eq("placa",values.get("placa")[0]).findUnique()!=null){
             flash("error","El Cabezal ya fue registrado");
             flash("modal","mod-new");
@@ -599,6 +664,44 @@ public class GerenteController extends Controller {
         }
 
         Cabezal nuevo = cabezal_form.get();
+
+        try{
+            
+
+            FilePart picture = body.getFile("imgCabezal");
+              if (picture != null) {
+                if(((File)picture.getFile()).length()!=0){
+                    String contentType = picture.getContentType(); 
+                    File file = (File)picture.getFile();
+                    RandomAccessFile raf = new RandomAccessFile(file, "r");
+                    nuevo.imgCabezal=new byte[(int)raf.length()];
+                    raf.readFully(nuevo.imgCabezal);
+                    nuevo.contentTypeImgCabezal=contentType;
+                }
+            }
+        }catch(Exception ex){
+            ex.printStackTrace();
+        }
+
+        try{
+            
+
+            FilePart picture = body.getFile("imgTarjeta");
+              if (picture != null) {
+                if(((File)picture.getFile()).length()!=0){
+                    String contentType = picture.getContentType(); 
+                    File file = (File)picture.getFile();
+                    RandomAccessFile raf = new RandomAccessFile(file, "r");
+                    nuevo.imgTarjeta=new byte[(int)raf.length()];
+                    raf.readFully(nuevo.imgTarjeta);
+                    nuevo.contentTypeImgTarjeta=contentType;
+                }
+            }
+        }catch(Exception ex){
+            ex.printStackTrace();
+        }
+
+
         nuevo.save();
 
         flash("exito","Operacion exitosa!");
@@ -660,9 +763,48 @@ public class GerenteController extends Controller {
                         return redirect(routes.GerenteController.cabezales());
                     }
                 }
-            
+            cab.chasis=cabezal_form.get().chasis;
+            cab.motor=cabezal_form.get().motor;
+            cab.año=cabezal_form.get().año;
+            cab.color=cabezal_form.get().color;
             cab.descripcion=cabezal_form.get().descripcion;
            
+
+            try{
+                
+                MultipartFormData body = request().body().asMultipartFormData();
+                FilePart picture = body.getFile("imgCabezal");
+                  if (picture != null) {
+                    if(((File)picture.getFile()).length()!=0){
+                        String contentType = picture.getContentType(); 
+                        File file = (File)picture.getFile();
+                        RandomAccessFile raf = new RandomAccessFile(file, "r");
+                        cab.imgCabezal=new byte[(int)raf.length()];
+                        raf.readFully(cab.imgCabezal);
+                        cab.contentTypeImgCabezal=contentType;
+                    }
+                }
+            }catch(Exception ex){
+                ex.printStackTrace();
+            }
+
+            try{
+                
+                MultipartFormData body = request().body().asMultipartFormData();
+                FilePart picture = body.getFile("imgTarjeta");
+                  if (picture != null) {
+                    if(((File)picture.getFile()).length()!=0){
+                        String contentType = picture.getContentType(); 
+                        File file = (File)picture.getFile();
+                        RandomAccessFile raf = new RandomAccessFile(file, "r");
+                        cab.imgTarjeta=new byte[(int)raf.length()];
+                        raf.readFully(cab.imgTarjeta);
+                        cab.contentTypeImgTarjeta=contentType;
+                    }
+                }
+            }catch(Exception ex){
+                ex.printStackTrace();
+            }
 
             cab.update();
         }        
@@ -718,8 +860,41 @@ public class GerenteController extends Controller {
     }
 
 
+    public Result getCabezalImage(Long id){
 
+        try {
+            Cabezal cab = Cabezal.find.byId(id);
+            InputStream input = new ByteArrayInputStream(cab.imgCabezal);
+            java.awt.image.BufferedImage imageC =  javax.imageio.ImageIO.read(input);
 
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            javax.imageio.ImageIO.write(imageC,cab.contentTypeImgCabezal.split("/")[1],baos);
+
+            return ok(baos.toByteArray()).as(cab.contentTypeImgCabezal);
+        }catch(Exception ex){
+            ex.printStackTrace();
+        }
+
+        return ok();
+    }
+
+    public Result getTarjetaImage(Long id){
+
+        try {
+            Cabezal cab = Cabezal.find.byId(id);
+            InputStream input = new ByteArrayInputStream(cab.imgTarjeta);
+            java.awt.image.BufferedImage imageT =  javax.imageio.ImageIO.read(input);
+
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            javax.imageio.ImageIO.write(imageT,cab.contentTypeImgTarjeta.split("/")[1],baos);
+
+            return ok(baos.toByteArray()).as(cab.contentTypeImgTarjeta);
+        }catch(Exception ex){
+            ex.printStackTrace();
+        }
+
+        return ok();
+    }
     public Result planilla(){//cuando el usuario no indique periodo se mostrara siempre el periodo actual
 
 
@@ -1426,7 +1601,7 @@ public class GerenteController extends Controller {
         PoliticaPago nueva = politica_form.get();
 
 
-        PoliticaPago match = PoliticaPago.find.where().conjunction().eq("duracion_periodo",nueva.duracion_periodo).eq("salario_minimo",nueva.salario_minimo).eq("porcentaje_isss",nueva.porcentaje_isss).eq("porcentaje_afp",nueva.porcentaje_afp).eq("tarifa_pago_km_loc",nueva.tarifa_pago_km_loc).eq("tarifa_pago_km_int",nueva.tarifa_pago_km_int).eq("porcentaje_sobrepeso",nueva.porcentaje_sobrepeso).eq("tarifa_viatico_vv",nueva.tarifa_viatico_vv).eq("tarifa_viatico_vc",nueva.tarifa_viatico_vc).eq("tarifa_viatico_cc",nueva.tarifa_viatico_cc).findUnique();
+        PoliticaPago match = PoliticaPago.find.where().conjunction().eq("duracion_periodo",nueva.duracion_periodo).eq("salario_minimo",nueva.salario_minimo).eq("porcentaje_isss",nueva.porcentaje_isss).eq("porcentaje_afp",nueva.porcentaje_afp).eq("tarifa_pago_km_loc",nueva.tarifa_pago_km_loc).eq("tarifa_pago_km_int",nueva.tarifa_pago_km_int).eq("tarifa_sobrepeso",nueva.tarifa_sobrepeso).eq("tarifa_viatico_vv",nueva.tarifa_viatico_vv).eq("tarifa_viatico_vc",nueva.tarifa_viatico_vc).eq("tarifa_viatico_cc",nueva.tarifa_viatico_cc).findUnique();
 
 
         if(actual!=null){

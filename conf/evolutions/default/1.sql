@@ -19,8 +19,16 @@ create table boleta (
 create table cabezal (
   id                            bigint auto_increment not null,
   placa                         varchar(10),
+  chasis                        varchar(20),
+  motor                         varchar(20),
+  año                           varchar(4),
+  color                         varchar(10),
   descripcion                   varchar(150),
   activo                        tinyint(1) default 0,
+  img_cabezal                   longblob,
+  content_type_img_cabezal      varchar(255),
+  img_tarjeta                   longblob,
+  content_type_img_tarjeta      varchar(255),
   constraint uq_cabezal_placa unique (placa),
   constraint pk_cabezal primary key (id)
 );
@@ -87,6 +95,7 @@ create table detalle_pago (
   total_pago_periodo            double,
   isss                          double,
   afp                           double,
+  erogacion_total               double,
   motorista_id                  bigint,
   periodo_planilla_id           bigint,
   constraint pk_detalle_pago primary key (id)
@@ -99,6 +108,8 @@ create table motorista (
   dui                           varchar(10),
   nit                           varchar(18),
   licencia                      varchar(18),
+  imagen                        longblob,
+  content_type_imagen           varchar(255),
   activo                        tinyint(1) default 0,
   constraint uq_motorista_codigo_dui_nit_licencia unique (codigo,dui,nit,licencia),
   constraint pk_motorista primary key (id)
@@ -143,7 +154,7 @@ create table politica_pago (
   porcentaje_afp                double,
   tarifa_pago_km_loc            double,
   tarifa_pago_km_int            double,
-  porcentaje_sobrepeso          double,
+  tarifa_sobrepeso              double,
   tarifa_viatico_vv             double,
   tarifa_viatico_vc             double,
   tarifa_viatico_cc             double,

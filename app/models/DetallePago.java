@@ -60,6 +60,8 @@ public class DetallePago extends Model{
 
 	public Double afp=0.0;
 
+	public Double erogacion_total=0.0;
+
 	@ManyToOne
 	public Motorista motorista;
 

@@ -15,6 +15,7 @@ public class Boleta extends Model{
 	@Id
 	public Long id;
 	
+	/* codigo es = a TIR de las vistas*/
 	@Column(length=10)	
 	@Constraints.Required(message="Debe ingresar el codigo de boleta")
 	public String codigo;

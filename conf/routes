@@ -36,11 +36,14 @@ GET     /manager/motoristas                         controllers.GerenteControlle
 POST     /manager/motoristas/new                    controllers.GerenteController.motorista_new
 POST     /manager/motoristas/edit/:id               controllers.GerenteController.motorista_edit(id: Long)
 POST     /manager/motoristas/remove/:id             controllers.GerenteController.motorista_remove(id:Long)
+GET 	/manager/motoristas/image/:id 				controllers.GerenteController.getMotoristaImage(id: Long)
 
 GET     /manager/cabezales                          controllers.GerenteController.cabezales
 POST     /manager/cabezales/new                     controllers.GerenteController.cabezal_new
 POST     /manager/cabezales/edit/:id                controllers.GerenteController.cabezal_edit(id: Long)
 POST     /manager/cabezales/remove/:id              controllers.GerenteController.cabezal_remove(id:Long)
+GET 	/manager/cabezales/imagec/:id 				controllers.GerenteController.getCabezalImage(id: Long)
+GET 	/manager/cabezales/imaget/:id 				controllers.GerenteController.getTarjetaImage(id: Long)
 
 GET     /manager/planilla                           controllers.GerenteController.planilla()
 GET     /manager/planilla/:id                      controllers.GerenteController.planilla_show(id: Long)

@@ -37,7 +37,7 @@ public class PoliticaPago extends Model{
 	public Double tarifa_pago_km_int;
 	
 	@Constraints.Required(message="Debe ingresar tarifa para tarifa sobrepeso")
-	public Double porcentaje_sobrepeso;
+	public Double tarifa_sobrepeso;
 
 	@Constraints.Required(message="Debe ingresar tarifa de pago vacio/vacio")
 	public Double tarifa_viatico_vv;

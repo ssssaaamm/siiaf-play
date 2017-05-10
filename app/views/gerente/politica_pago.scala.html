@@ -72,7 +72,7 @@
 		</div>
 	}
 	
-	@for(error <- politica_form("porcentaje_sobrepeso").errors) {
+	@for(error <- politica_form("tarifa_sobrepeso").errors) {
     	<div class="alert alert-danger">
 			<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
 			<strong>@Messages(error.messages, error.arguments.toArray: _*)</strong>
@@ -145,7 +145,7 @@
 			</div>
 
 			<div class="form-group">
-			 	@inputText(politica_form("porcentaje_sobrepeso"), '_showConstraints -> false, '_showErrors -> false,'class -> "form-control", 'placeholder -> "10.5", '_label -> "Porcentaje Sobrepeso: ")
+			 	@inputText(politica_form("tarifa_sobrepeso"), '_showConstraints -> false, '_showErrors -> false,'class -> "form-control", 'placeholder -> "10.5", '_label -> "Tarifa Sobrepeso: ")
 			</div>
 
 			<div class="form-group">
